@@ -1,6 +1,7 @@
 package me.violinsolo.boman.activity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityMainBinding;
@@ -37,6 +38,24 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
      */
     @Override
     protected void bindListeners() {
-//        mBinder
+        mBinder.findBleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
+
+    private void viewWhenNoBLE() {
+        mBinder.findBleBtn.setVisibility(View.VISIBLE);
+        mBinder.autoConnectBleBtn.setVisibility(View.GONE);
+        mBinder.disconnectBleBtn.setVisibility(View.GONE);
+    }
+
+    private void viewWhenBindBLE() {
+        mBinder.findBleBtn.setVisibility(View.GONE);
+        mBinder.autoConnectBleBtn.setVisibility(View.VISIBLE);
+        mBinder.disconnectBleBtn.setVisibility(View.VISIBLE);
     }
 }
