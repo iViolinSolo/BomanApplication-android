@@ -18,6 +18,7 @@ public abstract class BaseActivity<T extends ViewBinding > extends AppCompatActi
 
         setContentView(mBinder.getRoot());
 
+        initViews();
         bindListeners();
     }
 
@@ -30,6 +31,10 @@ public abstract class BaseActivity<T extends ViewBinding > extends AppCompatActi
      */
     protected abstract T onBind();
 
+    /**
+     * write init view codes, such as toolbar.
+     */
+    protected abstract void initViews();
 
     /**
      * bind all listeners here.

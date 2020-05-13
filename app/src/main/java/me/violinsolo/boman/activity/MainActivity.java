@@ -25,6 +25,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
     /**
+     * write init view codes, such as toolbar.
+     */
+    @Override
+    protected void initViews() {
+        setSupportActionBar(mBinder.toolbar);
+    }
+
+    /**
      * bind all listeners here.
      */
     @Override
