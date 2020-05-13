@@ -47,7 +47,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/list_known_devices"
+        android:id="@+id/list_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -57,15 +57,5 @@
         android:paddingStart="5dp"
         android:scrollbars="none" />
 
-    <ListView
-        android:id="@+id/list_new_devices"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="0.5dp"
-        android:paddingEnd="5dp"
-        android:paddingStart="5dp"
-        android:scrollbars="none" />
 
 </LinearLayout>

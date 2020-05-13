@@ -41,7 +41,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         boundMacAddr = spUtil.getBoundDevice();
         if (boundMacAddr == null) {
             // no bound device
-
+            viewWhenNoBLE();
+        }else {
+            viewWhenBindBLE();
         }
     }
 
