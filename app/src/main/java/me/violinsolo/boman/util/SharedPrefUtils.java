@@ -42,11 +42,11 @@ public class SharedPrefUtils {
     // -----------------
     // Functions
     // -----------------
-    public String getBindedDevice() {
+    public String getBoundDevice() {
         return getString(BINDED_DEVICES_KEY);
     }
 
-    public void storeBindedDevice(String deviceMacAddr) {
+    public void storeBoundDevice(String deviceMacAddr) {
         editor.putString(BINDED_DEVICES_KEY, deviceMacAddr);
         editor.commit();
     }

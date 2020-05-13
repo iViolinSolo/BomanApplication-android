@@ -5,8 +5,13 @@ import android.view.View;
 
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityMainBinding;
+import me.violinsolo.boman.util.SharedPrefUtils;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
+
+    private String boundMacAddr = null;
+    private SharedPrefUtils spUtil = new SharedPrefUtils(this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     @Override
     protected void initViews() {
         setSupportActionBar(mBinder.toolbar);
+
+        // reset the UI, simultaneously get the MAC address if possible.
+        boundMacAddr = spUtil.getBoundDevice();
+        if (boundMacAddr == null) {
+            // no bound device
+
+        }
     }
 
     /**
