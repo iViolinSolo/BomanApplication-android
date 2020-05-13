@@ -17,6 +17,8 @@ public abstract class BaseActivity<T extends ViewBinding > extends AppCompatActi
         mBinder = onBind();
 
         setContentView(mBinder.getRoot());
+
+        bindListeners();
     }
 
     /**
@@ -27,4 +29,10 @@ public abstract class BaseActivity<T extends ViewBinding > extends AppCompatActi
      *                  mBinder = ActivityXMLNameBinding.inflate(getLayoutInflater());
      */
     protected abstract T onBind();
+
+
+    /**
+     * bind all listeners here.
+     */
+    protected abstract void bindListeners();
 }

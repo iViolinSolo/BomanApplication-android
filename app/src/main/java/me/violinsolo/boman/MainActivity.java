@@ -23,4 +23,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     protected ActivityMainBinding onBind() {
         return ActivityMainBinding.inflate(getLayoutInflater());
     }
+
+    /**
+     * bind all listeners here.
+     */
+    @Override
+    protected void bindListeners() {
+//        mBinder
+    }
 }
