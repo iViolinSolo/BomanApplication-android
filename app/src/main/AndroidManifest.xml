@@ -19,7 +19,7 @@
 <!--            android:value="640"/>-->
         <!-- this is autosize design -->
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

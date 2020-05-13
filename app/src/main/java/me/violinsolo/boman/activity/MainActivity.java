@@ -1,4 +1,4 @@
-package me.violinsolo.boman;
+package me.violinsolo.boman.activity;
 
 import android.os.Bundle;
 
