@@ -172,7 +172,9 @@ public class DeviceAdapter extends BaseAdapter {
                     mBinder.layoutIdle.setVisibility(View.GONE);
                     mBinder.layoutConnected.setVisibility(View.VISIBLE);
                     mBinder.deviceState.setText(R.string.connected);
-                    mBinder.deviceState.setTextColor(0x00796B);
+                    mBinder.deviceState.setTextColor(0xFF00796B);
+                    mBinder.btnDisconnect.setVisibility(View.VISIBLE);
+                    mBinder.btnDetail.setVisibility(View.VISIBLE);
                     break;
                 case BOUND_DISCONNECTED:
                     mBinder.imgBlue.setImageResource(R.mipmap.ic_warm_offline);
@@ -181,7 +183,9 @@ public class DeviceAdapter extends BaseAdapter {
                     mBinder.layoutIdle.setVisibility(View.GONE);
                     mBinder.layoutConnected.setVisibility(View.VISIBLE);
                     mBinder.deviceState.setText(R.string.disconnect);
-                    mBinder.deviceState.setTextColor(0xFF5252);
+                    mBinder.deviceState.setTextColor(0xFFFF5252);
+                    mBinder.btnDisconnect.setVisibility(View.GONE);
+                    mBinder.btnDetail.setVisibility(View.GONE);
                     break;
             }
         }
