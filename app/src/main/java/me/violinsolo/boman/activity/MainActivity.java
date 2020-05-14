@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private Context mContext = MainActivity.this;
 
     private String boundMacAddr = null;
-    private SharedPrefUtils spUtil = new SharedPrefUtils(mContext);
+    private SharedPrefUtils spUtil; // = new SharedPrefUtils(mContext); // nullpointerexception.
 
 
     @Override
@@ -55,6 +55,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     @Override
     protected void initViews() {
         setSupportActionBar(mBinder.toolbar);
+        spUtil = new SharedPrefUtils(mContext);
 
         // reset the UI, simultaneously get the MAC address if possible.
         boundMacAddr = spUtil.getBoundDevice();
