@@ -214,7 +214,7 @@ public class DeviceAdapter extends BaseAdapter {
         });
 
 
-        return null;
+        return view; // if null, java.lang.NullPointerException: Attempt to invoke virtual method 'int android.view.View.getImportantForAccessibility()' on a null object reference
     }
 
 
