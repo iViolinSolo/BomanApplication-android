@@ -148,6 +148,30 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             }
         });
 
+        deviceAdapter.setOnDeviceClickListener(new DeviceAdapter.OnDeviceClickListener() {
+            @Override
+            public void onConnect(BleDevice bleDevice) {
+                bleUtils.connect(bleDevice);
+                spUtil.storeBoundDevice(bleDevice);
+            }
+
+            @Override
+            public void onDisConnect(final BleDevice bleDevice) {
+                bleUtils.disconnect(bleDevice);
+            }
+
+            @Override
+            public void onDetail(BleDevice bleDevice) {
+//                if (BleManager.getInstance().isConnected(bleDevice)) {
+//                    Intent intent = new Intent(MainActivity.this, OperationActivity.class);
+//                    intent.putExtra(OperationActivity.KEY_DATA, bleDevice);
+//                    startActivity(intent);
+//                }
+//                TODO need implement.
+                Toast.makeText(mContext, "Not available now", Toast.LENGTH_LONG).show();
+            }
+        });
+
 
         bleUtils.setBleConnectCallBack(new BLEUtils.BleConnectCallBack() {
             @Override

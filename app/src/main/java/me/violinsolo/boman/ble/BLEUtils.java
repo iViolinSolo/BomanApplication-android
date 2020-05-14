@@ -101,17 +101,23 @@ public class BLEUtils {
 
 
     // connect to specified device.
-    private void connect(final BleDevice bleDevice) {
-        BleManager.getInstance().connect(bleDevice, bleConnectCallBack);
+    public void connect(final BleDevice bleDevice) {
+        if (!BleManager.getInstance().isConnected(bleDevice)) {
+            BleManager.getInstance().cancelScan();
+            BleManager.getInstance().connect(bleDevice, bleConnectCallBack);
+        }
+    }
+
+    public void disconnect(final BleDevice bleDevice) {
+        if (BleManager.getInstance().isConnected(bleDevice)) {
+            BleManager.getInstance().disconnect(bleDevice);
+        }
     }
 
     public List<BleDevice> showConnectedDevice() {
         return BleManager.getInstance().getAllConnectedDevice();
     }
 
-    public boolean disconnectTo() {
-        return false;
-    }
 
 
 //    private void readRssi(BleDevice bleDevice) {
