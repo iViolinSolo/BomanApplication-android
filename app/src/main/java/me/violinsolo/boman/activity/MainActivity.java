@@ -34,6 +34,7 @@ import me.violinsolo.boman.R;
 import me.violinsolo.boman.adapter.DeviceAdapter;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.ble.BLEUtils;
+import me.violinsolo.boman.ble.BleRepr;
 import me.violinsolo.boman.ble.ObserverManager;
 import me.violinsolo.boman.databinding.ActivityMainBinding;
 import me.violinsolo.boman.util.SharedPrefUtils;
@@ -42,7 +43,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private Context mContext = MainActivity.this;
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private String boundMacAddr = null;
+    private BleRepr boundBleDevice = null;
     private SharedPrefUtils spUtil; // = new SharedPrefUtils(mContext); // nullpointerexception.
     private BLEUtils bleUtils;
     private DeviceAdapter deviceAdapter;
@@ -107,8 +108,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         progressDialog = new ProgressDialog(mContext);
 
         // reset the UI, simultaneously get the MAC address if possible.
-        boundMacAddr = spUtil.getBoundDevice();
-        if (boundMacAddr == null) {
+        boundBleDevice = spUtil.getBoundDevice();
+        if (boundBleDevice == null) {
             // no bound device
             viewWhenNoBLE();
         }else {
@@ -127,7 +128,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             public void onClick(View view) {
                 checkPermissions();
 
-                spUtil.storeBoundDevice("jSA09dclkwe23", "Device name #3ds", 900);
+//                spUtil.storeBoundDevice("jSA09dclkwe23", "Device name #3ds", 900);
             }
         });
 
@@ -136,7 +137,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             public void onClick(View view) {
 
                 // TODO disconnect the current device if connected.
-                boundMacAddr = null;
+                boundBleDevice = null;
                 spUtil.removeBoundDevice();
             }
         });
@@ -193,6 +194,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 progressDialog.dismiss();
                 deviceAdapter.addDevice(bleDevice, BLEUtils.BLEState.BOUND_CONNECTED);
                 deviceAdapter.notifyDataSetChanged();
+
+                spUtil.storeBoundDevice(bleDevice);
             }
 
             @Override

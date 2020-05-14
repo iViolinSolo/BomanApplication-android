@@ -52,22 +52,30 @@ public class SharedPrefUtils {
     // -----------------
     // Functions
     // -----------------
-    public String getBoundDevice() {
-        return getString(BOUND_DEVICES_KEY);
-    }
-
-//    public BleRepr getBoundD() {
-//        return null;
+//    public String getBoundDevice() {
+//        return getString(BOUND_DEVICES_KEY);
 //    }
 
+    public BleRepr getBoundDevice() {
+        String json = getString(BOUND_DEVICES_KEY);
+
+        if (json == null) {
+            return null;
+        }else {
+            Type type = new TypeToken<BleRepr>(){}.getType();
+            BleRepr newDev = gson.fromJson(json, type);
+            Log.d(TAG, "> current restore json is: "+json);
+            return newDev;
+        }
+    }
+
+
     public void storeBoundDevice(BleDevice bleDevice) {
-
-        String json = gson.toJson(bleDevice);
-        Log.d(TAG, "> current store json is: "+json);
-        Type type = new TypeToken<BleDevice>(){}.getType();
-        BleDevice newDev = gson.fromJson(json, type);
-        Log.d(TAG, "> current restore json is: "+gson.toJson(newDev));
-
+//        String json = gson.toJson(bleDevice);
+//        Log.d(TAG, "> current store json is: "+json);
+//        Type type = new TypeToken<BleDevice>(){}.getType();
+//        BleDevice newDev = gson.fromJson(json, type);
+//        Log.d(TAG, "> current restore json is: "+gson.toJson(newDev));
 
         storeBoundDevice(bleDevice.getMac(), bleDevice.getName(), bleDevice.getRssi());
     }
@@ -77,17 +85,22 @@ public class SharedPrefUtils {
         String json = gson.toJson(t);
 
         Log.d(TAG, "> current store json is: "+json);
-//        editor.putString(BOUND_DEVICES_KEY, json);
-//        editor.commit();
-    }
-
-    public void storeBoundDevice(String deviceMacAddr) {
-        editor.putString(BOUND_DEVICES_KEY, deviceMacAddr);
+        editor.putString(BOUND_DEVICES_KEY, json);
         editor.commit();
     }
 
+//    public void storeBoundDevice(String deviceMacAddr) {
+//        editor.putString(BOUND_DEVICES_KEY, deviceMacAddr);
+//        editor.commit();
+//    }
+
+//    public void removeBoundDevice() {
+//        storeBoundDevice((String) null);
+//    }
+
     public void removeBoundDevice() {
-        storeBoundDevice((String) null);
+        editor.remove(BOUND_DEVICES_KEY);
+        editor.commit();
     }
 
 
