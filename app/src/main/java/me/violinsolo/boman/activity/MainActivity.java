@@ -2,7 +2,9 @@ package me.violinsolo.boman.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,7 +15,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
+
+import com.clj.fastble.data.BleDevice;
+import com.clj.fastble.exception.BleException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +32,8 @@ import androidx.core.content.ContextCompat;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.adapter.DeviceAdapter;
 import me.violinsolo.boman.base.BaseActivity;
+import me.violinsolo.boman.ble.BLEUtils;
+import me.violinsolo.boman.ble.ObserverManager;
 import me.violinsolo.boman.databinding.ActivityMainBinding;
 import me.violinsolo.boman.util.SharedPrefUtils;
 
@@ -33,7 +43,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private String boundMacAddr = null;
     private SharedPrefUtils spUtil; // = new SharedPrefUtils(mContext); // nullpointerexception.
+    private BLEUtils bleUtils;
     private DeviceAdapter deviceAdapter;
+
+
+    private Animation operatingAnim;
+    private ProgressDialog progressDialog;
 
 
     @Override
@@ -61,6 +76,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         setSupportActionBar(mBinder.toolbar);
         spUtil = new SharedPrefUtils(mContext);
         deviceAdapter = new DeviceAdapter(mContext);
+        bleUtils = new BLEUtils();
+
+        operatingAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        operatingAnim.setInterpolator(new LinearInterpolator());
+        progressDialog = new ProgressDialog(mContext);
 
         // reset the UI, simultaneously get the MAC address if possible.
         boundMacAddr = spUtil.getBoundDevice();
@@ -101,6 +121,47 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             @Override
             public void onClick(View view) {
                 checkPermissions();
+            }
+        });
+
+
+        bleUtils.setBleConnectCallBack(new BLEUtils.BleConnectCallBack() {
+            @Override
+            public void onStartConnect() {
+                progressDialog.show();
+            }
+
+            @Override
+            public void onConnectFail(BleDevice bleDevice, BleException exception) {
+                mBinder.imgLoading.clearAnimation();
+                mBinder.imgLoading.setVisibility(View.GONE);
+//                btn_scan.setText(getString(R.string.start_scan));
+                progressDialog.dismiss();
+                Toast.makeText(mContext, getString(R.string.connect_fail), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
+                progressDialog.dismiss();
+                deviceAdapter.addDevice(bleDevice, BLEUtils.BLEState.BOUND_CONNECTED);
+                deviceAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onDisConnected(boolean isActiveDisConnected, BleDevice bleDevice, BluetoothGatt gatt, int status) {
+                progressDialog.dismiss();
+
+//                deviceAdapter.removeDevice(bleDevice);
+                deviceAdapter.updateDeviceState(bleDevice, BLEUtils.BLEState.BOUND_DISCONNECTED);
+                deviceAdapter.notifyDataSetChanged();
+
+                if (isActiveDisConnected) {
+                    Toast.makeText(MainActivity.this, getString(R.string.active_disconnected), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this, getString(R.string.disconnected), Toast.LENGTH_LONG).show();
+                    ObserverManager.getInstance().notifyObserver(bleDevice); // TODO, need to check observable functionality.
+                }
+
             }
         });
     }

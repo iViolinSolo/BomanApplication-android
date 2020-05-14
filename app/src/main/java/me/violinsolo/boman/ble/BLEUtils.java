@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class BLEUtils {
     public enum BLEState {UNBOUND, BOUND_CONNECTED, BOUND_DISCONNECTED}
-    public abstract class BleConnectCallBack extends BleGattCallback {}
+    public abstract static class BleConnectCallBack extends BleGattCallback {}
 
     private BleScanCallback bleScanCallback = null;
     private BleConnectCallBack bleConnectCallBack = null;
@@ -37,6 +37,11 @@ public class BLEUtils {
                 .setReConnectCount(1, 5000)
                 .setConnectOverTime(20000)
                 .setOperateTimeout(5000);
+    }
+    // destroy.
+    public void clean() {
+        BleManager.getInstance().disconnectAllDevice();
+        BleManager.getInstance().destroy();
     }
 
     // start scan ...

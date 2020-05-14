@@ -6,6 +6,9 @@ import android.util.Log;
 
 import com.clj.fastble.data.BleDevice;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 
 import me.violinsolo.boman.ble.BleRepr;
 
@@ -58,6 +61,14 @@ public class SharedPrefUtils {
 //    }
 
     public void storeBoundDevice(BleDevice bleDevice) {
+
+        String json = gson.toJson(bleDevice);
+        Log.d(TAG, "> current store json is: "+json);
+        Type type = new TypeToken<BleDevice>(){}.getType();
+        BleDevice newDev = gson.fromJson(json, type);
+        Log.d(TAG, "> current restore json is: "+gson.toJson(newDev));
+
+
         storeBoundDevice(bleDevice.getMac(), bleDevice.getName(), bleDevice.getRssi());
     }
     public void storeBoundDevice(String mac, String name, int rssi) {
