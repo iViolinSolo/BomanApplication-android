@@ -231,6 +231,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         mBinder.disconnectBleBtn.setVisibility(View.VISIBLE);
     }
 
+    private void nowScanAllAvailableDevices() {
+        bleUtils.setScanRule(null);
+        bleUtils.startScan();
+    }
+
 
     private static final int REQUEST_CODE_OPEN_GPS = 1;
     private static final int REQUEST_CODE_PERMISSION_LOCATION = 2;
@@ -307,6 +312,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 //                    TODO: Finish here....
 //                    setScanRule();
 //                    startScan();
+                    nowScanAllAvailableDevices();
                 }
                 break;
         }
@@ -332,6 +338,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 //                    TODO: Finish here....
 //                setScanRule();
 //                startScan();
+                nowScanAllAvailableDevices();
             }
         }
     }

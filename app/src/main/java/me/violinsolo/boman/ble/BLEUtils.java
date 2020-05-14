@@ -11,6 +11,9 @@ import com.clj.fastble.scan.BleScanRuleConfig;
 import java.util.List;
 import java.util.UUID;
 
+import androidx.annotation.Nullable;
+import me.violinsolo.boman.util.Config;
+
 public class BLEUtils {
     public enum BLEState {UNBOUND, BOUND_CONNECTED, BOUND_DISCONNECTED}
     public abstract static class BleConnectCallBack extends BleGattCallback {}
@@ -49,7 +52,7 @@ public class BLEUtils {
         BleManager.getInstance().scan(bleScanCallback);
     }
 
-    private void setScanRule(String macAddr) {
+    public void setScanRule(@Nullable String macAddr) {
         String[] uuids = null;
 //        String str_uuid = et_uuid.getText().toString();
 //        if (TextUtils.isEmpty(str_uuid)) {
@@ -71,7 +74,8 @@ public class BLEUtils {
             }
         }
 
-        String[] names = null;;
+//        String[] names = null;
+        String[] names = Config.deviceNames.toArray(new String[0]);
 //        String str_name = et_name.getText().toString();
 //        if (TextUtils.isEmpty(str_name)) {
 //            names = null;
