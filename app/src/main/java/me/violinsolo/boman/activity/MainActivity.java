@@ -233,7 +233,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
     private void nowScanAllAvailableDevices() {
-//        bleUtils.setScanRule(null);
+        bleUtils.setScanRule(null);
         bleUtils.startScan();
     }
 
