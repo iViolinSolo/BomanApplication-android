@@ -114,7 +114,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             viewWhenNoBLE();
         }else {
             viewWhenBindBLE();
-//            deviceAdapter.ad
+            deviceAdapter.addDevice(boundBleDevice, BLEUtils.BLEState.BOUND_DISCONNECTED);
+            deviceAdapter.notifyDataSetChanged();
         }
     }
 
