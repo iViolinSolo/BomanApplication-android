@@ -12,6 +12,6 @@ public class Config {
 
 
     static {
-        deviceNames.add("thunder");
+        deviceNames.add("Thunderboard");
     }
 }
