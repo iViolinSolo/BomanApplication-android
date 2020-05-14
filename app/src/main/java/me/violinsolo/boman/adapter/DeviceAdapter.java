@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.clj.fastble.BleManager;
 import com.clj.fastble.data.BleDevice;
 
 import java.util.ArrayList;
@@ -73,6 +74,17 @@ public class DeviceAdapter extends BaseAdapter {
             }
         }
 
+    }
+
+    public void clearScanDevice() {
+        int totalLen = devices.size();
+        for (int i = totalLen-1; i > 0; i--) {
+            BleDevice device = devices.get(i);
+            if (!BleManager.getInstance().isConnected(device)) {
+                devices.remove(i);
+                deviceStates.remove(i);
+            }
+        }
     }
 
 

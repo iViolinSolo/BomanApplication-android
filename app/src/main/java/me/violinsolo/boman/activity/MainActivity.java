@@ -20,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
+import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 
@@ -162,6 +163,35 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                     ObserverManager.getInstance().notifyObserver(bleDevice); // TODO, need to check observable functionality.
                 }
 
+            }
+        });
+
+        bleUtils.setBleScanCallback(new BleScanCallback() {
+            @Override
+            public void onScanStarted(boolean success) {
+                deviceAdapter.clearScanDevice();
+                deviceAdapter.notifyDataSetChanged();
+                mBinder.imgLoading.startAnimation(operatingAnim);
+                mBinder.imgLoading.setVisibility(View.VISIBLE);
+//                btn_scan.setText(getString(R.string.stop_scan));
+            }
+
+            @Override
+            public void onLeScan(BleDevice bleDevice) {
+                super.onLeScan(bleDevice);
+            }
+
+            @Override
+            public void onScanning(BleDevice bleDevice) {
+                deviceAdapter.addDevice(bleDevice, BLEUtils.BLEState.UNBOUND);
+                deviceAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onScanFinished(List<BleDevice> scanResultList) {
+                mBinder.imgLoading.clearAnimation();
+                mBinder.imgLoading.setVisibility(View.INVISIBLE);
+//                btn_scan.setText(getString(R.string.start_scan));
             }
         });
     }
