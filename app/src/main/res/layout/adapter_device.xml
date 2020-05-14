@@ -15,7 +15,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
-            android:src="@mipmap/ic_warm_64"
+            android:src="@mipmap/ic_warm_offline"
             android:contentDescription="@string/thermometer_icon" />
 
         <LinearLayout
