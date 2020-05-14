@@ -1,5 +1,6 @@
 package me.violinsolo.boman.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -8,9 +9,10 @@ import me.violinsolo.boman.databinding.ActivityMainBinding;
 import me.violinsolo.boman.util.SharedPrefUtils;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
+    private Context mContext = MainActivity.this;
 
     private String boundMacAddr = null;
-    private SharedPrefUtils spUtil = new SharedPrefUtils(this);
+    private SharedPrefUtils spUtil = new SharedPrefUtils(mContext);
 
 
     @Override
