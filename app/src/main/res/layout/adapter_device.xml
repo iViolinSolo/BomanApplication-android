@@ -84,6 +84,7 @@
             tools:ignore="RelativeOverlap">
 
             <TextView
+                android:id="@+id/device_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/connected"

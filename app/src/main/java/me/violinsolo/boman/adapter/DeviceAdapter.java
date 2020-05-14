@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.clj.fastble.BleManager;
 import com.clj.fastble.data.BleDevice;
 
 import java.util.ArrayList;
@@ -111,27 +110,57 @@ public class DeviceAdapter extends BaseAdapter {
         }
 
         final BleDevice bleDevice = getItem(i);
+        final BLEUtils.BLEState bleState = deviceStates.get(i);
         final AdapterDeviceBinding mBinder = holder.mBinder;
         if (bleDevice != null) {
-            boolean isConnected = BleManager.getInstance().isConnected(bleDevice);
             String name = bleDevice.getName();
             String mac = bleDevice.getMac();
             int rssi = bleDevice.getRssi();
             mBinder.txtName.setText(name);
             mBinder.txtMac.setText(mac);
             mBinder.txtRssi.setText(String.valueOf(rssi));
-            if (isConnected) {
-                mBinder.imgBlue.setImageResource(R.mipmap.ic_warm_online);
-                mBinder.txtName.setTextColor(0xFF1DE9B6);
-                mBinder.txtMac.setTextColor(0xFF1DE9B6);
-                mBinder.layoutIdle.setVisibility(View.GONE);
-                mBinder.layoutConnected.setVisibility(View.VISIBLE);
-            } else {
-                mBinder.imgBlue.setImageResource(R.mipmap.ic_warm_offline);
-                mBinder.txtName.setTextColor(0xFF000000);
-                mBinder.txtMac.setTextColor(0xFF000000);
-                mBinder.layoutIdle.setVisibility(View.VISIBLE);
-                mBinder.layoutConnected.setVisibility(View.GONE);
+
+//            boolean isConnected = BleManager.getInstance().isConnected(bleDevice);
+//            if (isConnected) {
+//                mBinder.imgBlue.setImageResource(R.mipmap.ic_warm_online);
+//                mBinder.txtName.setTextColor(0xFF1DE9B6);
+//                mBinder.txtMac.setTextColor(0xFF1DE9B6);
+//                mBinder.layoutIdle.setVisibility(View.GONE);
+//                mBinder.layoutConnected.setVisibility(View.VISIBLE);
+//            } else {
+//                mBinder.imgBlue.setImageResource(R.mipmap.ic_warm_offline);
+//                mBinder.txtName.setTextColor(0xFF000000);
+//                mBinder.txtMac.setTextColor(0xFF000000);
+//                mBinder.layoutIdle.setVisibility(View.VISIBLE);
+//                mBinder.layoutConnected.setVisibility(View.GONE);
+//            }
+
+            switch (bleState) {
+                case UNBOUND:
+                    mBinder.imgBlue.setImageResource(R.mipmap.ic_warm_offline);
+                    mBinder.txtName.setTextColor(0xFF000000);
+                    mBinder.txtMac.setTextColor(0xFF000000);
+                    mBinder.layoutIdle.setVisibility(View.VISIBLE);
+                    mBinder.layoutConnected.setVisibility(View.GONE);
+                    break;
+                case BOUND_CONNECTED:
+                    mBinder.imgBlue.setImageResource(R.mipmap.ic_warm_online);
+                    mBinder.txtName.setTextColor(0xFF1DE9B6);
+                    mBinder.txtMac.setTextColor(0xFF1DE9B6);
+                    mBinder.layoutIdle.setVisibility(View.GONE);
+                    mBinder.layoutConnected.setVisibility(View.VISIBLE);
+                    mBinder.deviceState.setText(R.string.connected);
+                    mBinder.deviceState.setTextColor(0x00796B);
+                    break;
+                case BOUND_DISCONNECTED:
+                    mBinder.imgBlue.setImageResource(R.mipmap.ic_warm_offline);
+                    mBinder.txtName.setTextColor(0xFF000000);
+                    mBinder.txtMac.setTextColor(0xFF000000);
+                    mBinder.layoutIdle.setVisibility(View.GONE);
+                    mBinder.layoutConnected.setVisibility(View.VISIBLE);
+                    mBinder.deviceState.setText(R.string.disconnect);
+                    mBinder.deviceState.setTextColor(0xFF5252);
+                    break;
             }
         }
 
