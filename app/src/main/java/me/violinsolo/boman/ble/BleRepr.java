@@ -38,4 +38,9 @@ public class BleRepr extends BleDevice {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String getKey() {
+        return name + mac;
+    }
 }
