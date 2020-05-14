@@ -82,6 +82,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             @Override
             public void onClick(View view) {
                 checkPermissions();
+
+                spUtil.storeBoundDevice("jSA09dclkwe23", "Device name #3ds", 900);
             }
         });
 

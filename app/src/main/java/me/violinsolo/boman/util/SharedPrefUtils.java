@@ -2,12 +2,19 @@ package me.violinsolo.boman.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
+import com.clj.fastble.data.BleDevice;
 import com.google.gson.Gson;
+
+import me.violinsolo.boman.ble.BleRepr;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class SharedPrefUtils {
+    private static final String TAG = SharedPrefUtils.class.getSimpleName();
+
+
     private SharedPreferences mPrefs;
     private SharedPreferences.Editor editor;
     private Gson gson;
@@ -46,13 +53,30 @@ public class SharedPrefUtils {
         return getString(BOUND_DEVICES_KEY);
     }
 
+//    public BleRepr getBoundD() {
+//        return null;
+//    }
+
+    public void storeBoundDevice(BleDevice bleDevice) {
+        storeBoundDevice(bleDevice.getMac(), bleDevice.getName(), bleDevice.getRssi());
+    }
+    public void storeBoundDevice(String mac, String name, int rssi) {
+        BleRepr t = new BleRepr(mac, name, rssi);
+
+        String json = gson.toJson(t);
+
+        Log.d(TAG, "> current store json is: "+json);
+//        editor.putString(BOUND_DEVICES_KEY, json);
+//        editor.commit();
+    }
+
     public void storeBoundDevice(String deviceMacAddr) {
         editor.putString(BOUND_DEVICES_KEY, deviceMacAddr);
         editor.commit();
     }
 
     public void removeBoundDevice() {
-        storeBoundDevice(null);
+        storeBoundDevice((String) null);
     }
 
 
