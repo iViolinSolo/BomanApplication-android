@@ -140,9 +140,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             @Override
             public void onClick(View view) {
 
-                // TODO disconnect the current device if connected.
-                boundBleDevice = null;
-                spUtil.removeBoundDevice();
+                if (boundBleDevice!=null) {
+                    BleDevice t = bleUtils.getCurrentConnectedDevice();
+                    if (t!=null) {
+                        bleUtils.disconnect(t);
+                        deviceAdapter.removeDevice(t);
+                        deviceAdapter.notifyDataSetChanged();
+                    }
+
+                    // TODO disconnect the current device if connected.
+                    boundBleDevice = null;
+                    spUtil.removeBoundDevice();
+
+                    viewWhenNoBLE();
+                }
             }
         });
 
@@ -191,6 +202,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 //                btn_scan.setText(getString(R.string.start_scan));
                 progressDialog.dismiss();
                 Toast.makeText(mContext, getString(R.string.connect_fail), Toast.LENGTH_LONG).show();
+                bleUtils.setCurrentConnectedDevice(null);
             }
 
             @Override
@@ -199,7 +211,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 deviceAdapter.addDevice(bleDevice, BLEUtils.BLEState.BOUND_CONNECTED);
                 deviceAdapter.notifyDataSetChanged();
 
+                bleUtils.setCurrentConnectedDevice(bleDevice);
                 spUtil.storeBoundDevice(bleDevice);
+
+                viewWhenBindBLE();
             }
 
             @Override

@@ -21,6 +21,14 @@ public class BLEUtils {
     private BleScanCallback bleScanCallback = null;
     private BleConnectCallBack bleConnectCallBack = null;
 
+    private BleDevice currentConnectedDevice = null;
+    public BleDevice getCurrentConnectedDevice() {
+        return currentConnectedDevice;
+    }
+    public void setCurrentConnectedDevice(BleDevice currentConnectedDevice) {
+        this.currentConnectedDevice = currentConnectedDevice;
+    }
+
     public BLEUtils() {
     }
 
