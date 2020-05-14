@@ -97,6 +97,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         spUtil = new SharedPrefUtils(mContext);
 
         deviceAdapter = new DeviceAdapter(mContext);
+        mBinder.listDevices.setAdapter(deviceAdapter);
 
         bleUtils = new BLEUtils();
         bleUtils.init(getApplication());
@@ -232,7 +233,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
     private void nowScanAllAvailableDevices() {
-        bleUtils.setScanRule(null);
+//        bleUtils.setScanRule(null);
         bleUtils.startScan();
     }
 
