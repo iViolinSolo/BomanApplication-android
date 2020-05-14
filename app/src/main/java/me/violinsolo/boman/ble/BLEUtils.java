@@ -101,7 +101,7 @@ public class BLEUtils {
         BleManager.getInstance().connect(bleDevice, bleConnectCallBack);
     }
 
-    private List<BleDevice> showConnectedDevice() {
+    public List<BleDevice> showConnectedDevice() {
         return BleManager.getInstance().getAllConnectedDevice();
     }
 

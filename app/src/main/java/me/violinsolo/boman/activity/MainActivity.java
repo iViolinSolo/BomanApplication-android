@@ -57,6 +57,24 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bleUtils.clean();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // TODO: need refactor, show all bound devices and the right status.
+        List<BleDevice> allConnectedDevice= bleUtils.showConnectedDevice();
+        deviceAdapter.clearConnectedDevice();
+        for (BleDevice bleDevice : allConnectedDevice) {
+            deviceAdapter.addDevice(bleDevice, BLEUtils.BLEState.BOUND_CONNECTED);
+        }
+        deviceAdapter.notifyDataSetChanged();
+    }
+
     /**
      * need to initilize the ViewBinding Class in every sub activity class.
      *
@@ -75,9 +93,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     @Override
     protected void initViews() {
         setSupportActionBar(mBinder.toolbar);
+
         spUtil = new SharedPrefUtils(mContext);
+
         deviceAdapter = new DeviceAdapter(mContext);
+
         bleUtils = new BLEUtils();
+        bleUtils.init(getApplication());
 
         operatingAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
         operatingAnim.setInterpolator(new LinearInterpolator());

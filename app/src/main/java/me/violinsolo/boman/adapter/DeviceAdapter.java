@@ -87,6 +87,16 @@ public class DeviceAdapter extends BaseAdapter {
         }
     }
 
+    public void clearConnectedDevice() {
+        int totalLen = devices.size();
+        for (int i = totalLen-1; i > 0; i--) {
+            BleDevice device = devices.get(i);
+            if (BleManager.getInstance().isConnected(device)) {
+                devices.remove(i);
+                deviceStates.remove(i);
+            }
+        }
+    }
 
 
     @Override
