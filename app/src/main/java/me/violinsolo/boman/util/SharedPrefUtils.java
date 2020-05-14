@@ -36,19 +36,23 @@ public class SharedPrefUtils {
     // -----------------
     // Keys
     // -----------------
-    private static final String BINDED_DEVICES_KEY = "BINDED_DEVICES_KEY";
+    private static final String BOUND_DEVICES_KEY = "BOUND_DEVICES_KEY";
 
 
     // -----------------
     // Functions
     // -----------------
     public String getBoundDevice() {
-        return getString(BINDED_DEVICES_KEY);
+        return getString(BOUND_DEVICES_KEY);
     }
 
     public void storeBoundDevice(String deviceMacAddr) {
-        editor.putString(BINDED_DEVICES_KEY, deviceMacAddr);
+        editor.putString(BOUND_DEVICES_KEY, deviceMacAddr);
         editor.commit();
+    }
+
+    public void removeBoundDevice() {
+        storeBoundDevice(null);
     }
 
 

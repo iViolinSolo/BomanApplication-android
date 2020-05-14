@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,15 +22,18 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import me.violinsolo.boman.R;
+import me.violinsolo.boman.adapter.DeviceAdapter;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityMainBinding;
 import me.violinsolo.boman.util.SharedPrefUtils;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private Context mContext = MainActivity.this;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private String boundMacAddr = null;
     private SharedPrefUtils spUtil; // = new SharedPrefUtils(mContext); // nullpointerexception.
+    private DeviceAdapter deviceAdapter;
 
 
     @Override
@@ -56,6 +60,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     protected void initViews() {
         setSupportActionBar(mBinder.toolbar);
         spUtil = new SharedPrefUtils(mContext);
+        deviceAdapter = new DeviceAdapter(mContext);
 
         // reset the UI, simultaneously get the MAC address if possible.
         boundMacAddr = spUtil.getBoundDevice();
@@ -64,6 +69,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             viewWhenNoBLE();
         }else {
             viewWhenBindBLE();
+//            deviceAdapter.ad
         }
     }
 
@@ -75,7 +81,24 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         mBinder.findBleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                checkPermissions();
+            }
+        });
 
+        mBinder.disconnectBleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // TODO disconnect the current device if connected.
+                boundMacAddr = null;
+                spUtil.removeBoundDevice();
+            }
+        });
+
+        mBinder.autoConnectBleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkPermissions();
             }
         });
     }
@@ -116,8 +139,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
     private void checkPermissions() {
-        if (checkBluetoothIsOpen()) {
-            Toast.makeText(this, getString(R.string.please_open_blue), Toast.LENGTH_LONG).show();
+        if (!checkBluetoothIsOpen()) {
+            Log.e(TAG, "> Bluetooth not open.");
+            Toast.makeText(mContext, getString(R.string.please_open_blue), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -126,8 +150,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         for (String permission : permissions) {
             int permissionCheck = ContextCompat.checkSelfPermission(this, permission);
             if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "> Manifest.permission.ACCESS_FINE_LOCATION => PackageManager.PERMISSION_GRANTED");
                 onPermissionGranted(permission);
             } else {
+                Log.e(TAG, "> Manifest.permission.ACCESS_FINE_LOCATION NOT PackageManager.PERMISSION_GRANTED");
                 permissionDeniedList.add(permission);
             }
         }
