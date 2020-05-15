@@ -68,8 +68,12 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
      */
     @Override
     protected void initViews() {
+        setSupportActionBar(mBinder.toolbar);
 
         ObserverManager.getInstance().addObserver(this);
+
+
+
     }
 
     /**

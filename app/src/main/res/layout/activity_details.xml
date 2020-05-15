@@ -8,6 +8,16 @@
     android:padding="@dimen/activity_vertical_margin"
     tools:context=".activity.DetailsActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:title="Bluetooth details"
+        app:titleTextColor="@android:color/white"
+        android:theme="?attr/actionBarTheme" />
+
     <TextView
         android:id="@+id/tv_temperature_mark"
         android:layout_width="wrap_content"
