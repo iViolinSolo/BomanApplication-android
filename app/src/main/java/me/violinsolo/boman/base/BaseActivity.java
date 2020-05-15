@@ -33,16 +33,16 @@ public abstract class BaseActivity<T extends ViewBinding > extends AppCompatActi
     protected abstract T onBind();
 
     /**
-     * write init view codes, such as toolbar.
-     */
-    protected abstract void initViews();
-
-    /**
      * init data here, like you can get data from extra.
      *  eg.
      *  var data = getIntent().getParcelableExtra(EXTRA_KEY_XXX);
      */
     protected abstract void initData();
+
+    /**
+     * write init view codes, such as toolbar.
+     */
+    protected abstract void initViews();
 
     /**
      * bind all listeners here.

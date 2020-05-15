@@ -64,19 +64,6 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
     }
 
     /**
-     * write init view codes, such as toolbar.
-     */
-    @Override
-    protected void initViews() {
-        setSupportActionBar(mBinder.toolbar);
-
-        ObserverManager.getInstance().addObserver(this);
-
-
-
-    }
-
-    /**
      * init data here, like you can get data from extra.
      * eg.
      * var data = getIntent().getParcelableExtra(EXTRA_KEY_XXX);
@@ -86,6 +73,20 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
         bleDevice = getIntent().getParcelableExtra(EXTRA_DATA_BLE);
         if (bleDevice == null)
             finish();
+    }
+
+    /**
+     * write init view codes, such as toolbar.
+     */
+    @Override
+    protected void initViews() {
+        setSupportActionBar(mBinder.toolbar);
+
+        ObserverManager.getInstance().addObserver(this);
+
+        mBinder.tvDeviceInfo.setText(String.format("%s - %s", bleDevice.getName(), bleDevice.getMac()));
+        mBinder.tvDeviceInfo.setTextColor(0xFF8DA9E4);
+
     }
 
     /**
