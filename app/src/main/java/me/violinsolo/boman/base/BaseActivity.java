@@ -18,8 +18,8 @@ public abstract class BaseActivity<T extends ViewBinding > extends AppCompatActi
 
         setContentView(mBinder.getRoot());
 
-        initViews();
         initData();
+        initViews();
         bindListeners();
     }
 

@@ -123,6 +123,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
     /**
+     * init data here, like you can get data from extra.
+     * eg.
+     * var data = getIntent().getParcelableExtra(EXTRA_KEY_XXX);
+     */
+    @Override
+    protected void initData() {
+
+    }
+
+    /**
      * bind all listeners here.
      */
     @Override
