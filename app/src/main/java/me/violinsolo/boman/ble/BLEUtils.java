@@ -126,6 +126,9 @@ public class BLEUtils {
         return BleManager.getInstance().getAllConnectedDevice();
     }
 
+    public boolean isConnected(BleDevice bleDevice) {
+        return BleManager.getInstance().isConnected(bleDevice);
+    }
 
 
 //    private void readRssi(BleDevice bleDevice) {

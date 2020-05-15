@@ -160,7 +160,17 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         mBinder.autoConnectBleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkPermissions();
+//                checkPermissions();
+                // TODO need check permission before use it.
+                // TODO now just try to get all permissions.
+
+                if (bleUtils.getCurrentConnectedDevice()!=null && bleUtils.isConnected(bleUtils.getCurrentConnectedDevice())) {
+                    Intent intent = new Intent(mContext, DetailsActivity.class);
+
+                    intent.putExtra(DetailsActivity.EXTRA_DATA_BLE, bleUtils.getCurrentConnectedDevice());
+
+                    startActivity(intent);
+                }
             }
         });
 
