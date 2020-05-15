@@ -10,7 +10,6 @@ import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
-import com.clj.fastble.utils.HexUtil;
 
 import java.util.UUID;
 
@@ -99,13 +98,13 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
 ////            service.
 //        }
         BluetoothGattService service_env_sensing = gatt.getService(UUID.fromString("0000181A-0000-1000-8000-00805F9B34FB"));
-        BluetoothGattCharacteristic characteristic_temperature = service_env_sensing.getCharacteristic(UUID.fromString("00002E6E-0000-1000-8000-00805F9B34FB"));
+        BluetoothGattCharacteristic characteristic_temperature = service_env_sensing.getCharacteristic(UUID.fromString("00002A6E-0000-1000-8000-00805F9B34FB"));
         BleManager.getInstance().read(
                 bleDevice,
 //                characteristic_temperature.getUuid().toString(),
 //                service_env_sensing.getUuid().toString(),
                 "0000181A-0000-1000-8000-00805F9B34FB",
-                "00002E6E-0000-1000-8000-00805F9B34FB",
+                "00002A6E-0000-1000-8000-00805F9B34FB",
                 new BleReadCallback() {
 
                     @Override
@@ -113,7 +112,33 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mBinder.tvTemperature.setText(HexUtil.formatHexString(data, true));
+                                String content = "";
+                                boolean addSpace = false;
+
+                                if (data == null || data.length < 1)
+                                    content = "No Data Fetched";
+                                else {
+                                    StringBuilder sb = new StringBuilder();
+
+                                    // 数据原因，所以倒叙读出
+
+                                    for (int i = data.length - 1; i >= 0; i--) {
+                                        String hex = Integer.toHexString(data[i] & 0xFF);
+                                        if (hex.length() == 1) {
+                                            hex = '0' + hex;
+                                        }
+                                        sb.append(hex);
+                                        if (addSpace)
+                                            sb.append(" ");
+                                    }
+                                    content = sb.toString().trim();
+
+                                    Long result = Long.getLong(content, 16);
+                                    content+= (" => " + (result != null ? result.toString() : "null"));
+                                }
+//                                String plainHexData = HexUtil.formatHexString(data, true);
+
+                                mBinder.tvTemperature.setText(content);
                             }
                         });
                     }
