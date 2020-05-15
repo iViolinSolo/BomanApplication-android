@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleReadCallback;
@@ -121,6 +122,9 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
                                     StringBuilder sb = new StringBuilder();
 
                                     // 数据原因，所以倒叙读出
+                                    for (int i = 0; i < data.length ; i++) {
+                                        Log.d(TAG, i+" -> "+data[i]);
+                                    }
 
                                     for (int i = data.length - 1; i >= 0; i--) {
                                         String hex = Integer.toHexString(data[i] & 0xFF);
@@ -133,8 +137,8 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
                                     }
                                     content = sb.toString().trim();
 
-                                    Long result = Long.getLong(content, 16);
-                                    content+= (" => " + (result != null ? result.toString() : "null"));
+                                    long result = Long.parseLong(content, 16);
+                                    content+= (" => " + result/100f+"℃");
                                 }
 //                                String plainHexData = HexUtil.formatHexString(data, true);
 
