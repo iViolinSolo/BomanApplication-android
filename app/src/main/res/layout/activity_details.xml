@@ -43,5 +43,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:text="0.00" />
+        android:text="0.00 ℃" />
+
+    <TextView
+        android:id="@+id/tv_uv_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="UV Index:" />
+
+    <TextView
+        android:id="@+id/tv_uv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="0.00 uv" />
+
+    <TextView
+        android:id="@+id/tv_humidity_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Humidity:" />
+
+    <TextView
+        android:id="@+id/tv_humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="0.00 %" />
 </LinearLayout>

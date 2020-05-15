@@ -109,6 +109,7 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
+                // temperature
                 BleManager.getInstance().read(
                         bleDevice,
 //                characteristic_temperature.getUuid().toString(),
@@ -147,7 +148,7 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
                                             content = sb.toString().trim();
 
                                             long result = Long.parseLong(content, 16);
-                                            content+= (" => " + result/100f+"℃");
+                                            content+= (" => " + result/100f+" ℃");
                                         }
 //                                String plainHexData = HexUtil.formatHexString(data, true);
 
@@ -167,7 +168,123 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
                             }
                         });
 
+                // uv index
+                BleManager.getInstance().read(
+                        bleDevice,
+//                characteristic_temperature.getUuid().toString(),
+//                service_env_sensing.getUuid().toString(),
+                        "0000181A-0000-1000-8000-00805F9B34FB",
+                        "00002A76-0000-1000-8000-00805F9B34FB",
+                        new BleReadCallback() {
 
+                            @Override
+                            public void onReadSuccess(final byte[] data) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String content = "";
+                                        boolean addSpace = false;
+
+                                        if (data == null || data.length < 1)
+                                            content = "No Data Fetched";
+                                        else {
+                                            StringBuilder sb = new StringBuilder();
+
+                                            // 数据原因，所以倒叙读出
+                                            for (int i = 0; i < data.length ; i++) {
+                                                Log.d(TAG, i+" -> "+data[i]);
+                                            }
+
+                                            for (int i = data.length - 1; i >= 0; i--) {
+                                                String hex = Integer.toHexString(data[i] & 0xFF);
+                                                if (hex.length() == 1) {
+                                                    hex = '0' + hex;
+                                                }
+                                                sb.append(hex);
+                                                if (addSpace)
+                                                    sb.append(" ");
+                                            }
+                                            content = sb.toString().trim();
+
+                                            long result = Long.parseLong(content, 16);
+                                            content+= (" => " + result/100f+" uv");
+                                        }
+//                                String plainHexData = HexUtil.formatHexString(data, true);
+
+                                        mBinder.tvUv.setText(content);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onReadFailure(final BleException exception) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mBinder.tvTemperature.setText(exception.toString());
+                                    }
+                                });
+                            }
+                        });
+
+                // humidity
+                BleManager.getInstance().read(
+                        bleDevice,
+//                characteristic_temperature.getUuid().toString(),
+//                service_env_sensing.getUuid().toString(),
+                        "0000181A-0000-1000-8000-00805F9B34FB",
+                        "00002A6F-0000-1000-8000-00805F9B34FB",
+                        new BleReadCallback() {
+
+                            @Override
+                            public void onReadSuccess(final byte[] data) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String content = "";
+                                        boolean addSpace = false;
+
+                                        if (data == null || data.length < 1)
+                                            content = "No Data Fetched";
+                                        else {
+                                            StringBuilder sb = new StringBuilder();
+
+                                            // 数据原因，所以倒叙读出
+                                            for (int i = 0; i < data.length ; i++) {
+                                                Log.d(TAG, i+" -> "+data[i]);
+                                            }
+
+                                            for (int i = data.length - 1; i >= 0; i--) {
+                                                String hex = Integer.toHexString(data[i] & 0xFF);
+                                                if (hex.length() == 1) {
+                                                    hex = '0' + hex;
+                                                }
+                                                sb.append(hex);
+                                                if (addSpace)
+                                                    sb.append(" ");
+                                            }
+                                            content = sb.toString().trim();
+
+                                            long result = Long.parseLong(content, 16);
+                                            content+= (" => " + result/100f+" %");
+                                        }
+//                                String plainHexData = HexUtil.formatHexString(data, true);
+
+                                        mBinder.tvHumidity.setText(content);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onReadFailure(final BleException exception) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mBinder.tvTemperature.setText(exception.toString());
+                                    }
+                                });
+                            }
+                        });
                 mHandler.postDelayed(this, 1000);
             }
         };
