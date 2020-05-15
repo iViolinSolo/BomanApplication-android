@@ -1,12 +1,18 @@
 package me.violinsolo.boman.activity;
 
+import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import android.os.Bundle;
 
 import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.data.BleDevice;
+import com.clj.fastble.exception.BleException;
+import com.clj.fastble.utils.HexUtil;
+
+import java.util.UUID;
 
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.ble.Observer;
@@ -87,6 +93,41 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
         mBinder.tvDeviceInfo.setText(String.format("%s - %s", bleDevice.getName(), bleDevice.getMac()));
         mBinder.tvDeviceInfo.setTextColor(0xFF8DA9E4);
 
+
+        BluetoothGatt gatt = BleManager.getInstance().getBluetoothGatt(bleDevice);
+//        for (BluetoothGattService service : gatt.getServices()) {
+////            service.
+//        }
+        BluetoothGattService service_env_sensing = gatt.getService(UUID.fromString("0000181A-0000-1000-8000-00805F9B34FB"));
+        BluetoothGattCharacteristic characteristic_temperature = service_env_sensing.getCharacteristic(UUID.fromString("00002E6E-0000-1000-8000-00805F9B34FB"));
+        BleManager.getInstance().read(
+                bleDevice,
+//                characteristic_temperature.getUuid().toString(),
+//                service_env_sensing.getUuid().toString(),
+                "0000181A-0000-1000-8000-00805F9B34FB",
+                "00002E6E-0000-1000-8000-00805F9B34FB",
+                new BleReadCallback() {
+
+                    @Override
+                    public void onReadSuccess(final byte[] data) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mBinder.tvTemperature.setText(HexUtil.formatHexString(data, true));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onReadFailure(final BleException exception) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mBinder.tvTemperature.setText(exception.toString());
+                            }
+                        });
+                    }
+                });
     }
 
     /**
