@@ -1,16 +1,20 @@
 package me.violinsolo.testlibsapp.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.Nullable;
 import androidx.navigation.fragment.NavHostFragment;
 import me.violinsolo.testlibsapp.R;
+import me.violinsolo.testlibsapp.base.BaseFragment;
+import me.violinsolo.testlibsapp.databinding.FragmentFirstBinding;
 
-public class FirstFragment extends Fragment {
+public class FirstFragment extends BaseFragment<FragmentFirstBinding> {
+    private static final String TAG = FirstFragment.class.getSimpleName();
 
     @Override
     public View onCreateView(
@@ -18,7 +22,36 @@ public class FirstFragment extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    /**
+     * need to initilize the ViewBinding Class in every sub activity class.
+     *
+     * @param inflater
+     * @param parent
+     * @return mBinder the field of view binding handler. Initialize it before use
+     * eg.
+     * mBinder = FragmentXMLNameBinding.inflate(inflater, container, boolean attachToParent = false);
+     */
+    @Override
+    protected FragmentFirstBinding onBind(@NonNull LayoutInflater inflater, @Nullable ViewGroup parent) {
+        return FragmentFirstBinding.inflate(inflater, parent, false);
+    }
+
+    /**
+     * bind all listeners here.
+     */
+    @Override
+    protected void bindListeners() {
+        mBinder.btnBluetooth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e(TAG, "Now try to get Bluetooth permission.");
+
+                Log.e(TAG, "Now after Bluetooth permission granted.");
+            }
+        });
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -32,4 +65,6 @@ public class FirstFragment extends Fragment {
             }
         });
     }
+
+
 }
