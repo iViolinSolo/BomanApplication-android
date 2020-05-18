@@ -24,6 +24,7 @@ import permissions.dispatcher.RuntimePermissions;
 @RuntimePermissions
 public class FirstFragment extends BaseFragment<FragmentFirstBinding> {
     private static final String TAG = FirstFragment.class.getSimpleName();
+    private static final String[] bluetoothPers = {Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN};
 
     @Override
     public View onCreateView(
@@ -87,22 +88,23 @@ public class FirstFragment extends BaseFragment<FragmentFirstBinding> {
     /**
      * Now all permission functions.
      */
-    @NeedsPermission({Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN})
+    @NeedsPermission({Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,})
+//    @NeedsPermission(bluetoothPers)
     void showBluetoothNeedsGranted() {
         Log.e(TAG, "This part needs bluetooth permission granted.");
     }
 
-    @OnShowRationale({Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN})
+    @OnShowRationale({Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,})
     void showRationalForBluetooth(final PermissionRequest request) {
         showRationaleDialog("@OnShowRationale({Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN})", request);
     }
 
-    @OnPermissionDenied({Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN})
+    @OnPermissionDenied({Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,})
     void showDenyForBlueto() {
         Log.e(TAG, "@OnPermissionDenied({Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN})");
     }
 
-    @OnNeverAskAgain({Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN})
+    @OnNeverAskAgain({Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,})
     void showNeverAskForCamera() {
         Log.e(TAG, "@OnNeverAskAgain({Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN})");
     }
