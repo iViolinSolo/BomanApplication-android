@@ -57,7 +57,8 @@ public class FirstFragment extends BaseFragment<FragmentFirstBinding> {
             @Override
             public void onClick(View view) {
                 Log.e(TAG, "Now try to get Bluetooth permission.");
-
+                // NOTE: delegate the permission handling to generated method
+                FirstFragmentPermissionsDispatcher.showBluetoothNeedsGrantedWithPermissionCheck(FirstFragment.this);
                 Log.e(TAG, "Now after Bluetooth permission granted.");
             }
         });
@@ -75,6 +76,13 @@ public class FirstFragment extends BaseFragment<FragmentFirstBinding> {
         });
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        FirstFragmentPermissionsDispatcher.onRequestPermissionsResult(FirstFragment.this, requestCode, grantResults);
+    }
 
     /**
      * Now all permission functions.
