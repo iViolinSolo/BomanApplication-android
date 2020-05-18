@@ -31,6 +31,9 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
     private BluetoothGattCharacteristic characteristic;
 
     private Handler mHandler;
+    private Handler mHandlerTemperature;
+    private Handler mHandlerUV;
+    private Handler mHandlerHumidity;
 
 
     @Override
@@ -106,7 +109,7 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
 
 
         mHandler = new Handler();
-        Runnable runnable = new Runnable() {
+        Runnable runnableTemperature = new Runnable() {
             @Override
             public void run() {
                 // temperature
@@ -167,6 +170,13 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
                                 });
                             }
                         });
+                mHandler.postDelayed(this, 1000);
+            }
+        };
+
+        Runnable runnableUV = new Runnable() {
+            @Override
+            public void run() {
 
                 // uv index
                 BleManager.getInstance().read(
@@ -226,7 +236,13 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
                                 });
                             }
                         });
+                mHandler.postDelayed(this, 1000);
+            }
+        };
 
+        Runnable runnableHumidity = new Runnable() {
+            @Override
+            public void run() {
                 // humidity
                 BleManager.getInstance().read(
                         bleDevice,
@@ -289,9 +305,12 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
             }
         };
 
-        mHandler.postDelayed(runnable, 1000);
+        mHandler.postDelayed(runnableTemperature, 333);
+        mHandler.postDelayed(runnableUV, 666);
+        mHandler.postDelayed(runnableHumidity, 999);
 
     }
+
 
     /**
      * bind all listeners here.
