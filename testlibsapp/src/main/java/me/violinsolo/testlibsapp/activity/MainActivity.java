@@ -1,6 +1,8 @@
 package me.violinsolo.testlibsapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import me.violinsolo.testlibsapp.base.BaseActivity;
 import me.violinsolo.testlibsapp.databinding.ActivityMainBinding;
@@ -47,6 +49,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
      */
     @Override
     protected void bindListeners() {
-
+        mBinder.btnGoActiPermission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, TestPermissionActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
