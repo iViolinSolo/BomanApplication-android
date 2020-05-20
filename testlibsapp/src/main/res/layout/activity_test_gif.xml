@@ -11,7 +11,5 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/bluetooth_intro"
-        tools:layout_editor_absoluteX="60dp"
-        tools:layout_editor_absoluteY="89dp" />
+        app:srcCompat="@drawable/bluetooth_intro" />
 </androidx.appcompat.widget.LinearLayoutCompat>
