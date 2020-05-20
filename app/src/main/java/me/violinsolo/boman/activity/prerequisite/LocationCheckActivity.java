@@ -1,5 +1,8 @@
 package me.violinsolo.boman.activity.prerequisite;
 
+import android.content.Context;
+import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import me.violinsolo.boman.R;
@@ -41,7 +44,14 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
      */
     @Override
     protected void initViews() {
+        if (checkGPSIsOpen()) {
+            Intent intent = new Intent(LocationCheckActivity.this, BluetoothCheckActivity.class);
 
+            startActivity(intent);
+            finish();
+        }else {
+
+        }
     }
 
     /**
@@ -51,4 +61,12 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
     protected void bindListeners() {
 
     }
+
+    private boolean checkGPSIsOpen() {
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager == null)
+            return false;
+        return locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
+    }
+
 }
