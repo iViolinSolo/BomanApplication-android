@@ -41,4 +41,7 @@ dependencies {
     implementation 'com.clj.fastble:FastBleLib:2.3.4'
     implementation 'com.google.code.gson:gson:2.8.6'
 
+//    widget for loading gif
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+
 }
