@@ -25,9 +25,24 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.DetailsActivity" />
-        <activity android:name=".activity.prerequisite.RadarActivity" />
-        <activity android:name=".activity.prerequisite.BluetoothCheckActivity" />
-        <activity android:name=".activity.prerequisite.LocationCheckActivity" />
+        <activity android:name=".activity.prerequisite.RadarActivity"
+            android:parentActivityName=".activity.prerequisite.BluetoothCheckActivity" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.prerequisite.BluetoothCheckActivity" />
+        </activity>
+        <activity android:name=".activity.prerequisite.BluetoothCheckActivity"
+            android:parentActivityName=".activity.prerequisite.LocationCheckActivity" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.prerequisite.LocationCheckActivity" />
+        </activity>
+        <activity android:name=".activity.prerequisite.LocationCheckActivity" >
+        </activity>
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />

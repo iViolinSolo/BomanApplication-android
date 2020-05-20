@@ -44,6 +44,11 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
      */
     @Override
     protected void initViews() {
+
+        setSupportActionBar(mBinder.toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
+//        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+
         if (checkGPSIsOpen()) {
             Intent intent = new Intent(LocationCheckActivity.this, BluetoothCheckActivity.class);
 
