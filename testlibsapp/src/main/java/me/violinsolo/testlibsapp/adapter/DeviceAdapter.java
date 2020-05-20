@@ -16,6 +16,14 @@ import me.violinsolo.testlibsapp.R;
 import me.violinsolo.testlibsapp.ble.BLEUtils;
 import me.violinsolo.testlibsapp.databinding.AdapterDeviceBinding;
 
+/**
+ * @author violinsolo
+ * @version Boman v0.1
+ * @createAt 2020/5/20 10:18 AM
+ * @updateAt 2020/5/20 10:18 AM
+ * <p>
+ * Copyright (c) 2020 EmberXu.hack. All rights reserved.
+ */
 public class DeviceAdapter extends BaseAdapter {
 
     private Context mContext;

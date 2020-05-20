@@ -10,6 +10,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import me.violinsolo.testlibsapp.R;
 
+/**
+ * @author violinsolo
+ * @version Boman v0.1
+ * @createAt 2020/5/20 10:18 AM
+ * @updateAt 2020/5/20 10:18 AM
+ * <p>
+ * Copyright (c) 2020 EmberXu.hack. All rights reserved.
+ */
 public class SecondFragment extends Fragment {
 
     @Override

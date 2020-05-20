@@ -11,6 +11,14 @@ import com.clj.fastble.data.BleDevice;
  * using polymorphism and the override technique to intercept the getter functions, which will
  * be invoked in DeviceAdapter while generating each listview item through BleDevice instance.
  */
+/**
+ * @author violinsolo
+ * @version Boman v0.1
+ * @createAt 2020/5/20 10:18 AM
+ * @updateAt 2020/5/20 10:18 AM
+ * <p>
+ * Copyright (c) 2020 EmberXu.hack. All rights reserved.
+ */
 public class BleRepr extends BleDevice {
     String mac;
     String name;
