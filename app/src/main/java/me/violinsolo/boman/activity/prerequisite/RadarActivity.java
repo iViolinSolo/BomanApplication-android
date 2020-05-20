@@ -1,8 +1,9 @@
 package me.violinsolo.boman.activity.prerequisite;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import me.violinsolo.boman.R;
 
 public class RadarActivity extends AppCompatActivity {
 

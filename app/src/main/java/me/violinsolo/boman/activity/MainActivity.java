@@ -36,8 +36,8 @@ import me.violinsolo.boman.adapter.DeviceAdapter;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.ble.BLEUtils;
 import me.violinsolo.boman.ble.BleRepr;
-import me.violinsolo.boman.ble.ObserverManager;
 import me.violinsolo.boman.databinding.ActivityMainBinding;
+import me.violinsolo.boman.subscribe.ObserverManager;
 import me.violinsolo.boman.util.SharedPrefUtils;
 
 /**

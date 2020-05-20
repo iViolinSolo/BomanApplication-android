@@ -16,9 +16,9 @@ import com.clj.fastble.exception.BleException;
 import java.util.UUID;
 
 import me.violinsolo.boman.base.BaseActivity;
-import me.violinsolo.boman.ble.Observer;
-import me.violinsolo.boman.ble.ObserverManager;
 import me.violinsolo.boman.databinding.ActivityDetailsBinding;
+import me.violinsolo.boman.subscribe.Observer;
+import me.violinsolo.boman.subscribe.ObserverManager;
 
 /**
  * @author violinsolo
