@@ -26,6 +26,11 @@
         android:src="@drawable/location_intro"
         android:background="@drawable/location_intro" />
 
-
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ok"
+        android:layout_gravity="center" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
