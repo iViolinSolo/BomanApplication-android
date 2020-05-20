@@ -22,4 +22,10 @@
         android:layout_height="wrap_content"
         android:text="Go to permission" />
 
+    <Button
+        android:id="@+id/btn_go_acti_gif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to gif" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

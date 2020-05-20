@@ -2,16 +2,18 @@ package me.violinsolo.testlibsapp.activity;
 
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
+
 import me.violinsolo.testlibsapp.R;
 import me.violinsolo.testlibsapp.base.BaseActivity;
-import me.violinsolo.testlibsapp.databinding.ActivityGifTestBinding;
+import me.violinsolo.testlibsapp.databinding.ActivityTestGifBinding;
 
-public class GifTestActivity extends BaseActivity<ActivityGifTestBinding> {
+public class TestGifActivity extends BaseActivity<ActivityTestGifBinding> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gif_test);
+        setContentView(R.layout.activity_test_gif);
     }
 
     /**
@@ -22,8 +24,8 @@ public class GifTestActivity extends BaseActivity<ActivityGifTestBinding> {
      * mBinder = ActivityXMLNameBinding.inflate(getLayoutInflater());
      */
     @Override
-    protected ActivityGifTestBinding onBind() {
-        return ActivityGifTestBinding.inflate(getLayoutInflater());
+    protected ActivityTestGifBinding onBind() {
+        return ActivityTestGifBinding.inflate(getLayoutInflater());
     }
 
     /**
@@ -41,7 +43,7 @@ public class GifTestActivity extends BaseActivity<ActivityGifTestBinding> {
      */
     @Override
     protected void initViews() {
-
+        Glide.with(this).asGif().load(R.drawable.bluetooth_intro).into(mBinder.imageView);
     }
 
     /**

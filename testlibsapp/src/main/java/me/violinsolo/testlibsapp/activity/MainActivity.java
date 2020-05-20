@@ -64,5 +64,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 startActivity(intent);
             }
         });
+
+        mBinder.btnGoActiGif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, TestGifActivity.class));
+            }
+        });
     }
 }

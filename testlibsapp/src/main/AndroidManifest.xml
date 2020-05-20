@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.GifTestActivity"></activity>
+        <activity android:name=".activity.TestGifActivity"></activity>
         <activity
             android:name=".activity.TestPermissionActivity"
             android:label="@string/title_activity_test_permission"
