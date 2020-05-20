@@ -11,5 +11,12 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/bluetooth_intro" />
+        app:srcCompat="@drawable/location_intro" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/location_intro"
+        android:background="@drawable/location_intro"
+        />
 </androidx.appcompat.widget.LinearLayoutCompat>

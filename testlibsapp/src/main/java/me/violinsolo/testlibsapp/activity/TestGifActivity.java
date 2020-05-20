@@ -3,6 +3,7 @@ package me.violinsolo.testlibsapp.activity;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import me.violinsolo.testlibsapp.R;
 import me.violinsolo.testlibsapp.base.BaseActivity;
@@ -43,7 +44,7 @@ public class TestGifActivity extends BaseActivity<ActivityTestGifBinding> {
      */
     @Override
     protected void initViews() {
-        Glide.with(this).asGif().load(R.drawable.bluetooth_intro).into(mBinder.imageView);
+        Glide.with(this).asGif().diskCacheStrategy(DiskCacheStrategy.RESOURCE).load(R.drawable.bluetooth_intro).into(mBinder.imageView);
     }
 
     /**
