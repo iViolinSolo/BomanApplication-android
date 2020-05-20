@@ -26,7 +26,7 @@
         android:src="@drawable/location_intro"
         android:background="@drawable/location_intro" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/btn_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

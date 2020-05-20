@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,8 +18,10 @@ import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityLocationCheckBinding;
 
 public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBinding> {
-    public Context mContext;
+    public static final String TAG = LocationCheckActivity.class.getSimpleName();
     private static final int REQUEST_CODE_OPEN_GPS = 1;
+
+    public Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,35 +63,12 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkGPSIsOpen()) {
+            Log.d(TAG, "> Location service check PASS...");
             goToNextPage();
         }else {
+            Log.e(TAG, "> Location service check FAIL...");
 
-            mBinder.btnOk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new AlertDialog.Builder(mContext)
-                            .setTitle(R.string.notifyTitle)
-                            .setMessage(R.string.gpsNotifyMsg)
-                            .setNegativeButton(R.string.cancel,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            finish();
-                                        }
-                                    })
-                            .setPositiveButton(R.string.setting,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                            startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
-                                        }
-                                    })
 
-                            .setCancelable(false)
-                            .show();
-                }
-            });
         }
 
 
@@ -100,6 +80,34 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
     @Override
     protected void bindListeners() {
 
+        mBinder.btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Show dialog to guide the user permit us");
+                new AlertDialog.Builder(mContext)
+                        .setTitle(R.string.notifyTitle)
+                        .setMessage(R.string.gpsNotifyMsg)
+                        .setNegativeButton(R.string.cancel,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                        .setPositiveButton(R.string.setting,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                        startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
+                                    }
+                                })
+
+                        .setCancelable(false)
+                        .show();
+            }
+        });
+
     }
 
     @Override
@@ -109,12 +117,14 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
             if (checkGPSIsOpen()) {
                 goToNextPage();
             }else {
+                Log.e(TAG, "User cancel the action to permit us with the privilege to access Location.");
                 Toast.makeText(mContext, "请授予我们位置权限", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private void goToNextPage() {
+        Log.d(TAG, "Now go to next page: Bluetooth check activity.");
 
         Intent intent = new Intent(mContext, BluetoothCheckActivity.class);
 
