@@ -13,7 +13,7 @@ import com.clj.fastble.data.BleDevice;
  */
 public interface Observable {
 
-    void addObserver(me.violinsolo.boman.ble.Observer obj);
+    void addObserver(Observer obj);
 
     void deleteObserver(Observer obj);
 
