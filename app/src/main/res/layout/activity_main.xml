@@ -54,6 +54,13 @@
             android:visibility="gone"
             android:text="测温"
             />
+        <Button
+            android:id="@+id/check_location_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:text="检查必备条件"
+            />
     </LinearLayout>
 
     <ListView
