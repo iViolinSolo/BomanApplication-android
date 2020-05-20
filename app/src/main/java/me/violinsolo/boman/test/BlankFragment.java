@@ -15,7 +15,9 @@ import me.violinsolo.boman.databinding.FragmentBlankBinding;
  * @version Boman v0.1
  * @createAt 2020/5/20 10:18 AM
  * @updateAt 2020/5/20 10:18 AM
- *
+ * <p>
+ * Copyright (c) 2020 EmberXu.hack. All rights reserved.
+ * <p>
  * A simple {@link Fragment} subclass.
  * Use the {@link BlankFragment#newInstance} factory method to
  * create an instance of this fragment.

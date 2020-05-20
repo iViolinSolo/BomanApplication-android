@@ -45,6 +45,8 @@ import me.violinsolo.boman.util.SharedPrefUtils;
  * @version Boman v0.1
  * @createAt 2020/5/20 10:18 AM
  * @updateAt 2020/5/20 10:18 AM
+ * <p>
+ * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private Context mContext = MainActivity.this;
