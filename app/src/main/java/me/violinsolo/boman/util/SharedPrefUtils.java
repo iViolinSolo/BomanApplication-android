@@ -14,6 +14,12 @@ import me.violinsolo.boman.ble.BleRepr;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * @author violinsolo
+ * @version Boman v0.1
+ * @createAt 2020/5/20 10:18 AM
+ * @updateAt 2020/5/20 10:18 AM
+ */
 public class SharedPrefUtils {
     private static final String TAG = SharedPrefUtils.class.getSimpleName();
 

@@ -20,6 +20,12 @@ import me.violinsolo.boman.ble.Observer;
 import me.violinsolo.boman.ble.ObserverManager;
 import me.violinsolo.boman.databinding.ActivityDetailsBinding;
 
+/**
+ * @author violinsolo
+ * @version Boman v0.1
+ * @createAt 2020/5/20 10:18 AM
+ * @updateAt 2020/5/20 10:18 AM
+ */
 public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implements Observer {
     private static final String TAG = DetailsActivity.class.getSimpleName();
 

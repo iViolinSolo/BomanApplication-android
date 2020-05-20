@@ -14,6 +14,12 @@ import java.util.UUID;
 import androidx.annotation.Nullable;
 import me.violinsolo.boman.util.Config;
 
+/**
+ * @author violinsolo
+ * @version Boman v0.1
+ * @createAt 2020/5/20 10:18 AM
+ * @updateAt 2020/5/20 10:18 AM
+ */
 public class BLEUtils {
     public enum BLEState {UNBOUND, BOUND_CONNECTED, BOUND_DISCONNECTED}
     public abstract static class BleConnectCallBack extends BleGattCallback {}

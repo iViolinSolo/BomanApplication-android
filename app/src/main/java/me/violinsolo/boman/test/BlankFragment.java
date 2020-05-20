@@ -10,8 +10,12 @@ import androidx.fragment.app.Fragment;
 import me.violinsolo.boman.base.BaseFragment;
 import me.violinsolo.boman.databinding.FragmentBlankBinding;
 
-
 /**
+ * @author violinsolo
+ * @version Boman v0.1
+ * @createAt 2020/5/20 10:18 AM
+ * @updateAt 2020/5/20 10:18 AM
+ *
  * A simple {@link Fragment} subclass.
  * Use the {@link BlankFragment#newInstance} factory method to
  * create an instance of this fragment.

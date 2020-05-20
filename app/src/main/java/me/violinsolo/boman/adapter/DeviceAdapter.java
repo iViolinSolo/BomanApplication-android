@@ -16,6 +16,12 @@ import me.violinsolo.boman.R;
 import me.violinsolo.boman.ble.BLEUtils;
 import me.violinsolo.boman.databinding.AdapterDeviceBinding;
 
+/**
+ * @author violinsolo
+ * @version Boman v0.1
+ * @createAt 2020/5/20 10:18 AM
+ * @updateAt 2020/5/20 10:18 AM
+ */
 public class DeviceAdapter extends BaseAdapter {
 
     private Context mContext;
