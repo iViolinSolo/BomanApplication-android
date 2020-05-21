@@ -1,17 +1,20 @@
 package me.violinsolo.boman.activity.prerequisite;
 
+import android.content.Context;
 import android.os.Bundle;
 
-import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityRadarBinding;
 
 public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
+    public static final String TAG = RadarActivity.class.getSimpleName();
+
+    public Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_radar);
+//        setContentView(R.layout.activity_radar);
     }
 
     /**
@@ -33,7 +36,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
      */
     @Override
     protected void initData() {
-
+        mContext = RadarActivity.this;
     }
 
     /**
@@ -41,7 +44,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
      */
     @Override
     protected void initViews() {
-
+        setSupportActionBar(mBinder.toolbar);
     }
 
     /**
