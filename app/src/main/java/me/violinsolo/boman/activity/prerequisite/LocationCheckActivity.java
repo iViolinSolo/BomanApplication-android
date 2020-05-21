@@ -7,6 +7,9 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -16,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityLocationCheckBinding;
+import me.violinsolo.boman.util.Config;
 
 public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBinding> {
     public static final String TAG = LocationCheckActivity.class.getSimpleName();
@@ -67,6 +71,13 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
             goToNextPage();
         }else {
             Log.e(TAG, "> Location service check FAIL...");
+
+
+            // set highlight.
+            SpannableStringBuilder style = new SpannableStringBuilder(mBinder.tvPermitLocationExplanation.getText());
+            style.setSpan(new ForegroundColorSpan(Config.colorPrimary), 9, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            style.setSpan(new ForegroundColorSpan(Config.colorPrimary), 16, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mBinder.tvPermitLocationExplanation.setText(style);
 
             mBinder.btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
