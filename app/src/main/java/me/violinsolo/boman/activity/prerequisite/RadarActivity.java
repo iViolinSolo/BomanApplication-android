@@ -4,8 +4,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityRadarBinding;
@@ -60,7 +64,15 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
             }
         });
 
+        if (!checkBluetoothIsOpen()||!checkGPSIsOpen()) {
+            Log.e(TAG, "> Please keep bluetooth and location open.");
+            Toast.makeText(mContext, "请保持蓝牙和位置服务开启。", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
+        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        mBinder.rvListDevices.setLayoutManager(mLayoutManager);
     }
 
     /**

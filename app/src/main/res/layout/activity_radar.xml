@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:animateLayoutChanges="true"
     tools:context=".activity.prerequisite.RadarActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -15,6 +17,12 @@
         app:title="@string/toolbar_radar"
         app:titleTextColor="@android:color/white"
         android:theme="?attr/actionBarTheme" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_list_devices"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none" />
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>
