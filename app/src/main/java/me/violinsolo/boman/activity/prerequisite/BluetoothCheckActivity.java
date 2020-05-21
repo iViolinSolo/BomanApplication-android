@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityBluetoothCheckBinding;
 import me.violinsolo.boman.util.Config;
@@ -58,8 +59,15 @@ public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckB
 
         setSupportActionBar(mBinder.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
-        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可
-
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可
+        mBinder.toolbar.setNavigationIcon(R.drawable.ic_chevron_left_black_32dp);
+        mBinder.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         if (checkBluetoothIsOpen()) {
             Log.d(TAG, "> Bluetooth service check PASS...");
             goToNextPage();

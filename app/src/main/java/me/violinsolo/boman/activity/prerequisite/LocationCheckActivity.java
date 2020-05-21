@@ -61,10 +61,17 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
      */
     @Override
     protected void initViews() {
-
         setSupportActionBar(mBinder.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
-        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可
+        mBinder.toolbar.setNavigationIcon(R.drawable.ic_chevron_left_black_32dp);
+        mBinder.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkGPSIsOpen()) {
             Log.d(TAG, "> Location service check PASS...");
