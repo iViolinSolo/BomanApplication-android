@@ -22,4 +22,9 @@ public class Config {
     static {
         deviceNames.add("Thunderboard");
     }
+
+
+    public static final int colorPrimary = 0xFF6200EE;
+    public static final int colorPrimaryDark = 0xFF3700B3;
+    public static final int colorAccent = 0xFF03DAC5;
 }

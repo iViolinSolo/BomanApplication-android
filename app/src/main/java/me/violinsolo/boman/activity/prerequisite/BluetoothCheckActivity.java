@@ -4,6 +4,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -11,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityBluetoothCheckBinding;
+import me.violinsolo.boman.util.Config;
 
 public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckBinding> {
     public static final String TAG = BluetoothCheckActivity.class.getSimpleName();
@@ -62,6 +66,11 @@ public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckB
 
         }else {
             Log.e(TAG, "> Bluetooth service check FAIL...");
+
+            // set highlight.
+            SpannableStringBuilder style = new SpannableStringBuilder(mBinder.tvPermitBtExplanation.getText());
+            style.setSpan(new ForegroundColorSpan(Config.colorPrimary), 5, 11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mBinder.tvPermitBtExplanation.setText(style);
 
             mBinder.btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
