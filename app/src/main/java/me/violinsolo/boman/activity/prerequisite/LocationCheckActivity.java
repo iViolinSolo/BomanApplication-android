@@ -1,6 +1,5 @@
 package me.violinsolo.boman.activity.prerequisite;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityLocationCheckBinding;
@@ -26,7 +26,7 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location_check);
+//        setContentView(R.layout.activity_location_check); // if you set twice, the ViewBinding will not work
     }
 
     /**
@@ -68,7 +68,33 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
         }else {
             Log.e(TAG, "> Location service check FAIL...");
 
+            mBinder.btnNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "Show dialog to guide the user permit us");
+                    new AlertDialog.Builder(mContext)
+                            .setTitle(R.string.notifyTitle)
+                            .setMessage(R.string.gpsNotifyMsg)
+                            .setNegativeButton(R.string.cancel,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            finish();
+                                        }
+                                    })
+                            .setPositiveButton(R.string.setting,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                            startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
+                                        }
+                                    })
 
+                            .setCancelable(false)
+                            .show();
+                }
+            });
         }
 
 
@@ -79,34 +105,6 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
      */
     @Override
     protected void bindListeners() {
-
-        mBinder.btnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "Show dialog to guide the user permit us");
-                new AlertDialog.Builder(mContext)
-                        .setTitle(R.string.notifyTitle)
-                        .setMessage(R.string.gpsNotifyMsg)
-                        .setNegativeButton(R.string.cancel,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        finish();
-                                    }
-                                })
-                        .setPositiveButton(R.string.setting,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                        startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
-                                    }
-                                })
-
-                        .setCancelable(false)
-                        .show();
-            }
-        });
 
     }
 
