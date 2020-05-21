@@ -12,8 +12,8 @@
     <string name="rssi_icon">rssi icon</string>
 
 
-    <string name="notifyTitle">提示</string>
-    <string name="gpsNotifyMsg">当前手机扫描蓝牙需要打开定位功能。</string>
+    <string name="notifyTitle">系统定位服务已关闭</string>
+    <string name="gpsNotifyMsg">请打开定位服务，以便使用蓝牙更好的查找您的产品。</string>
     <string name="setting">开启定位</string>
     <string name="cancel">取消</string>
     <string name="please_open_blue">请先打开蓝牙</string>
