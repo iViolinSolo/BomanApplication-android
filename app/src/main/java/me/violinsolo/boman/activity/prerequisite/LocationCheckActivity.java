@@ -104,8 +104,12 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                            startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
+                                            if (checkGPSIsOpen()) {
+                                                goToNextPage();
+                                            }else {
+                                                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                                startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
+                                            }
                                         }
                                     })
 
