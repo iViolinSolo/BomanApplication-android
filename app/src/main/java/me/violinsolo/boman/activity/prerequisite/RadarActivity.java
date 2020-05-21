@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import me.violinsolo.boman.R;
+import me.violinsolo.boman.adapter.DeviceListAdapter;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityRadarBinding;
 
@@ -18,6 +19,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     public static final String TAG = RadarActivity.class.getSimpleName();
 
     public Context mContext;
+    public DeviceListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +72,14 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
             finish();
         }
 
+        // set layout manager
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mBinder.rvListDevices.setLayoutManager(mLayoutManager);
+        // set adapter
+        mAdapter = new DeviceListAdapter();
+        mBinder.rvListDevices.setAdapter(mAdapter);
+
     }
 
     /**

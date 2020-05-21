@@ -1,10 +1,16 @@
 package me.violinsolo.boman.adapter;
 
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import me.violinsolo.boman.databinding.AdapterRvListDeviceItemBinding;
 
 /**
  * @author violinsolo
@@ -14,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
  * <p>
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
-public class DeviceListAdapter extends RecyclerView.Adapter {
+public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.ViewHolder> {
+
+
     /**
      * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
      * an item.
@@ -37,7 +45,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter {
      */
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return null;
     }
 
@@ -62,8 +70,13 @@ public class DeviceListAdapter extends RecyclerView.Adapter {
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
     }
 
     /**
@@ -74,5 +87,19 @@ public class DeviceListAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return 0;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private ImageView ivDeviceIcon;
+        private TextView tvDeviceName;
+        private TextView tvDeviceStatus;
+
+        public ViewHolder(AdapterRvListDeviceItemBinding mBinder) {
+            super(mBinder.getRoot());
+
+            ivDeviceIcon = mBinder.ivDeviceIcon;
+            tvDeviceName = mBinder.tvDeviceName;
+            tvDeviceStatus = mBinder.tvDeviceStatus;
+        }
     }
 }
