@@ -21,6 +21,7 @@ public class Config {
 
     static {
         deviceNames.add("Thunderboard");
+        deviceNames.add("BM-");
     }
 
 

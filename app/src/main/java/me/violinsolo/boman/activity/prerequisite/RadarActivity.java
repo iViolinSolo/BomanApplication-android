@@ -22,6 +22,7 @@ import me.violinsolo.boman.databinding.ActivityRadarBinding;
 import me.violinsolo.boman.fragment.ConnectFailureFragment;
 import me.violinsolo.boman.fragment.ConnectLoadingFragment;
 import me.violinsolo.boman.fragment.DeviceListFragment;
+import me.violinsolo.boman.util.Config;
 import me.violinsolo.boman.util.HexUtil;
 
 public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
@@ -140,6 +141,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                 Log.e(TAG, bleDevice.getKey()+" \t[length]: "+advertisementLength+" -> "+content);
 
 
+                String criticalInfo = "";
                 for (int i = 0; i < advertisementLength; i++) {
                    int secLen = broadcastData[i] & 0xff;
 
@@ -170,6 +172,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
 
                        String plainHex = HexUtil.hexStrBigEndian(secData);
                        String plainAscii = HexUtil.str(secData, true);
+                       criticalInfo = plainAscii;
 
                        Log.e(TAG, bleDevice.getKey()+" \t\t [Device Name Info]: <"+plainHex+"> => ["+plainAscii+"]");
                    }else {
@@ -179,14 +182,20 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                    i += secLen; // skip current section, next iteration, i==i+secLen+1
                 }
 
-                if (content.equals("ss")) {
-                    curState = ConnState.FOUND_DEVICES;
-                    filteredScanResult.add(bleDevice);
+                for (String nm:
+                        Config.deviceNames) {
+                    if (criticalInfo.startsWith(nm)) {
+                        curState = ConnState.FOUND_DEVICES;
+                        filteredScanResult.add(bleDevice);
+                        deviceListFragment.addRvItem(bleDevice);
 
-                    if (filteredScanResult.size() == 1) {
-                        showDevicesListPage();
+                        if (filteredScanResult.size() == 1) {
+                            showDevicesListPage();
+                        }
+                        break;
                     }
                 }
+
             }
         });
     }

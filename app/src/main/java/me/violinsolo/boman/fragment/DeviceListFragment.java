@@ -110,6 +110,7 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
 
 
     public void addRvItem(BleDevice bleDevice) {
-
+        mAdapter.addDevice(bleDevice);
+        mAdapter.notifyDataSetChanged();
     }
 }
