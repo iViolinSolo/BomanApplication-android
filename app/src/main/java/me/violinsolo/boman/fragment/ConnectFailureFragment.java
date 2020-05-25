@@ -102,4 +102,8 @@ public class ConnectFailureFragment extends BaseFragment<FragmentConnectFailureB
     protected void bindListeners() {
 
     }
+
+    public void setCurrentTitle(String failureTitle) {
+        mBinder.tvFailTitle.setText(failureTitle);
+    }
 }

@@ -295,6 +295,12 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         getSupportFragmentManager().beginTransaction().hide(connectLoadingFragment).commit();
         getSupportFragmentManager().beginTransaction().show(connectFailureFragment).commit();
         getSupportFragmentManager().beginTransaction().hide(deviceListFragment).commit();
+
+        if (curState == ConnState.CONNECT_FAIL) {
+            connectFailureFragment.setCurrentTitle("连接不到您的产品？");
+        }else if (curState == ConnState.NO_DEVICES) {
+            connectFailureFragment.setCurrentTitle("看不到您的产品？");
+        }
     }
 
     private boolean checkGPSIsOpen() {

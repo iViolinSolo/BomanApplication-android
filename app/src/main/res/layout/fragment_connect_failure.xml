@@ -6,4 +6,9 @@
     tools:context=".fragment.ConnectFailureFragment">
 
 
+    <TextView
+        android:id="@+id/tv_fail_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
 </FrameLayout>
