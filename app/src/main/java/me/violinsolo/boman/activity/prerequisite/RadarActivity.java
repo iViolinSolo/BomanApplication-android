@@ -43,6 +43,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     private DeviceListFragment deviceListFragment;
 
     public ConnState curState;
+    public List<BleDevice> filteredScanResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     protected void initData() {
         mContext = RadarActivity.this;
         fragments = new ArrayList<>();
+        filteredScanResult = new ArrayList<>();
     }
 
     /**
@@ -105,20 +107,52 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
      */
     @Override
     protected void bindListeners() {
+        // Auto-triggered Scanning Part.
         BleManager.getInstance().scan(new BleScanCallback() {
             @Override
             public void onScanFinished(List<BleDevice> scanResultList) {
+                curState = ConnState.SCANNING_FINISH;
 
+                if (filteredScanResult.isEmpty()) {
+                    curState = ConnState.NO_DEVICES;
+                    showFailurePage();
+                }
             }
 
             @Override
             public void onScanStarted(boolean success) {
-
+                if (success) {
+                    curState = ConnState.START_SCANNING;
+                }else {
+                    curState = ConnState.NO_DEVICES;
+                    showFailurePage();
+                }
             }
 
             @Override
             public void onScanning(BleDevice bleDevice) {
+                byte[] broadcastData = bleDevice.getScanRecord();
 
+                int advertisementLength = broadcastData.length;
+                boolean addSpace = true;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < advertisementLength; i++) {
+                    String hex = Integer.toHexString(broadcastData[i] & 0xFF);
+                    sb.append(hex);
+                    if (addSpace)
+                        sb.append(" ");
+                }
+                String content = sb.toString().trim();
+                Log.e(TAG, bleDevice.getKey()+" \t[length]: "+advertisementLength+" -> "+content);
+
+                if (content.equals("ss")) {
+                    curState = ConnState.FOUND_DEVICES;
+                    filteredScanResult.add(bleDevice);
+
+                    if (filteredScanResult.size() == 1) {
+                        showDevicesListPage();
+                    }
+                }
             }
         });
     }
@@ -138,11 +172,24 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     }
 
     private void showLoadingPage() {
+        // Attention, there are two types of LoadingPage
         getSupportFragmentManager().beginTransaction().show(connectLoadingFragment).commit();
         getSupportFragmentManager().beginTransaction().hide(connectFailureFragment).commit();
         getSupportFragmentManager().beginTransaction().hide(deviceListFragment).commit();
     }
 
+    private void showDevicesListPage() {
+        getSupportFragmentManager().beginTransaction().hide(connectLoadingFragment).commit();
+        getSupportFragmentManager().beginTransaction().hide(connectFailureFragment).commit();
+        getSupportFragmentManager().beginTransaction().show(deviceListFragment).commit();
+    }
+
+    private void showFailurePage() {
+        // Attention, there are two types of FailurePage
+        getSupportFragmentManager().beginTransaction().hide(connectLoadingFragment).commit();
+        getSupportFragmentManager().beginTransaction().show(connectFailureFragment).commit();
+        getSupportFragmentManager().beginTransaction().hide(deviceListFragment).commit();
+    }
 
     private boolean checkGPSIsOpen() {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
