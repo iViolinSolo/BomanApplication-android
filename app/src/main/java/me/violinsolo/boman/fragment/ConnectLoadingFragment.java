@@ -62,6 +62,27 @@ public class ConnectLoadingFragment extends BaseFragment<FragmentConnectLoadingB
     }
 
     /**
+     * init data here, like you can get data from extra.
+     * eg.
+     * var data = getIntent().getParcelableExtra(EXTRA_KEY_XXX);
+     * if (getArguments() != null) {
+     * failureTitle = getArguments().getString(ARG_FAILURE_TITLE);
+     * }
+     */
+    @Override
+    protected void initData() {
+
+    }
+
+    /**
+     * write init view codes, such as TextView.setText().
+     */
+    @Override
+    protected void initViews() {
+
+    }
+
+    /**
      * bind all listeners here.
      */
     @Override

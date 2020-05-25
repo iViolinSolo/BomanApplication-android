@@ -6,9 +6,6 @@
     <string name="toolbar_bluetooth_check">请打开蓝牙</string>
     <string name="toolbar_radar">尝试连接中</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="connect">连接</string>
     <string name="connected">已连接</string>
     <string name="disconnect">断开连接</string>

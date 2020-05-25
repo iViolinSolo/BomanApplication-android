@@ -62,7 +62,7 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     protected abstract void initData();
 
     /**
-     * write init view codes, such as toolbar.
+     * write init view codes, such as TextView.setText().
      */
     protected abstract void initViews();
 
