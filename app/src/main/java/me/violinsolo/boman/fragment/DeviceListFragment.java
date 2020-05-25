@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import me.violinsolo.boman.adapter.DeviceListAdapter;
 import me.violinsolo.boman.base.BaseFragment;
 import me.violinsolo.boman.databinding.FragmentDeviceListBinding;
+import me.violinsolo.boman.listener.OnRecyclerViewItemClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +32,7 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
     public Context mContext;
     public DeviceListAdapter mAdapter;
     private List<BleDevice> bleDevices;
+    private OnRecyclerViewItemClick onRecyclerViewItemClick;
 
     public DeviceListFragment() {
         // Required empty public constructor
@@ -43,7 +45,6 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
      *
      * @return A new instance of fragment DeviceListFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static DeviceListFragment newInstance() {
         DeviceListFragment fragment = new DeviceListFragment();
         return fragment;
@@ -116,6 +117,9 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
      */
     @Override
     protected void bindListeners() {
+        if (onRecyclerViewItemClick!=null) {
+            mAdapter.setOnRecyclerViewItemClick(onRecyclerViewItemClick);
+        }
 
     }
 
@@ -128,5 +132,9 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
             mAdapter.addDevice(bleDevice);
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void setOnRecyclerViewItemClick(OnRecyclerViewItemClick onRecyclerViewItemClick) {
+        this.onRecyclerViewItemClick = onRecyclerViewItemClick;
     }
 }

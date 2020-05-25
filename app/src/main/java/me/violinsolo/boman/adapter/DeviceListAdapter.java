@@ -16,6 +16,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import me.violinsolo.boman.databinding.AdapterRvListDeviceItemBinding;
+import me.violinsolo.boman.listener.OnRecyclerViewItemClick;
 
 /**
  * @author violinsolo
@@ -28,10 +29,15 @@ import me.violinsolo.boman.databinding.AdapterRvListDeviceItemBinding;
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.ViewHolder> {
     private List<BleDevice> mData;
     private Context mContext;
+    private OnRecyclerViewItemClick onRecyclerViewItemClick;
 
     public DeviceListAdapter(Context mContext) {
         this.mData = new ArrayList<>();
         this.mContext = mContext;
+    }
+
+    public void setOnRecyclerViewItemClick(OnRecyclerViewItemClick onRecyclerViewItemClick) {
+        this.onRecyclerViewItemClick = onRecyclerViewItemClick;
     }
 
     /**
@@ -59,6 +65,14 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         AdapterRvListDeviceItemBinding mBinder = AdapterRvListDeviceItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
         ViewHolder vh = new ViewHolder(mBinder);
+        mBinder.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onRecyclerViewItemClick != null) {
+                    onRecyclerViewItemClick.onItemClick(view, (int) view.getTag());
+                }
+            }
+        });
         return vh;
     }
 
@@ -87,6 +101,8 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
         BleDevice bleDevice = mData.get(position);
 
         holder.tvDeviceName.setText(bleDevice.getName());
+        holder.itemView.setTag(position);  // used on itemClickListener
+
 //        holder.ivDeviceIcon
     }
 
@@ -117,6 +133,12 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
             tvDeviceName = mBinder.tvDeviceName;
             tvDeviceStatus = mBinder.tvDeviceStatus;
         }
+    }
+
+    public BleDevice getItem(int position) {
+        if (position <0 || position>=mData.size())
+            throw new IllegalArgumentException("BleDevice index out of range.");
+        return mData.get(position);
     }
 
     public void addDevice(BleDevice device){
