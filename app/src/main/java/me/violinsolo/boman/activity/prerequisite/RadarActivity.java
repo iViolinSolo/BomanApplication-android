@@ -184,7 +184,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
 
                 for (String nm:
                         Config.deviceNames) {
-                    if (criticalInfo.startsWith(nm)) {
+                    if (true||criticalInfo.startsWith(nm)) {
                         curState = ConnState.FOUND_DEVICES;
                         filteredScanResult.add(bleDevice);
 
@@ -193,6 +193,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                         }
 
                         deviceListFragment.addRvItem(bleDevice);
+                        Log.d(TAG, "[Add] => "+bleDevice.getKey());
                         break;
                     }
                 }

@@ -123,6 +123,7 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
     public void addRvItem(BleDevice bleDevice) {
         bleDevices.add(bleDevice);
         if (mAdapter != null) {
+//            Log.e(TAG, "Add "+bleDevice.getKey());
             // Before you show this fragment, adapter is null object due to the lifecycle.
             mAdapter.addDevice(bleDevice);
             mAdapter.notifyDataSetChanged();
