@@ -138,6 +138,9 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < advertisementLength; i++) {
                     String hex = Integer.toHexString(broadcastData[i] & 0xFF);
+                    if (hex.length() == 1) {
+                        hex = '0' + hex;
+                    }
                     sb.append(hex);
                     if (addSpace)
                         sb.append(" ");
