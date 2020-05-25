@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 
 import com.clj.fastble.data.BleDevice;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,9 +30,11 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
 
     public Context mContext;
     public DeviceListAdapter mAdapter;
+    private List<BleDevice> bleDevices;
 
     public DeviceListFragment() {
         // Required empty public constructor
+        bleDevices = new ArrayList<>();
     }
 
     /**
@@ -98,6 +103,12 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
         // set adapter
         mAdapter = new DeviceListAdapter(mContext);
         mBinder.rvListDevices.setAdapter(mAdapter);
+
+        for (BleDevice ble :
+                bleDevices) {
+            mAdapter.addDevice(ble);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     /**
@@ -110,7 +121,10 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
 
 
     public void addRvItem(BleDevice bleDevice) {
-        mAdapter.addDevice(bleDevice);
-        mAdapter.notifyDataSetChanged();
+        bleDevices.add(bleDevice);
+        if (mAdapter != null) {
+            mAdapter.addDevice(bleDevice);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

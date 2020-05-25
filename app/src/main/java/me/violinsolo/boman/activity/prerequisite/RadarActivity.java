@@ -187,11 +187,12 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                     if (criticalInfo.startsWith(nm)) {
                         curState = ConnState.FOUND_DEVICES;
                         filteredScanResult.add(bleDevice);
-                        deviceListFragment.addRvItem(bleDevice);
 
                         if (filteredScanResult.size() == 1) {
                             showDevicesListPage();
                         }
+
+                        deviceListFragment.addRvItem(bleDevice);
                         break;
                     }
                 }
