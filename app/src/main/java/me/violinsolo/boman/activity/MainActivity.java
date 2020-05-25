@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         mBinder.listDevices.setAdapter(deviceAdapter);
 
         bleUtils = new BLEUtils();
-        bleUtils.init(getApplication());
+//        bleUtils.init(getApplication());
 
         operatingAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
         operatingAnim.setInterpolator(new LinearInterpolator());
