@@ -135,8 +135,49 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                 byte[] broadcastData = bleDevice.getScanRecord();
 
                 int advertisementLength = broadcastData.length;
+
                 String content = HexUtil.hexStrBigEndian(broadcastData);
                 Log.e(TAG, bleDevice.getKey()+" \t[length]: "+advertisementLength+" -> "+content);
+
+
+                for (int i = 0; i < advertisementLength; i++) {
+                   int secLen = broadcastData[i] & 0xff;
+
+                   if (i>=31) {
+                       break; // or the response data field will out of bound.`
+                   }
+
+                   byte secType = broadcastData[i+1];
+                   if (secType == (byte)0xff){
+                       // current section is manufacture info section.
+
+                       byte[] secData = new byte[secLen-1];
+                       for (int j = 0; j < secLen-1; j++) {
+                            secData[j] = broadcastData[j+i+2];
+                       }
+
+                       String plainHex = HexUtil.hexStrBigEndian(secData);
+                       String plainAscii = HexUtil.str(secData, true);
+
+                       Log.e(TAG, bleDevice.getKey()+" \t\t [Manufacturer Info]: <"+plainHex+"> => ["+plainAscii+"]");
+                   }else if (secType == (byte)0x09){
+                       // current section is device name info section.
+
+                       byte[] secData = new byte[secLen-1];
+                       for (int j = 0; j < secLen-1; j++) {
+                           secData[j] = broadcastData[j+i+2];
+                       }
+
+                       String plainHex = HexUtil.hexStrBigEndian(secData);
+                       String plainAscii = HexUtil.str(secData, true);
+
+                       Log.e(TAG, bleDevice.getKey()+" \t\t [Device Name Info]: <"+plainHex+"> => ["+plainAscii+"]");
+                   }else {
+                       // Nothing to do.
+                   }
+
+                   i += secLen; // skip current section, next iteration, i==i+secLen+1
+                }
 
                 if (content.equals("ss")) {
                     curState = ConnState.FOUND_DEVICES;
