@@ -16,7 +16,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import me.violinsolo.boman.databinding.AdapterRvListDeviceItemBinding;
-import me.violinsolo.boman.listener.OnRecyclerViewItemClick;
+import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
 
 /**
  * @author violinsolo
@@ -29,15 +29,15 @@ import me.violinsolo.boman.listener.OnRecyclerViewItemClick;
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.ViewHolder> {
     private List<BleDevice> mData;
     private Context mContext;
-    private OnRecyclerViewItemClick onRecyclerViewItemClick;
+    private OnRecyclerViewItemClickListener onRecyclerViewItemClickListener;
 
     public DeviceListAdapter(Context mContext) {
         this.mData = new ArrayList<>();
         this.mContext = mContext;
     }
 
-    public void setOnRecyclerViewItemClick(OnRecyclerViewItemClick onRecyclerViewItemClick) {
-        this.onRecyclerViewItemClick = onRecyclerViewItemClick;
+    public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener onRecyclerViewItemClickListener) {
+        this.onRecyclerViewItemClickListener = onRecyclerViewItemClickListener;
     }
 
     /**
@@ -68,8 +68,8 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
         mBinder.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (onRecyclerViewItemClick != null) {
-                    onRecyclerViewItemClick.onItemClick(view, (int) view.getTag());
+                if (onRecyclerViewItemClickListener != null) {
+                    onRecyclerViewItemClickListener.onItemClick(view, (int) view.getTag());
                 }
             }
         });

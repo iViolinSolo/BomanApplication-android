@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import me.violinsolo.boman.adapter.DeviceListAdapter;
 import me.violinsolo.boman.base.BaseFragment;
 import me.violinsolo.boman.databinding.FragmentDeviceListBinding;
-import me.violinsolo.boman.listener.OnRecyclerViewItemClick;
+import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,7 +32,7 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
     public Context mContext;
     public DeviceListAdapter mAdapter;
     private List<BleDevice> bleDevices;
-    private OnRecyclerViewItemClick onRecyclerViewItemClick;
+    private OnRecyclerViewItemClickListener onRecyclerViewItemClickListener;
 
     public DeviceListFragment() {
         // Required empty public constructor
@@ -117,8 +117,8 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
      */
     @Override
     protected void bindListeners() {
-        if (onRecyclerViewItemClick!=null) {
-            mAdapter.setOnRecyclerViewItemClick(onRecyclerViewItemClick);
+        if (onRecyclerViewItemClickListener !=null) {
+            mAdapter.setOnRecyclerViewItemClickListener(onRecyclerViewItemClickListener);
         }
 
     }
@@ -134,7 +134,7 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
         }
     }
 
-    public void setOnRecyclerViewItemClick(OnRecyclerViewItemClick onRecyclerViewItemClick) {
-        this.onRecyclerViewItemClick = onRecyclerViewItemClick;
+    public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener onRecyclerViewItemClickListener) {
+        this.onRecyclerViewItemClickListener = onRecyclerViewItemClickListener;
     }
 }

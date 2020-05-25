@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import me.violinsolo.boman.base.BaseFragment;
 import me.violinsolo.boman.databinding.FragmentConnectFailureBinding;
+import me.violinsolo.boman.listener.OnFailureButtonClickLinstener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +22,7 @@ public class ConnectFailureFragment extends BaseFragment<FragmentConnectFailureB
     private static final String ARG_FAILURE_TITLE = "ARG_FAILURE_TITLE";
 
     private String failureTitle;
+    private OnFailureButtonClickLinstener onFailureButtonClickLinstener;
 
     public ConnectFailureFragment() {
         // Required empty public constructor
@@ -100,10 +102,21 @@ public class ConnectFailureFragment extends BaseFragment<FragmentConnectFailureB
      */
     @Override
     protected void bindListeners() {
-
+        mBinder.btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onFailureButtonClickLinstener!=null) {
+                    onFailureButtonClickLinstener.OnClick(view);
+                }
+            }
+        });
     }
 
     public void setCurrentTitle(String failureTitle) {
         mBinder.tvFailTitle.setText(failureTitle);
+    }
+
+    public void setOnFailureButtonClickLinstener(OnFailureButtonClickLinstener onFailureButtonClickLinstener) {
+        this.onFailureButtonClickLinstener = onFailureButtonClickLinstener;
     }
 }

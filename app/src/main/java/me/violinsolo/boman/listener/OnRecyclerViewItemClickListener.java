@@ -10,7 +10,7 @@ import android.view.View;
  * <p>
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
-public interface OnRecyclerViewItemClick {
+public interface OnRecyclerViewItemClickListener {
 
     void onItemClick(View view, int position);
 }

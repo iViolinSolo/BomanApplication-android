@@ -27,7 +27,8 @@ import me.violinsolo.boman.databinding.ActivityRadarBinding;
 import me.violinsolo.boman.fragment.ConnectFailureFragment;
 import me.violinsolo.boman.fragment.ConnectLoadingFragment;
 import me.violinsolo.boman.fragment.DeviceListFragment;
-import me.violinsolo.boman.listener.OnRecyclerViewItemClick;
+import me.violinsolo.boman.listener.OnFailureButtonClickLinstener;
+import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
 import me.violinsolo.boman.subscribe.ObserverManager;
 import me.violinsolo.boman.util.Config;
 import me.violinsolo.boman.util.HexUtil;
@@ -113,6 +114,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         }
 
         prepareFragments();
+        curState = ConnState.START_SCANNING; //TODO change this line when you have the mac address get in.
         showLoadingPage();
     }
 
@@ -213,7 +215,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
             }
         });
 
-        deviceListFragment.setOnRecyclerViewItemClick(new OnRecyclerViewItemClick() {
+        deviceListFragment.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 BleDevice target = deviceListFragment.mAdapter.getItem(position);
@@ -256,6 +258,13 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                 });
             }
         });
+
+        connectFailureFragment.setOnFailureButtonClickLinstener(new OnFailureButtonClickLinstener() {
+            @Override
+            public void OnClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void prepareFragments() {
@@ -282,6 +291,14 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         getSupportFragmentManager().beginTransaction().show(connectLoadingFragment).commit();
         getSupportFragmentManager().beginTransaction().hide(connectFailureFragment).commit();
         getSupportFragmentManager().beginTransaction().hide(deviceListFragment).commit();
+
+        if (curState == ConnState.START_SCANNING) {
+
+        }else if (curState == ConnState.START_CONNECTING) {
+
+        }else if (curState == ConnState.START_CONNECTING_MAC) {
+
+        }
     }
 
     private void showDevicesListPage() {
