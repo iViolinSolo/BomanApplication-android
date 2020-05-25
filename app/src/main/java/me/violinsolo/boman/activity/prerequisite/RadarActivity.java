@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.adapter.DeviceListAdapter;
 import me.violinsolo.boman.base.BaseActivity;
@@ -72,13 +70,6 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
             finish();
         }
 
-        // set layout manager
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
-        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        mBinder.rvListDevices.setLayoutManager(mLayoutManager);
-        // set adapter
-        mAdapter = new DeviceListAdapter(mContext);
-        mBinder.rvListDevices.setAdapter(mAdapter);
 
     }
 

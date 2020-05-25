@@ -1,5 +1,6 @@
 package me.violinsolo.boman.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import me.violinsolo.boman.adapter.DeviceListAdapter;
 import me.violinsolo.boman.base.BaseFragment;
 import me.violinsolo.boman.databinding.FragmentDeviceListBinding;
 
@@ -17,6 +21,10 @@ import me.violinsolo.boman.databinding.FragmentDeviceListBinding;
  * create an instance of this fragment.
  */
 public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> {
+    public static final String TAG = DeviceListFragment.class.getSimpleName();
+
+    public Context mContext;
+    public DeviceListAdapter mAdapter;
 
     public DeviceListFragment() {
         // Required empty public constructor
@@ -72,7 +80,7 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
      */
     @Override
     protected void initData() {
-
+        mContext = getContext();
     }
 
     /**
@@ -81,6 +89,13 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
     @Override
     protected void initViews() {
 
+        // set layout manager
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
+        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        mBinder.rvListDevices.setLayoutManager(mLayoutManager);
+        // set adapter
+        mAdapter = new DeviceListAdapter(mContext);
+        mBinder.rvListDevices.setAdapter(mAdapter);
     }
 
     /**
