@@ -1,7 +1,9 @@
 package me.violinsolo.boman.activity.prerequisite;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothGatt;
 import android.content.Context;
+import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,24 +11,32 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleGattCallback;
 import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
+import com.clj.fastble.exception.BleException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
 import me.violinsolo.boman.R;
+import me.violinsolo.boman.activity.DetailsActivity;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityRadarBinding;
 import me.violinsolo.boman.fragment.ConnectFailureFragment;
 import me.violinsolo.boman.fragment.ConnectLoadingFragment;
 import me.violinsolo.boman.fragment.DeviceListFragment;
+import me.violinsolo.boman.listener.OnRecyclerViewItemClick;
+import me.violinsolo.boman.subscribe.ObserverManager;
 import me.violinsolo.boman.util.Config;
 import me.violinsolo.boman.util.HexUtil;
+import me.violinsolo.boman.util.SharedPrefUtils;
 
 public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     public static final String TAG = RadarActivity.class.getSimpleName();
+    private SharedPrefUtils spUtil;
+
     public static enum ConnState {
         START_SCANNING,
         FOUND_DEVICES,
@@ -75,6 +85,8 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         mContext = RadarActivity.this;
         fragments = new ArrayList<>();
         filteredScanResult = new ArrayList<>();
+
+        spUtil = new SharedPrefUtils(mContext);
     }
 
     /**
@@ -184,7 +196,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
 
                 for (String nm:
                         Config.deviceNames) {
-                    if (true||criticalInfo.startsWith(nm)) {
+                    if (criticalInfo.startsWith(nm)) {
                         curState = ConnState.FOUND_DEVICES;
                         filteredScanResult.add(bleDevice);
 
@@ -198,6 +210,50 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                     }
                 }
 
+            }
+        });
+
+        deviceListFragment.setOnRecyclerViewItemClick(new OnRecyclerViewItemClick() {
+            @Override
+            public void onItemClick(View view, int position) {
+                BleDevice target = deviceListFragment.mAdapter.getItem(position);
+                BleManager.getInstance().connect(target, new BleGattCallback() {
+                    @Override
+                    public void onStartConnect() {
+                        curState = ConnState.START_CONNECTING;
+                        showLoadingPage();
+                    }
+
+                    @Override
+                    public void onConnectFail(BleDevice bleDevice, BleException exception) {
+                        curState = ConnState.CONNECT_FAIL;
+                        showFailurePage();
+                    }
+
+                    @Override
+                    public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
+                        curState = ConnState.CONNECTED;
+
+                        spUtil.storeBoundDevice(bleDevice);
+
+                        Intent intent = new Intent(mContext, DetailsActivity.class);
+                        intent.putExtra(DetailsActivity.EXTRA_DATA_BLE, bleDevice);
+                        startActivity(intent);
+
+                        finish();
+                    }
+
+                    @Override
+                    public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
+
+                        if (isActiveDisConnected) {
+                            Toast.makeText(mContext, getString(R.string.active_disconnected), Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(mContext, getString(R.string.disconnected), Toast.LENGTH_LONG).show();
+                            ObserverManager.getInstance().notifyObserver(device); // TODO, need to check observable functionality.
+                        }
+                    }
+                });
             }
         });
     }
