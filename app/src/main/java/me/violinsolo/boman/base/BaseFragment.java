@@ -34,6 +34,8 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
 
         mBinder = onBind(inflater, container);
 
+        initData();
+        initViews();
         bindListeners();
 
         return mBinder.getRoot();
@@ -48,6 +50,21 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
      *                  mBinder = FragmentXMLNameBinding.inflate(inflater, container, boolean attachToParent = false);
      */
     protected abstract T onBind(@NonNull LayoutInflater inflater, @Nullable ViewGroup parent);
+
+    /**
+     * init data here, like you can get data from extra.
+     *  eg.
+     *  var data = getIntent().getParcelableExtra(EXTRA_KEY_XXX);
+     *  if (getArguments() != null) {
+     *             failureTitle = getArguments().getString(ARG_FAILURE_TITLE);
+     *         }
+     */
+    protected abstract void initData();
+
+    /**
+     * write init view codes, such as toolbar.
+     */
+    protected abstract void initViews();
 
 
     /**

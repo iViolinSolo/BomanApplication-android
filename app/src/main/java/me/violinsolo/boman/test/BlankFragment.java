@@ -78,6 +78,24 @@ public class BlankFragment extends BaseFragment<FragmentBlankBinding> {
     }
 
     /**
+     * init data here, like you can get data from extra.
+     * eg.
+     * var data = getIntent().getParcelableExtra(EXTRA_KEY_XXX);
+     */
+    @Override
+    protected void initData() {
+
+    }
+
+    /**
+     * write init view codes, such as toolbar.
+     */
+    @Override
+    protected void initViews() {
+
+    }
+
+    /**
      * bind all listeners here.
      */
     @Override
