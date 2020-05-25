@@ -8,14 +8,41 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleScanCallback;
+import com.clj.fastble.data.BleDevice;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.fragment.app.Fragment;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityRadarBinding;
+import me.violinsolo.boman.fragment.ConnectFailureFragment;
+import me.violinsolo.boman.fragment.ConnectLoadingFragment;
+import me.violinsolo.boman.fragment.DeviceListFragment;
 
 public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     public static final String TAG = RadarActivity.class.getSimpleName();
+    public static enum ConnState {
+        START_SCANNING,
+        FOUND_DEVICES,
+        NO_DEVICES,
+        SCANNING_FINISH,
+        START_CONNECTING,
+        START_CONNECTING_MAC,
+        CONNECTED,
+        CONNECT_FAIL
+    }
 
     public Context mContext;
+    private List<Fragment> fragments;
+    private ConnectFailureFragment connectFailureFragment;
+    private ConnectLoadingFragment connectLoadingFragment;
+    private DeviceListFragment deviceListFragment;
+
+    public ConnState curState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +70,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     @Override
     protected void initData() {
         mContext = RadarActivity.this;
+        fragments = new ArrayList<>();
     }
 
     /**
@@ -68,7 +96,8 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
             finish();
         }
 
-
+        prepareFragments();
+        showLoadingPage();
     }
 
     /**
@@ -76,7 +105,42 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
      */
     @Override
     protected void bindListeners() {
+        BleManager.getInstance().scan(new BleScanCallback() {
+            @Override
+            public void onScanFinished(List<BleDevice> scanResultList) {
 
+            }
+
+            @Override
+            public void onScanStarted(boolean success) {
+
+            }
+
+            @Override
+            public void onScanning(BleDevice bleDevice) {
+
+            }
+        });
+    }
+
+    private void prepareFragments() {
+        if (fragments == null) {
+            fragments = new ArrayList<>();
+        }
+
+        deviceListFragment = DeviceListFragment.newInstance();
+        fragments.add(deviceListFragment);
+        connectLoadingFragment = ConnectLoadingFragment.newInstance();
+        fragments.add(connectLoadingFragment);
+        connectFailureFragment = ConnectFailureFragment.newInstance("");
+        fragments.add(connectFailureFragment);
+
+    }
+
+    private void showLoadingPage() {
+        getSupportFragmentManager().beginTransaction().show(connectLoadingFragment).commit();
+        getSupportFragmentManager().beginTransaction().hide(connectFailureFragment).commit();
+        getSupportFragmentManager().beginTransaction().hide(deviceListFragment).commit();
     }
 
 
