@@ -29,7 +29,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
     private List<BleDevice> mData;
     private Context mContext;
 
-    public DeviceListAdapter( Context mContext) {
+    public DeviceListAdapter(Context mContext) {
         this.mData = new ArrayList<>();
         this.mContext = mContext;
     }
@@ -116,6 +116,23 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
             ivDeviceIcon = mBinder.ivDeviceIcon;
             tvDeviceName = mBinder.tvDeviceName;
             tvDeviceStatus = mBinder.tvDeviceStatus;
+        }
+    }
+
+    public void addDevice(BleDevice device){
+        removeDevice(device);
+        mData.add(device);
+    }
+
+    public void removeDevice(BleDevice device) {
+        for (int i = 0; i < mData.size(); i++) {
+            BleDevice t = mData.get(i);
+
+            if (t.getKey().equals(device.getKey())) {
+                mData.remove(i);
+
+                break;
+            }
         }
     }
 }

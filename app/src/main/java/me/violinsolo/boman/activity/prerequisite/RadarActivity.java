@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import me.violinsolo.boman.R;
-import me.violinsolo.boman.adapter.DeviceListAdapter;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityRadarBinding;
 
@@ -17,7 +16,6 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     public static final String TAG = RadarActivity.class.getSimpleName();
 
     public Context mContext;
-    public DeviceListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

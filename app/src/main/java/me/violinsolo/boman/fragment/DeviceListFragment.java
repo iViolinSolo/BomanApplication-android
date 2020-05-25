@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.clj.fastble.data.BleDevice;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -103,6 +105,11 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
      */
     @Override
     protected void bindListeners() {
+
+    }
+
+
+    public void addRvItem(BleDevice bleDevice) {
 
     }
 }
