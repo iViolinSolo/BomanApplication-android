@@ -5,23 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import me.violinsolo.boman.R;
+import me.violinsolo.boman.base.BaseFragment;
+import me.violinsolo.boman.databinding.FragmentConnectFailureBinding;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ConnectFailureFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConnectFailureFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
+public class ConnectFailureFragment extends BaseFragment<FragmentConnectFailureBinding> {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_FAILURE_TITLE = "ARG_FAILURE_TITLE";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String failureTitle;
 
     public ConnectFailureFragment() {
         // Required empty public constructor
@@ -31,16 +30,15 @@ public class ConnectFailureFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param failureTitle Parameter that can hold the title to present,
+     *                     if the previous stage is connecting a device, then present connect fail.
+     *                     And if the previous stage is searching a device, then present search fail.
      * @return A new instance of fragment ConnectFailureFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static ConnectFailureFragment newInstance(String param1, String param2) {
+    public static ConnectFailureFragment newInstance(String failureTitle) {
         ConnectFailureFragment fragment = new ConnectFailureFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_FAILURE_TITLE, failureTitle);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,8 +47,7 @@ public class ConnectFailureFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            failureTitle = getArguments().getString(ARG_FAILURE_TITLE);
         }
     }
 
@@ -58,6 +55,30 @@ public class ConnectFailureFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_connect_failure, container, false);
+//        return inflater.inflate(R.layout.fragment_device_list, container, false);
+        // Using ViewBinding, this inflate part will be transferred to BaseFragment to handle it.
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    /**
+     * need to initilize the ViewBinding Class in every sub activity class.
+     *
+     * @param inflater
+     * @param parent
+     * @return mBinder the field of view binding handler. Initialize it before use
+     * eg.
+     * mBinder = FragmentXMLNameBinding.inflate(inflater, container, boolean attachToParent = false);
+     */
+    @Override
+    protected FragmentConnectFailureBinding onBind(@NonNull LayoutInflater inflater, @Nullable ViewGroup parent) {
+        return FragmentConnectFailureBinding.inflate(LayoutInflater.from(getContext()), parent, false);
+    }
+
+    /**
+     * bind all listeners here.
+     */
+    @Override
+    protected void bindListeners() {
+
     }
 }
