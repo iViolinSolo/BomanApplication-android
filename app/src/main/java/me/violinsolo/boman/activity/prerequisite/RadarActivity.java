@@ -22,6 +22,7 @@ import me.violinsolo.boman.databinding.ActivityRadarBinding;
 import me.violinsolo.boman.fragment.ConnectFailureFragment;
 import me.violinsolo.boman.fragment.ConnectLoadingFragment;
 import me.violinsolo.boman.fragment.DeviceListFragment;
+import me.violinsolo.boman.util.HexUtil;
 
 public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     public static final String TAG = RadarActivity.class.getSimpleName();
@@ -134,18 +135,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                 byte[] broadcastData = bleDevice.getScanRecord();
 
                 int advertisementLength = broadcastData.length;
-                boolean addSpace = true;
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < advertisementLength; i++) {
-                    String hex = Integer.toHexString(broadcastData[i] & 0xFF);
-                    if (hex.length() == 1) {
-                        hex = '0' + hex;
-                    }
-                    sb.append(hex);
-                    if (addSpace)
-                        sb.append(" ");
-                }
-                String content = sb.toString().trim();
+                String content = HexUtil.hexStrBigEndian(broadcastData);
                 Log.e(TAG, bleDevice.getKey()+" \t[length]: "+advertisementLength+" -> "+content);
 
                 if (content.equals("ss")) {
