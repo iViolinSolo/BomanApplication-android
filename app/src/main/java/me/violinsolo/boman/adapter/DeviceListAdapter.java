@@ -1,11 +1,16 @@
 package me.violinsolo.boman.adapter;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.clj.fastble.data.BleDevice;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -21,7 +26,13 @@ import me.violinsolo.boman.databinding.AdapterRvListDeviceItemBinding;
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.ViewHolder> {
+    private List<BleDevice> mData;
+    private Context mContext;
 
+    public DeviceListAdapter( Context mContext) {
+        this.mData = new ArrayList<>();
+        this.mContext = mContext;
+    }
 
     /**
      * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
@@ -46,7 +57,9 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        AdapterRvListDeviceItemBinding mBinder = AdapterRvListDeviceItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
+        ViewHolder vh = new ViewHolder(mBinder);
+        return vh;
     }
 
     /**
@@ -71,7 +84,10 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        BleDevice bleDevice = mData.get(position);
 
+        holder.tvDeviceName.setText(bleDevice.getName());
+//        holder.ivDeviceIcon
     }
 
     @Override
@@ -86,7 +102,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
      */
     @Override
     public int getItemCount() {
-        return 0;
+        return mData.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

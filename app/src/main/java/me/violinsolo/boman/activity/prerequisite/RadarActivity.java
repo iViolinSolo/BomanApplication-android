@@ -77,7 +77,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mBinder.rvListDevices.setLayoutManager(mLayoutManager);
         // set adapter
-        mAdapter = new DeviceListAdapter();
+        mAdapter = new DeviceListAdapter(mContext);
         mBinder.rvListDevices.setAdapter(mAdapter);
 
     }
