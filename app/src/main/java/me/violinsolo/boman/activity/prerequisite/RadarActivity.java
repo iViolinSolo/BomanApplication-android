@@ -213,6 +213,11 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         connectFailureFragment = ConnectFailureFragment.newInstance("");
         fragments.add(connectFailureFragment);
 
+        for (Fragment f :
+                fragments) {
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment, f).hide(f).commit();
+        }
+
     }
 
     private void showLoadingPage() {
