@@ -293,10 +293,12 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         getSupportFragmentManager().beginTransaction().hide(deviceListFragment).commit();
 
         if (curState == ConnState.START_SCANNING) {
-
+            connectLoadingFragment.setLoadingTitle("开始扫描");
         }else if (curState == ConnState.START_CONNECTING) {
+            connectLoadingFragment.setLoadingTitle("尝试连接新设备");
 
         }else if (curState == ConnState.START_CONNECTING_MAC) {
+            connectLoadingFragment.setLoadingTitle("尝试连接绑定设备");
 
         }
     }

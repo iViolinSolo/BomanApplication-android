@@ -17,6 +17,8 @@ import me.violinsolo.boman.databinding.FragmentConnectLoadingBinding;
  * create an instance of this fragment.
  */
 public class ConnectLoadingFragment extends BaseFragment<FragmentConnectLoadingBinding> {
+    private String loadingTitle;
+
 
     public ConnectLoadingFragment() {
         // Required empty public constructor
@@ -79,7 +81,7 @@ public class ConnectLoadingFragment extends BaseFragment<FragmentConnectLoadingB
      */
     @Override
     protected void initViews() {
-
+        mBinder.tvLoadingTitle.setText(loadingTitle);
     }
 
     /**
@@ -88,5 +90,12 @@ public class ConnectLoadingFragment extends BaseFragment<FragmentConnectLoadingB
     @Override
     protected void bindListeners() {
 
+    }
+
+    public void setLoadingTitle(String loadingTitle) {
+        this.loadingTitle = loadingTitle;
+        if (mBinder != null) {
+            mBinder.tvLoadingTitle.setText(loadingTitle);
+        }
     }
 }
