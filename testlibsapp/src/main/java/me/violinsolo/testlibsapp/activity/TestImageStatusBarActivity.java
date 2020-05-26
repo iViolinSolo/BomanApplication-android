@@ -2,6 +2,8 @@ package me.violinsolo.testlibsapp.activity;
 
 import android.os.Bundle;
 
+import com.jaeger.library.StatusBarUtil;
+
 import me.violinsolo.testlibsapp.base.BaseActivity;
 import me.violinsolo.testlibsapp.databinding.ActivityTestImageStatusBarBinding;
 
@@ -40,7 +42,7 @@ public class TestImageStatusBarActivity extends BaseActivity<ActivityTestImageSt
      */
     @Override
     protected void initViews() {
-
+        StatusBarUtil.setTransparent(this);
     }
 
     /**
