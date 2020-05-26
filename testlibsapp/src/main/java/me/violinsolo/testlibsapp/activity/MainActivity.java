@@ -71,5 +71,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 startActivity(new Intent(MainActivity.this, TestGifActivity.class));
             }
         });
+
+        mBinder.btnGoActiStatusbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, TestStatusBarActivity.class));
+            }
+        });
     }
 }
