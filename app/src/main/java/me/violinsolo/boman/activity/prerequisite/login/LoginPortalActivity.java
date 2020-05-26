@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.jaeger.library.StatusBarUtil;
+
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityLoginPortalBinding;
 
@@ -42,6 +44,12 @@ public class LoginPortalActivity extends BaseActivity<ActivityLoginPortalBinding
      */
     @Override
     protected void initViews() {
+        // set current status bar alpha 0 and set the title font color to dark(to suit the light mode)
+        StatusBarUtil.setLightMode(this);
+        StatusBarUtil.setColor(this, getResources().getColor(android.R.color.white), 0);
+//        StatusBarUtil.setTransparent(this);
+
+
         mBinder.btnWechatLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
