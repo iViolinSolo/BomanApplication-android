@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
+import com.jaeger.library.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ import me.violinsolo.boman.util.SharedPrefUtils;
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
-    private Context mContext = MainActivity.this;
+    private Context mContext;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private BleRepr boundBleDevice = null;
@@ -104,7 +105,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
      */
     @Override
     protected void initData() {
-
+        mContext = MainActivity.this;
     }
 
     /**
@@ -113,6 +114,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     @Override
     protected void initViews() {
         setSupportActionBar(mBinder.toolbar);
+        StatusBarUtil.setTransparent(MainActivity.this);
+        mBinder.toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+
 
         spUtil = new SharedPrefUtils(mContext);
 

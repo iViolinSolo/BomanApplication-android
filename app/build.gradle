@@ -44,5 +44,7 @@ dependencies {
 
 //    widget for loading gif
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+//    lib for easily using status bar
+    implementation 'com.jaeger.statusbarutil:library:1.5.1'
 
 }
