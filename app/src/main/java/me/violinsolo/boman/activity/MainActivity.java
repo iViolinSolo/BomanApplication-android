@@ -114,8 +114,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     @Override
     protected void initViews() {
         setSupportActionBar(mBinder.toolbar);
-        StatusBarUtil.setTransparent(MainActivity.this);
-        mBinder.toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
 
         spUtil = new SharedPrefUtils(mContext);
@@ -309,12 +307,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         mBinder.findBleBtn.setVisibility(View.VISIBLE);
         mBinder.autoConnectBleBtn.setVisibility(View.GONE);
         mBinder.disconnectBleBtn.setVisibility(View.GONE);
+        setStatusBarWhenNoBound();
     }
 
     private void viewWhenBindBLE() {
         mBinder.findBleBtn.setVisibility(View.GONE);
         mBinder.autoConnectBleBtn.setVisibility(View.VISIBLE);
         mBinder.disconnectBleBtn.setVisibility(View.VISIBLE);
+        setStatusBarWhenHBound();
     }
 
     private void nowScanAllAvailableDevices() {
@@ -462,6 +462,22 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 nowScanAllAvailableDevices();
             }
         }
+    }
+
+
+
+    private void setStatusBarWhenNoBound() {
+        StatusBarUtil.setTransparent(MainActivity.this);
+        mBinder.toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        mBinder.getRoot().setBackground(getDrawable(R.drawable.main_background));
+        StatusBarUtil.setLightMode(MainActivity.this);
+    }
+
+    private void setStatusBarWhenHBound() {
+        StatusBarUtil.setTransparent(MainActivity.this);
+        mBinder.toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        mBinder.getRoot().setBackground(null);
+        StatusBarUtil.setLightMode(MainActivity.this);
     }
 
 }
