@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.TestStatusBarActivity"></activity>
+        <activity android:name=".activity.TestImageStatusBarActivity"></activity>
+        <activity android:name=".activity.TestStatusBarActivity" />
         <activity android:name=".activity.TestGifActivity" />
         <activity
             android:name=".activity.TestPermissionActivity"
@@ -30,10 +31,10 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 </manifest>

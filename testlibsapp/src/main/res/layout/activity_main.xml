@@ -34,4 +34,10 @@
         android:layout_height="wrap_content"
         android:text="Go to status bar" />
 
+    <Button
+        android:id="@+id/btn_go_acti_fullimage_statusbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to full image status bar" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>
