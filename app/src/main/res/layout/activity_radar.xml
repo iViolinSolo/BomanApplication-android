@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:animateLayoutChanges="true"
-    tools:context=".activity.prerequisite.RadarActivity">
+    tools:context=".activity.prerequisite.bt.RadarActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

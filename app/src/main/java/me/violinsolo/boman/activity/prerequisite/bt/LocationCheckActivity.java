@@ -1,4 +1,4 @@
-package me.violinsolo.boman.activity.prerequisite;
+package me.violinsolo.boman.activity.prerequisite.bt;
 
 import android.content.Context;
 import android.content.DialogInterface;

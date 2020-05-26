@@ -32,7 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import me.violinsolo.boman.R;
-import me.violinsolo.boman.activity.prerequisite.LocationCheckActivity;
+import me.violinsolo.boman.activity.prerequisite.bt.LocationCheckActivity;
 import me.violinsolo.boman.adapter.DeviceAdapter;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.ble.BLEUtils;

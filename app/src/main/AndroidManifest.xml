@@ -31,23 +31,23 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.DetailsActivity" />
-        <activity android:name=".activity.prerequisite.RadarActivity"
-            android:parentActivityName=".activity.prerequisite.BluetoothCheckActivity" >
+        <activity android:name=".activity.prerequisite.bt.RadarActivity"
+            android:parentActivityName=".activity.prerequisite.bt.BluetoothCheckActivity" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.prerequisite.BluetoothCheckActivity" />
+                android:value=".activity.prerequisite.bt.BluetoothCheckActivity" />
         </activity>
-        <activity android:name=".activity.prerequisite.BluetoothCheckActivity"
-            android:parentActivityName=".activity.prerequisite.LocationCheckActivity" >
+        <activity android:name=".activity.prerequisite.bt.BluetoothCheckActivity"
+            android:parentActivityName=".activity.prerequisite.bt.LocationCheckActivity" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.prerequisite.LocationCheckActivity" />
+                android:value=".activity.prerequisite.bt.LocationCheckActivity" />
         </activity>
-        <activity android:name=".activity.prerequisite.LocationCheckActivity" >
+        <activity android:name=".activity.prerequisite.bt.LocationCheckActivity" >
         </activity>
     </application>
 
