@@ -44,7 +44,7 @@ public class TestStatusBarActivity extends BaseActivity<ActivityTestStatusBarBin
      */
     @Override
     protected void initViews() {
-        StatusBarUtil.setColor(this, 0xff05D1A7);
+        StatusBarUtil.setColor(this, 0xff05D1A7, 0); // without the alpha, you cannot get a translucent bar.
         setSupportActionBar(mBinder.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
         getSupportActionBar().setDisplayShowHomeEnabled(true);
