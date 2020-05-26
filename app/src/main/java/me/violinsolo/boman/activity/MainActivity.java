@@ -33,6 +33,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.activity.prerequisite.bt.LocationCheckActivity;
+import me.violinsolo.boman.activity.prerequisite.login.LoginPortalActivity;
 import me.violinsolo.boman.adapter.DeviceAdapter;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.ble.BLEUtils;
@@ -198,6 +199,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(mContext, LocationCheckActivity.class));
+            }
+        });
+
+        mBinder.btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, LoginPortalActivity.class));
             }
         });
 

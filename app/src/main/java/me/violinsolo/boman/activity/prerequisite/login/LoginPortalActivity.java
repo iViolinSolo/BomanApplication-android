@@ -1,11 +1,14 @@
 package me.violinsolo.boman.activity.prerequisite.login;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityLoginPortalBinding;
 
 public class LoginPortalActivity extends BaseActivity<ActivityLoginPortalBinding> {
+    public static final String TAG = LoginPortalActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,19 @@ public class LoginPortalActivity extends BaseActivity<ActivityLoginPortalBinding
      */
     @Override
     protected void initViews() {
-
+        mBinder.btnWechatLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "wechat login");
+            }
+        });
+        mBinder.btnPhoneLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "phone login");
+                finish();
+            }
+        });
     }
 
     /**
