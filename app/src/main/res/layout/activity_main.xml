@@ -104,26 +104,13 @@
                     android:visibility="gone" />
 
                 <Button
-                    android:id="@+id/find_ble_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    android:text="绑定新设备"
-                    />
-                <Button
                     android:id="@+id/auto_connect_ble_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:text="测温"
                     />
-                <Button
-                    android:id="@+id/check_location_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    android:text="检查必备条件"
-                    />
+
             </LinearLayout>
 
             <ListView
