@@ -60,4 +60,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     // test best practice to load gif.
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+
+    // test statusbar utils, try to find the best practice.
+    implementation 'com.jaeger.statusbarutil:library:1.5.1'
 }
