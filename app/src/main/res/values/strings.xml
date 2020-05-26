@@ -30,4 +30,5 @@
     <string name="please_permit_bluetooth_title">请您确保蓝牙的打开</string>
     <string name="please_permit_bluetooth_explanation">我们的应用必须打开蓝牙才能连接铂曼设备；</string>
     <string name="device_bindable">可绑定</string>
+    <string name="slogan">伴你静享健康生活</string>
 </resources>
