@@ -113,7 +113,7 @@ public class ConnectFailureFragment extends BaseFragment<FragmentConnectFailureB
     }
 
     public void setCurrentTitle(String failureTitle) {
-        mBinder.tvFailTitle.setText(failureTitle);
+        mBinder.tvFailTitle.setText(failureTitle); //TODO need to chanage, potential nullptr exception
     }
 
     public void setOnFailureButtonClickLinstener(OnFailureButtonClickLinstener onFailureButtonClickLinstener) {
