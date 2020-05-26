@@ -11,10 +11,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorWhite"
         android:minHeight="?attr/actionBarSize"
         app:title="@string/toolbar_bluetooth_check"
-        app:titleTextColor="@android:color/white"
+        app:titleTextColor="@color/colorBlack"
         android:theme="?attr/actionBarTheme" />
 
     <pl.droidsonroids.gif.GifImageView

@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.jaeger.library.StatusBarUtil;
+
 import androidx.annotation.Nullable;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
@@ -61,7 +63,9 @@ public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckB
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可
-        mBinder.toolbar.setNavigationIcon(R.drawable.ic_chevron_left_black_32dp);
+//        mBinder.toolbar.setNavigationIcon(R.drawable.ic_chevron_left_black_32dp);
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorWhite), 0);
+        mBinder.toolbar.setNavigationIcon(R.mipmap.ic_back);
         mBinder.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

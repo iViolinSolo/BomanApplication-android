@@ -15,6 +15,7 @@ import com.clj.fastble.callback.BleGattCallback;
 import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
+import com.jaeger.library.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +100,9 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可
-        mBinder.toolbar.setNavigationIcon(R.drawable.ic_chevron_left_black_32dp);
+//        mBinder.toolbar.setNavigationIcon(R.drawable.ic_chevron_left_black_32dp);
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorWhite), 0);
+        mBinder.toolbar.setNavigationIcon(R.mipmap.ic_back);
         mBinder.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
