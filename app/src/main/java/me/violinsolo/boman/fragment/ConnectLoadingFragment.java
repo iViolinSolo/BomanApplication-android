@@ -1,6 +1,7 @@
 package me.violinsolo.boman.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,13 @@ import me.violinsolo.boman.databinding.FragmentConnectLoadingBinding;
  * create an instance of this fragment.
  */
 public class ConnectLoadingFragment extends BaseFragment<FragmentConnectLoadingBinding> {
+    private static final String TAG = ConnectFailureFragment.class.getSimpleName();
     private String loadingTitle;
 
 
     public ConnectLoadingFragment() {
         // Required empty public constructor
+        Log.d(TAG, "ConnectLoadingFragment.Constructor");
     }
 
     /**
@@ -37,12 +40,14 @@ public class ConnectLoadingFragment extends BaseFragment<FragmentConnectLoadingB
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "ConnectLoadingFragment.onCreate");
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "ConnectLoadingFragment.onCreateView");
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_device_list, container, false);
         // Using ViewBinding, this inflate part will be transferred to BaseFragment to handle it.
@@ -93,6 +98,7 @@ public class ConnectLoadingFragment extends BaseFragment<FragmentConnectLoadingB
     }
 
     public void setLoadingTitle(String loadingTitle) {
+        Log.d(TAG, "ConnectLoadingFragment.setLoadingTitle: "+loadingTitle);
         this.loadingTitle = loadingTitle;
         if (mBinder != null) {
             mBinder.tvLoadingTitle.setText(loadingTitle);
