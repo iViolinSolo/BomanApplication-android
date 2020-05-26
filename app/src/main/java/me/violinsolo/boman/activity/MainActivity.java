@@ -85,6 +85,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             deviceAdapter.addDevice(bleDevice, BLEUtils.BLEState.BOUND_CONNECTED);
         }
         deviceAdapter.notifyDataSetChanged();
+
+
+        boundBleDevice = spUtil.getBoundDevice();
+        if (boundBleDevice==null) {
+            viewWhenNoBLE();
+        }else {
+            viewWhenBindBLE();
+        }
     }
 
     /**
@@ -306,6 +314,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 mBinder.imgLoading.clearAnimation();
                 mBinder.imgLoading.setVisibility(View.INVISIBLE);
 //                btn_scan.setText(getString(R.string.start_scan));
+            }
+        });
+
+
+        // ===========================================
+        mBinder.btnAddDevice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, LocationCheckActivity.class));
             }
         });
     }
