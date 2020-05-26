@@ -21,10 +21,10 @@
 
     <cn.gavinliu.android.lib.shapedimageview.ShapedImageView
         android:id="@+id/iv_user_profile"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="20dp"
         android:src="@mipmap/logo"
         app:shape_mode="circle"
         app:stroke_color="@color/colorAccent"
