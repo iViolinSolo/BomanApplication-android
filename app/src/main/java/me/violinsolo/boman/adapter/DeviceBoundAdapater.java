@@ -1,6 +1,8 @@
 package me.violinsolo.boman.adapter;
 
+import android.content.Context;
 import android.view.ViewGroup;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import me.violinsolo.boman.databinding.AdapterRvBoundDeviceItemBinding;
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
 public class DeviceBoundAdapater extends RecyclerView.Adapter<DeviceBoundAdapater.ViewHolder> {
+    private Context mContext;
     private List<BleRepr> mData;
 
     /**
