@@ -17,5 +17,7 @@ public interface Observable {
 
     void deleteObserver(Observer obj);
 
-    void notifyObserver(BleDevice bleDevice);
+    void notifyObserverWhenConnected(BleDevice bleDevice);
+
+    void notifyObserverWhenDisonnected(BleDevice bleDevice);
 }

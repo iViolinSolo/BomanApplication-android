@@ -40,10 +40,18 @@ public class ObserverManager implements Observable {
     }
 
     @Override
-    public synchronized void notifyObserver(BleDevice bleDevice) {
+    public synchronized void notifyObserverWhenConnected(BleDevice bleDevice) {
         for (int i = 0; i < observers.size(); i++) {
             Observer o = observers.get(i);
-            o.disConnected(bleDevice);
+            o.onBLEConneted(bleDevice);
+        }
+    }
+
+    @Override
+    public synchronized void notifyObserverWhenDisonnected(BleDevice bleDevice) {
+        for (int i = 0; i < observers.size(); i++) {
+            Observer o = observers.get(i);
+            o.onBLEDisconneted(bleDevice);
         }
     }
 
