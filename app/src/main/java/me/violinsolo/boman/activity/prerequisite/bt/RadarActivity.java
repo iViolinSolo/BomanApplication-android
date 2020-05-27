@@ -221,46 +221,49 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
             @Override
             public void onItemClick(View view, int position) {
                 BleDevice target = deviceListFragment.mAdapter.getItem(position);
-                BleManager.getInstance().connect(target, new BleGattCallback() {
-                    @Override
-                    public void onStartConnect() {
-                        curState = ConnState.START_CONNECTING;
-                        showLoadingPage();
-                    }
+                if (!BleManager.getInstance().isConnected(target)) {
+                    BleManager.getInstance().cancelScan();
+                    BleManager.getInstance().connect(target, new BleGattCallback() {
+                        @Override
+                        public void onStartConnect() {
+                            curState = ConnState.START_CONNECTING;
+                            showLoadingPage();
+                        }
 
-                    @Override
-                    public void onConnectFail(BleDevice bleDevice, BleException exception) {
-                        curState = ConnState.CONNECT_FAIL;
-                        showFailurePage();
-                    }
+                        @Override
+                        public void onConnectFail(BleDevice bleDevice, BleException exception) {
+                            curState = ConnState.CONNECT_FAIL;
+                            showFailurePage();
+                        }
 
-                    @Override
-                    public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
-                        curState = ConnState.CONNECTED;
+                        @Override
+                        public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
+                            curState = ConnState.CONNECTED;
 
 //                        spUtil.storeBoundDeviceV2(bleDevice);
-                        ObserverManager.getInstance().notifyObserverWhenConnected(bleDevice); // mainly notify MainActivity to store the current device.
+                            ObserverManager.getInstance().notifyObserverWhenConnected(bleDevice); // mainly notify MainActivity to store the current device.
 
-                        // Go to the setting page directly, more user friendly.
-                        Intent intent = new Intent(mContext, DetailsActivity.class);
-                        intent.putExtra(DetailsActivity.EXTRA_DATA_BLE, bleDevice);
-                        startActivity(intent);
+                            // Go to the setting page directly, more user friendly.
+                            Intent intent = new Intent(mContext, DetailsActivity.class);
+                            intent.putExtra(DetailsActivity.EXTRA_DATA_BLE, bleDevice);
+                            startActivity(intent);
 
-                        finish();
-                    }
-
-                    @Override
-                    public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
-
-                        if (isActiveDisConnected) {
-                            Toast.makeText(mContext, getString(R.string.active_disconnected), Toast.LENGTH_LONG).show();
-                            ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
-                        } else {
-                            Toast.makeText(mContext, getString(R.string.inactive_disconnected), Toast.LENGTH_LONG).show();
-                            ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
+                            finish();
                         }
-                    }
-                });
+
+                        @Override
+                        public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
+
+                            if (isActiveDisConnected) {
+                                Toast.makeText(mContext, getString(R.string.active_disconnected), Toast.LENGTH_LONG).show();
+                                ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
+                            } else {
+                                Toast.makeText(mContext, getString(R.string.inactive_disconnected), Toast.LENGTH_LONG).show();
+                                ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
+                            }
+                        }
+                    });
+                }
             }
         });
 
