@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 
 import me.violinsolo.boman.ble.BleRepr;
+import me.violinsolo.boman.model.BleBoundDevice;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -55,15 +56,27 @@ public class SharedPrefUtils {
     // Keys
     // -----------------
     private static final String BOUND_DEVICES_KEY = "BOUND_DEVICES_KEY";
+    private static final String BOUND_DEVICES_V2_KEY = "BOUND_DEVICES_V2_KEY";
 
 
     // -----------------
     // Functions
     // -----------------
+//    ===========================================
+//    V0 only store the MAC address for a device.
+//    ===========================================
 //    public String getBoundDevice() {
 //        return getString(BOUND_DEVICES_KEY);
 //    }
+//    public void storeBoundDevice(String deviceMacAddr) {
+//        editor.putString(BOUND_DEVICES_KEY, deviceMacAddr);
+//        editor.commit();
+//    }
+//    public void removeBoundDevice() {
+//        storeBoundDevice((String) null);
+//    }
 
+    @Deprecated
     public BleRepr getBoundDevice() {
         String json = getString(BOUND_DEVICES_KEY);
 
@@ -76,8 +89,7 @@ public class SharedPrefUtils {
             return newDev;
         }
     }
-
-
+    @Deprecated
     public void storeBoundDevice(BleDevice bleDevice) {
 //        String json = gson.toJson(bleDevice);
 //        Log.d(TAG, "> current store json is: "+json);
@@ -87,6 +99,7 @@ public class SharedPrefUtils {
 
         storeBoundDevice(bleDevice.getMac(), bleDevice.getName(), bleDevice.getRssi());
     }
+    @Deprecated
     public void storeBoundDevice(String mac, String name, int rssi) {
         BleRepr t = new BleRepr(mac, name, rssi);
 
@@ -96,21 +109,43 @@ public class SharedPrefUtils {
         editor.putString(BOUND_DEVICES_KEY, json);
         editor.commit();
     }
-
-//    public void storeBoundDevice(String deviceMacAddr) {
-//        editor.putString(BOUND_DEVICES_KEY, deviceMacAddr);
-//        editor.commit();
-//    }
-
-//    public void removeBoundDevice() {
-//        storeBoundDevice((String) null);
-//    }
-
+    @Deprecated
     public void removeBoundDevice() {
         editor.remove(BOUND_DEVICES_KEY);
         editor.commit();
     }
 
+
+
+    public BleBoundDevice getBoundDeviceV2() {
+        String json = getString(BOUND_DEVICES_V2_KEY);
+
+        if (json == null) {
+            return null;
+        }else {
+            Type type = new TypeToken<BleBoundDevice>(){}.getType();
+            BleBoundDevice newDev = gson.fromJson(json, type);
+            Log.d(TAG, "> current restore json is: "+json);
+            return newDev;
+        }
+    }
+    public void storeBoundDeviceV2(BleBoundDevice bleDevice) {
+//        String json = gson.toJson(bleDevice);
+//        Log.d(TAG, "> current store json is: "+json);
+//        Type type = new TypeToken<BleDevice>(){}.getType();
+//        BleDevice newDev = gson.fromJson(json, type);
+//        Log.d(TAG, "> current restore json is: "+gson.toJson(newDev));
+
+        String json = gson.toJson(bleDevice);
+
+        Log.d(TAG, "> current store json is: "+json);
+        editor.putString(BOUND_DEVICES_V2_KEY, json);
+        editor.commit();
+    }
+    public void removeBoundDeviceV2() {
+        editor.remove(BOUND_DEVICES_V2_KEY);
+        editor.commit();
+    }
 
 
 //    private static final String MAP_KEY = "MAP_KEY";
