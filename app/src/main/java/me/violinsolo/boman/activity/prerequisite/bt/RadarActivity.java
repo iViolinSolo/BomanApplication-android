@@ -33,11 +33,10 @@ import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
 import me.violinsolo.boman.subscribe.ObserverManager;
 import me.violinsolo.boman.util.Config;
 import me.violinsolo.boman.util.HexUtil;
-import me.violinsolo.boman.util.SharedPrefUtils;
 
 public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     public static final String TAG = RadarActivity.class.getSimpleName();
-    private SharedPrefUtils spUtil;
+//    private SharedPrefUtils spUtil;
 
     public static enum ConnState {
         START_SCANNING,
@@ -88,7 +87,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         fragments = new ArrayList<>();
         filteredScanResult = new ArrayList<>();
 
-        spUtil = new SharedPrefUtils(mContext);
+//        spUtil = new SharedPrefUtils(mContext);
     }
 
     /**
@@ -239,8 +238,10 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                     public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
                         curState = ConnState.CONNECTED;
 
-                        spUtil.storeBoundDevice(bleDevice);
+//                        spUtil.storeBoundDeviceV2(bleDevice);
+                        ObserverManager.getInstance().notifyObserverWhenConnected(bleDevice); // mainly notify MainActivity to store the current device.
 
+                        // Go to the setting page directly, more user friendly.
                         Intent intent = new Intent(mContext, DetailsActivity.class);
                         intent.putExtra(DetailsActivity.EXTRA_DATA_BLE, bleDevice);
                         startActivity(intent);
@@ -253,9 +254,10 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
 
                         if (isActiveDisConnected) {
                             Toast.makeText(mContext, getString(R.string.active_disconnected), Toast.LENGTH_LONG).show();
+                            ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
                         } else {
-                            Toast.makeText(mContext, getString(R.string.disconnected), Toast.LENGTH_LONG).show();
-                            ObserverManager.getInstance().notifyObserver(device); // TODO, need to check observable functionality.
+                            Toast.makeText(mContext, getString(R.string.inactive_disconnected), Toast.LENGTH_LONG).show();
+                            ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
                         }
                     }
                 });
