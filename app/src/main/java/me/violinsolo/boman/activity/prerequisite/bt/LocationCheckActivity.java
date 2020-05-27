@@ -28,6 +28,7 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
     private static final int REQUEST_CODE_OPEN_GPS = 1;
 
     public Context mContext;
+    public String macAddr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,9 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
     protected void initData() {
         mContext = LocationCheckActivity.this;
 
+        // macAddr will be null if it is not a bound-device-connection
+        macAddr = getIntent().getStringExtra(RadarActivity.EXTRA_DATA_MAC);
+//        Log.i(TAG, macAddr != null ? macAddr : "null");
     }
 
     /**
@@ -152,6 +156,7 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
         Log.d(TAG, "Now go to next page: Bluetooth check activity.");
 
         Intent intent = new Intent(mContext, BluetoothCheckActivity.class);
+        intent.putExtra(RadarActivity.EXTRA_DATA_MAC, macAddr); // cascade transport the value.
 
         startActivity(intent);
         finish();

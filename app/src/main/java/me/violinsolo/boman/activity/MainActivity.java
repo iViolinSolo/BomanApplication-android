@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.activity.prerequisite.bt.LocationCheckActivity;
+import me.violinsolo.boman.activity.prerequisite.bt.RadarActivity;
 import me.violinsolo.boman.activity.prerequisite.login.LoginPortalActivity;
 import me.violinsolo.boman.adapter.DeviceBoundAdapater;
 import me.violinsolo.boman.base.BaseActivity;
@@ -198,11 +199,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
         mAdapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                // TODO go to next one
-                // need to change the app to bound mac and check others.
-                Intent intent = new Intent(mContext, LocationCheckActivity.class);
-                intent.putExtra("MAC", "XXXXXXX");
-                startActivity(intent);
+                if (boundBleDevice!= null) {
+                    Intent intent = new Intent(mContext, LocationCheckActivity.class);
+                    intent.putExtra(RadarActivity.EXTRA_DATA_MAC, boundBleDevice.getMac());
+                    startActivity(intent);
+                }else {
+                    throw new RuntimeException("[Fatal Error] you can not reach here.");
+                }
             }
         });
 

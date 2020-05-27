@@ -36,6 +36,7 @@ import me.violinsolo.boman.util.HexUtil;
 
 public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     public static final String TAG = RadarActivity.class.getSimpleName();
+    public static final String EXTRA_DATA_MAC = "EXTRA_DATA_MAC";
 //    private SharedPrefUtils spUtil;
 
     public enum ConnState {
@@ -54,6 +55,8 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     private ConnectFailureFragment connectFailureFragment;
     private ConnectLoadingFragment connectLoadingFragment;
     private DeviceListFragment deviceListFragment;
+
+    public String macAddr;
 
     public ConnState curState;
     public List<BleDevice> filteredScanResult;
@@ -88,6 +91,10 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         filteredScanResult = new ArrayList<>();
 
 //        spUtil = new SharedPrefUtils(mContext);
+
+        // macAddr will be null if it is not a bound-device-connection
+        macAddr = getIntent().getStringExtra(RadarActivity.EXTRA_DATA_MAC);
+//        Log.i(TAG, macAddr != null ? macAddr : "null");
     }
 
     /**

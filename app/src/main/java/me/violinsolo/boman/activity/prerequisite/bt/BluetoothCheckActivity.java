@@ -24,6 +24,7 @@ public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckB
     private static final int REQUEST_CODE_ENABLE_BLUETOOTH = 1;
 
     public Context mContext;
+    public String macAddr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,10 @@ public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckB
     @Override
     protected void initData() {
         mContext = BluetoothCheckActivity.this;
+
+        // macAddr will be null if it is not a bound-device-connection
+        macAddr = getIntent().getStringExtra(RadarActivity.EXTRA_DATA_MAC);
+//        Log.i(TAG, macAddr != null ? macAddr : "null");
     }
 
     /**
@@ -126,6 +131,7 @@ public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckB
         Log.d(TAG, "Now go to next page: Search Device activity.");
 
         Intent intent = new Intent(mContext, RadarActivity.class);
+        intent.putExtra(RadarActivity.EXTRA_DATA_MAC, macAddr); // cascade transport the value.
 
         startActivity(intent);
         finish();
