@@ -18,6 +18,7 @@ import com.clj.fastble.data.BleDevice;
  * using polymorphism and the override technique to intercept the getter functions, which will
  * be invoked in DeviceAdapter while generating each listview item through BleDevice instance.
  */
+@Deprecated
 public class BleRepr extends BleDevice {
     String mac;
     String name;

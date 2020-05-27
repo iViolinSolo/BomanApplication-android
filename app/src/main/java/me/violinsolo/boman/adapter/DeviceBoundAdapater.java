@@ -84,7 +84,7 @@ public class DeviceBoundAdapater extends RecyclerView.Adapter<DeviceBoundAdapate
      */
     @Override
     public int getItemCount() {
-        return 0;
+        return mData.size();
     }
 
 
