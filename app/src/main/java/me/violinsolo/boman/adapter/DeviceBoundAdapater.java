@@ -102,7 +102,13 @@ public class DeviceBoundAdapater extends RecyclerView.Adapter<DeviceBoundAdapate
 
         holder.ivDeviceImage.setImageResource(R.drawable.product_thermometer);
         holder.tvDeviceName.setText(bleBoundDevice.getName());
-        holder.tvDeviceStatus.setText(bleBoundDevice.ge);
+        boolean isItemConnected = bleBoundDevice.isConnected();
+        holder.tvDeviceStatus.setText(isItemConnected? R.string.status_connected: R.string.status_disconnected);
+        holder.tvDeviceStatus.setTextColor(mContext.getResources().getColor(isItemConnected? R.color.colorMainTheme: R.color.colorRed));
+        int itemSOCVal = bleBoundDevice.getSocVal();
+        holder.tvDeviceSOC.setText((itemSOCVal==BleBoundDevice.SOC_NO_VALUE)? "-- %": itemSOCVal+" %");
+
+        holder.itemView.setTag(position);  // used on itemClickListener
     }
 
     /**
