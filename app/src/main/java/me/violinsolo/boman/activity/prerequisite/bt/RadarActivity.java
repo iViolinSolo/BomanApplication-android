@@ -132,97 +132,147 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
      */
     @Override
     protected void bindListeners() {
-        // Auto-triggered Scanning Part.
-        BleManager.getInstance().scan(new BleScanCallback() {
-            @Override
-            public void onScanFinished(List<BleDevice> scanResultList) {
-                curState = ConnState.SCANNING_FINISH;
+        if (macAddr == null) {
+            // you can trigger the scanning functionality.
+            // Auto-triggered Scanning Part.
+            BleManager.getInstance().scan(new BleScanCallback() {
+                @Override
+                public void onScanFinished(List<BleDevice> scanResultList) {
+                    curState = ConnState.SCANNING_FINISH;
 
-                if (filteredScanResult.isEmpty()) {
-                    curState = ConnState.NO_DEVICES;
-                    showFailurePage();
-                }
-            }
-
-            @Override
-            public void onScanStarted(boolean success) {
-                if (success) {
-                    curState = ConnState.START_SCANNING;
-                }else {
-                    curState = ConnState.NO_DEVICES;
-                    showFailurePage();
-                }
-            }
-
-            @Override
-            public void onScanning(BleDevice bleDevice) {
-                byte[] broadcastData = bleDevice.getScanRecord();
-
-                int advertisementLength = broadcastData.length;
-
-                String content = HexUtil.hexStrBigEndian(broadcastData);
-                Log.e(TAG, bleDevice.getKey()+" \t[length]: "+advertisementLength+" -> "+content);
-
-
-                String criticalInfo = "";
-                for (int i = 0; i < advertisementLength; i++) {
-                   int secLen = broadcastData[i] & 0xff;
-
-                   if (i>=31) {
-                       break; // or the response data field will out of bound.`
-                   }
-
-                   byte secType = broadcastData[i+1];
-                   if (secType == (byte)0xff){
-                       // current section is manufacture info section.
-
-                       byte[] secData = new byte[secLen-1];
-                       for (int j = 0; j < secLen-1; j++) {
-                            secData[j] = broadcastData[j+i+2];
-                       }
-
-                       String plainHex = HexUtil.hexStrBigEndian(secData);
-                       String plainAscii = HexUtil.str(secData, true);
-
-                       Log.e(TAG, bleDevice.getKey()+" \t\t [Manufacturer Info]: <"+plainHex+"> => ["+plainAscii+"]");
-                   }else if (secType == (byte)0x09){
-                       // current section is device name info section.
-
-                       byte[] secData = new byte[secLen-1];
-                       for (int j = 0; j < secLen-1; j++) {
-                           secData[j] = broadcastData[j+i+2];
-                       }
-
-                       String plainHex = HexUtil.hexStrBigEndian(secData);
-                       String plainAscii = HexUtil.str(secData, true);
-                       criticalInfo = plainAscii;
-
-                       Log.e(TAG, bleDevice.getKey()+" \t\t [Device Name Info]: <"+plainHex+"> => ["+plainAscii+"]");
-                   }else {
-                       // Nothing to do.
-                   }
-
-                   i += secLen; // skip current section, next iteration, i==i+secLen+1
-                }
-
-                for (String nm:
-                        Config.deviceNames) {
-                    if (criticalInfo.startsWith(nm)) {
-                        curState = ConnState.FOUND_DEVICES;
-                        filteredScanResult.add(bleDevice);
-
-                        if (filteredScanResult.size() == 1) {
-                            showDevicesListPage();
-                        }
-
-                        deviceListFragment.addRvItem(bleDevice);
-                        Log.d(TAG, "[Add] => "+bleDevice.getKey());
-                        break;
+                    if (filteredScanResult.isEmpty()) {
+                        curState = ConnState.NO_DEVICES;
+                        showFailurePage();
                     }
                 }
 
-            }
-        });
+                @Override
+                public void onScanStarted(boolean success) {
+                    if (success) {
+                        curState = ConnState.START_SCANNING;
+                    }else {
+                        curState = ConnState.NO_DEVICES;
+                        showFailurePage();
+                    }
+                }
+
+                @Override
+                public void onScanning(BleDevice bleDevice) {
+                    byte[] broadcastData = bleDevice.getScanRecord();
+
+                    int advertisementLength = broadcastData.length;
+
+                    String content = HexUtil.hexStrBigEndian(broadcastData);
+                    Log.e(TAG, bleDevice.getKey()+" \t[length]: "+advertisementLength+" -> "+content);
+
+
+                    String criticalInfo = "";
+                    for (int i = 0; i < advertisementLength; i++) {
+                        int secLen = broadcastData[i] & 0xff;
+
+                        if (i>=31) {
+                            break; // or the response data field will out of bound.`
+                        }
+
+                        byte secType = broadcastData[i+1];
+                        if (secType == (byte)0xff){
+                            // current section is manufacture info section.
+
+                            byte[] secData = new byte[secLen-1];
+                            for (int j = 0; j < secLen-1; j++) {
+                                secData[j] = broadcastData[j+i+2];
+                            }
+
+                            String plainHex = HexUtil.hexStrBigEndian(secData);
+                            String plainAscii = HexUtil.str(secData, true);
+
+                            Log.e(TAG, bleDevice.getKey()+" \t\t [Manufacturer Info]: <"+plainHex+"> => ["+plainAscii+"]");
+                        }else if (secType == (byte)0x09){
+                            // current section is device name info section.
+
+                            byte[] secData = new byte[secLen-1];
+                            for (int j = 0; j < secLen-1; j++) {
+                                secData[j] = broadcastData[j+i+2];
+                            }
+
+                            String plainHex = HexUtil.hexStrBigEndian(secData);
+                            String plainAscii = HexUtil.str(secData, true);
+                            criticalInfo = plainAscii;
+
+                            Log.e(TAG, bleDevice.getKey()+" \t\t [Device Name Info]: <"+plainHex+"> => ["+plainAscii+"]");
+                        }else {
+                            // Nothing to do.
+                        }
+
+                        i += secLen; // skip current section, next iteration, i==i+secLen+1
+                    }
+
+                    for (String nm:
+                            Config.deviceNames) {
+                        if (criticalInfo.startsWith(nm)) {
+                            curState = ConnState.FOUND_DEVICES;
+                            filteredScanResult.add(bleDevice);
+
+                            if (filteredScanResult.size() == 1) {
+                                showDevicesListPage();
+                            }
+
+                            deviceListFragment.addRvItem(bleDevice);
+                            Log.d(TAG, "[Add] => "+bleDevice.getKey());
+                            break;
+                        }
+                    }
+
+                }
+            });
+
+        }else {
+            // you should connect the device directly.
+            BleManager.getInstance().cancelScan();
+            BleManager.getInstance().connect(macAddr, new BleGattCallback() {
+                @Override
+                public void onStartConnect() {
+                    curState = ConnState.START_CONNECTING;
+                    showLoadingPage();
+                    Log.i(TAG, "[Bluetooth] onStartConnect");
+                }
+
+                @Override
+                public void onConnectFail(BleDevice bleDevice, BleException exception) {
+                    curState = ConnState.CONNECT_FAIL;
+                    showFailurePage();
+                    Log.i(TAG, "[Bluetooth] onStartConnect");
+                }
+
+                @Override
+                public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
+                    curState = ConnState.CONNECTED;
+
+//                        spUtil.storeBoundDeviceV2(bleDevice);
+                    ObserverManager.getInstance().notifyObserverWhenConnected(bleDevice); // mainly notify MainActivity to store the current device.
+
+                    // Go to the setting page directly, more user friendly.
+                    Intent intent = new Intent(mContext, DetailsActivity.class);
+                    intent.putExtra(DetailsActivity.EXTRA_DATA_BLE, bleDevice);
+                    startActivity(intent);
+
+                    finish();
+                    Log.i(TAG, "[Bluetooth] onStartConnect");
+                }
+
+                @Override
+                public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
+
+                    if (isActiveDisConnected) {
+                        Toast.makeText(mContext, getString(R.string.active_disconnected), Toast.LENGTH_LONG).show();
+                        ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
+                    } else {
+                        Toast.makeText(mContext, getString(R.string.inactive_disconnected), Toast.LENGTH_LONG).show();
+                        ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
+                    }
+                }
+            });
+        }
 
         deviceListFragment.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
             @Override
