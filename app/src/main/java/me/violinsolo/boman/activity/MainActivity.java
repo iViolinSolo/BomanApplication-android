@@ -427,6 +427,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
 //            spUtil.storeBoundDeviceV2(boundBleDevice);
 //            mAdapter.addDevice(boundBleDevice);
         }
+        // TODO need to check this part in the future if you want to bind and connect different kinds of devices.
+        // TODO since I have combine the two types of connections callbacks which are triggered in connect device through mac and connect
+        // TODO device after sacnning, this observer/observable part will be trigger in both types, so CHECK before use. Also see in RadarActivity
 //        else { // Since we will trigger this notification in the bound-device-connection stage, so it will always be triggered.
 //            Log.e(TAG, "[Fatal Error] you can not reach here.");
 //            throw new RuntimeException("[Fatal Error] you can never bind a device after you have bound it and before you remove it.");

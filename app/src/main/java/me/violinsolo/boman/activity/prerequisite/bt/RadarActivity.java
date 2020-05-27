@@ -40,6 +40,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
 //    private SharedPrefUtils spUtil;
 
     public enum ConnState {
+        PAGE_INIT,
         START_SCANNING,
         FOUND_DEVICES,
         NO_DEVICES,
@@ -123,7 +124,12 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         }
 
         prepareFragments();
-        curState = ConnState.START_SCANNING; //TODO change this line when you have the mac address get in.
+
+        if (macAddr == null) {
+            curState = ConnState.PAGE_INIT;
+        }else {
+            curState = ConnState.START_CONNECTING_MAC;
+        }
         showLoadingPage();
     }
 
@@ -326,10 +332,10 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
             connectLoadingFragment.setLoadingTitle("开始扫描");
         }else if (curState == ConnState.START_CONNECTING) {
             connectLoadingFragment.setLoadingTitle("尝试连接新设备");
-
         }else if (curState == ConnState.START_CONNECTING_MAC) {
             connectLoadingFragment.setLoadingTitle("尝试连接绑定设备");
-
+        }else if (curState == ConnState.PAGE_INIT) {
+            connectLoadingFragment.setLoadingTitle("开始准备硬件环境");
         }
     }
 
