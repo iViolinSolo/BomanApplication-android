@@ -329,10 +329,16 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
     }
 
     @Override
-    public void disConnected(BleDevice device) {
+    public void onBLEDisconneted(BleDevice device) {
         if (device != null && bleDevice != null && device.getKey().equals(bleDevice.getKey())) {
             finish();
         }
 
+    }
+
+    @Override
+    public void onBLEConneted(BleDevice bleDevice) {
+        // So far, nothing to do here.
+        // since bleDevice is the bleDevice you can get through intent.
     }
 }
