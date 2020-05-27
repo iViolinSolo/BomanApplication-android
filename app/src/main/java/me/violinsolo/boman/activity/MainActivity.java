@@ -52,6 +52,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.e(TAG, "mainactivity.ondestroy");
 
         BleManager.getInstance().disconnectAllDevice();
         BleManager.getInstance().destroy();
@@ -164,16 +165,17 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
                                 BleManager.getInstance().disconnect(device);
                             }
 
-                            mAdapter.removeDevice(boundBleDevice);
-
-                            boundBleDevice = null; // delete the bound device and remove the reference.
-                            spUtil.removeBoundDeviceV2();
-
-                            viewWhenNoBLE();
-
                             break;
                         }
                     }
+
+                    // fix bug, we can still delete the device even though we can not reach the device.
+                    mAdapter.removeDevice(boundBleDevice);
+
+                    boundBleDevice = null; // delete the bound device and remove the reference.
+                    spUtil.removeBoundDeviceV2();
+
+                    viewWhenNoBLE();
                 }
             }
         });
