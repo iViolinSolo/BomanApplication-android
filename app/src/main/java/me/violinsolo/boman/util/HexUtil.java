@@ -10,6 +10,14 @@ package me.violinsolo.boman.util;
  */
 public class HexUtil {
 
+    /**
+     * cast the byte array to plain hex string, eg.
+     *      "8A 3F 9B"
+     * @param data          the target byte array
+     * @param addSpace      whether the :return string has space between each byte.
+     * @param isBigEndian   parse the byte array in big-endian mode (0x123456) Or little-endian mode (0x563421).
+     * @return              the plain hex string, eg. "8A 3F 9B" OR "8A3F9B"
+     */
     public static String hexStr(final byte[] data, boolean addSpace, boolean isBigEndian) {
         StringBuilder sb = new StringBuilder();
 
@@ -34,24 +42,12 @@ public class HexUtil {
         return content;
     }
 
-
-    public static String hexStrBigEndian(final byte[] data, boolean addSpace) {
-        return hexStr(data, addSpace, true);
-    }
-
-    public static String hexStrBigEndian(final byte[] data) {
-        return hexStr(data, true, true);
-    }
-
-    public static String hexStrLittleEndian(final byte[] data, boolean addSpace) {
-        return hexStr(data, addSpace, false);
-    }
-
-    public static String hexStrLittleEndian(final byte[] data) {
-        return hexStr(data, true, false);
-    }
-
-
+    /**
+     * cast the byte array into readable ascii-based string literals
+     * @param data          the target byte array
+     * @param isBigEndian   parse the byte array in big-endian mode (0x123456) Or little-endian mode (0x563421).
+     * @return              string literals based on ascii parsed from byte array.
+     */
     public static String str(final byte[] data, boolean isBigEndian) {
         StringBuilder sb = new StringBuilder();
 
@@ -72,6 +68,67 @@ public class HexUtil {
         return content;
     }
 
+    /**
+     * cast the byte array into a long number
+     * @param data          the target byte array
+     * @param isBigEndian   parse the byte array in big-endian mode (0x123456) Or little-endian mode (0x563421).
+     * @return              3698l, 3000l
+     */
+    public static long lng(final byte[] data, boolean isBigEndian) {
+        String content = hexStr(data, false, isBigEndian);
+        long result = Long.parseLong(content, 16);
+        return result;
+    }
+
+
+    /**
+     * cast the byte array to plain hex string **IN BIG-ENDIAN MODE**, eg.
+     *      "8A 3F 9B"
+     * @param data      the target byte array
+     * @param addSpace  whether the :return string has space between each byte.
+     * @return          the plain hex string (BIG-ENDIAN MODE), eg. "8A 3F 9B" OR "8A3F9B"
+     */
+    public static String hexStrBigEndian(final byte[] data, boolean addSpace) {
+        return hexStr(data, addSpace, true);
+    }
+
+    /**
+     * cast the byte array to plain hex string **IN BIG-ENDIAN MODE, SPACE ENABLED**, eg.
+     *      "8A 3F 9B"
+     * @param data  the target byte array
+     * @return      the plain hex string (BIG-ENDIAN MODE, WITH SPACE), eg. "8A 3F 9B"
+     */
+    public static String hexStrBigEndian(final byte[] data) {
+        return hexStr(data, true, true);
+    }
+
+    /**
+     * cast the byte array to plain hex string **IN LITTLE-ENDIAN MODE**, eg.
+     *      "8A 3F 9B"
+     * @param data      the target byte array
+     * @param addSpace  whether the :return string has space between each byte.
+     * @return          the plain hex string (LITTLE-ENDIAN MODE), eg. "8A 3F 9B"
+     */
+    public static String hexStrLittleEndian(final byte[] data, boolean addSpace) {
+        return hexStr(data, addSpace, false);
+    }
+
+    /**
+     * cast the byte array to plain hex string **IN LITTLE-ENDIAN MODE, SPACE ENABLED**, eg.
+     *      "8A 3F 9B"
+     * @param data  the target byte array
+     * @return      the plain hex string (LITTLE-ENDIAN MODE, WITH SPACE), eg. "8A 3F 9B"
+     */
+    public static String hexStrLittleEndian(final byte[] data) {
+        return hexStr(data, true, false);
+    }
+
+
+    /**
+     * cast a byte into a hex string
+     * @param b     target byte
+     * @return      "0A", "F8"
+     */
     private static String hex(byte b) {
         String hex = Integer.toHexString(b & 0xFF);
         if (hex.length() == 1) {
@@ -80,6 +137,11 @@ public class HexUtil {
         return hex;
     }
 
+    /**
+     * cast a byte into ascii char
+     * @param b     target byte
+     * @return      '\n', ' ', 'A', 'a'
+     */
     private static char ascii(byte b) {
         String hex = Integer.toHexString(b & 0xFF);
         if (hex.length() == 1) {
