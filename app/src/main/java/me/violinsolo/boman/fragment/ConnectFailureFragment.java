@@ -95,6 +95,8 @@ public class ConnectFailureFragment extends BaseFragment<FragmentConnectFailureB
     @Override
     protected void initViews() {
 
+        // using cache to set title.
+        mBinder.tvFailTitle.setText(failureTitle);
     }
 
     /**
@@ -113,7 +115,10 @@ public class ConnectFailureFragment extends BaseFragment<FragmentConnectFailureB
     }
 
     public void setCurrentTitle(String failureTitle) {
-        mBinder.tvFailTitle.setText(failureTitle); //TODO need to chanage, potential nullptr exception
+        this.failureTitle = failureTitle;
+        if (mBinder!=null) {
+            mBinder.tvFailTitle.setText(failureTitle); //TODO need to chanage, potential nullptr exception
+        }
     }
 
     public void setOnFailureButtonClickLinstener(OnFailureButtonClickLinstener onFailureButtonClickLinstener) {
