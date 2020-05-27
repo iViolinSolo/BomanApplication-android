@@ -423,13 +423,17 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
     public void onBLEConneted(BleDevice bleDevice) {
         if (boundBleDevice == null) {
             boundBleDevice = new BleBoundDevice(bleDevice);
-            boundBleDevice.setConnected(true);
-            spUtil.storeBoundDeviceV2(boundBleDevice);
-            mAdapter.addDevice(boundBleDevice);
-        }else {
-            Log.e(TAG, "[Fatal Error] you can not reach here.");
-            throw new RuntimeException("[Fatal Error] you can never bind a device after you have bound it and before you remove it.");
+//            boundBleDevice.setConnected(true);
+//            spUtil.storeBoundDeviceV2(boundBleDevice);
+//            mAdapter.addDevice(boundBleDevice);
         }
+//        else { // Since we will trigger this notification in the bound-device-connection stage, so it will always be triggered.
+//            Log.e(TAG, "[Fatal Error] you can not reach here.");
+//            throw new RuntimeException("[Fatal Error] you can never bind a device after you have bound it and before you remove it.");
+//        }
 
+        boundBleDevice.setConnected(true);
+        spUtil.storeBoundDeviceV2(boundBleDevice);
+        mAdapter.addDevice(boundBleDevice);
     }
 }

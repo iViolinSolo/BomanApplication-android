@@ -273,7 +273,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
 
         }else {
             // you should connect the device directly.
-            BleManager.getInstance().cancelScan();
+//            BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
             BleManager.getInstance().connect(macAddr, callback);
         }
 
@@ -283,7 +283,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                 BleDevice target = deviceListFragment.mAdapter.getItem(position);
                 if (!BleManager.getInstance().isConnected(target)) {
                     // connect the device through BleDevice.
-                    BleManager.getInstance().cancelScan();
+//            BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
                     BleManager.getInstance().connect(target, callback);
                 }
             }
