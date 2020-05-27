@@ -33,6 +33,7 @@ import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
 import me.violinsolo.boman.subscribe.ObserverManager;
 import me.violinsolo.boman.util.Config;
 import me.violinsolo.boman.util.HexUtil;
+import me.violinsolo.boman.util.Intermediate;
 
 public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     public static final String TAG = RadarActivity.class.getSimpleName();
@@ -195,16 +196,22 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                         curState = ConnState.NO_DEVICES;
                         showFailurePage();
                     }
+
+                    Intermediate.getInstance().statusIsScanning = false;
                 }
 
                 @Override
                 public void onScanStarted(boolean success) {
                     if (success) {
                         curState = ConnState.START_SCANNING;
+                        showLoadingPage();
+
+                        Intermediate.getInstance().statusIsScanning = true;
                     }else {
                         curState = ConnState.NO_DEVICES;
                         showFailurePage();
                     }
+
                 }
 
                 @Override
@@ -279,7 +286,10 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
 
         }else {
             // you should connect the device directly.
-//            BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
+            if (Intermediate.getInstance().statusIsScanning) {
+                BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
+                Intermediate.getInstance().statusIsScanning = false;
+            }
             BleManager.getInstance().connect(macAddr, callback);
         }
 
@@ -289,7 +299,10 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                 BleDevice target = deviceListFragment.mAdapter.getItem(position);
                 if (!BleManager.getInstance().isConnected(target)) {
                     // connect the device through BleDevice.
-//            BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
+                    if (Intermediate.getInstance().statusIsScanning) {
+                        BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
+                        Intermediate.getInstance().statusIsScanning = false;
+                    }
                     BleManager.getInstance().connect(target, callback);
                 }
             }

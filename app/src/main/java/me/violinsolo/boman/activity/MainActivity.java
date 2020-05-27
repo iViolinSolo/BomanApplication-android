@@ -25,6 +25,7 @@ import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
 import me.violinsolo.boman.model.BleBoundDevice;
 import me.violinsolo.boman.subscribe.Observer;
 import me.violinsolo.boman.subscribe.ObserverManager;
+import me.violinsolo.boman.util.Intermediate;
 import me.violinsolo.boman.util.SharedPrefUtils;
 
 /**
@@ -61,8 +62,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
             boundBleDevice.setConnected(false);
             spUtil.storeBoundDeviceV2(boundBleDevice);
         }
-
-        BleManager.getInstance().cancelScan();
+        if (Intermediate.getInstance().statusIsScanning) {
+            BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
+            Intermediate.getInstance().statusIsScanning = false;
+        }
         BleManager.getInstance().disconnectAllDevice();
         BleManager.getInstance().destroy();
     }
