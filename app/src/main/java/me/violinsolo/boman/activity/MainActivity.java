@@ -3,6 +3,7 @@ package me.violinsolo.boman.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.clj.fastble.BleManager;
@@ -21,6 +22,8 @@ import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityMainBinding;
 import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
 import me.violinsolo.boman.model.BleBoundDevice;
+import me.violinsolo.boman.subscribe.Observer;
+import me.violinsolo.boman.subscribe.ObserverManager;
 import me.violinsolo.boman.util.SharedPrefUtils;
 
 /**
@@ -31,11 +34,11 @@ import me.violinsolo.boman.util.SharedPrefUtils;
  * <p>
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
-public class MainActivity extends BaseActivity<ActivityMainBinding> {
+public class MainActivity extends BaseActivity<ActivityMainBinding> implements Observer {
     private Context mContext;
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private BleBoundDevice boundBleDevice = null;
+    private BleBoundDevice boundBleDevice = null; // this reference can only be null when initialize it or delete the boundary.
     private SharedPrefUtils spUtil; // = new SharedPrefUtils(mContext); // nullpointerexception.
 
     private DeviceBoundAdapater mAdapter;
@@ -95,6 +98,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     protected void initData() {
         mContext = MainActivity.this;
         spUtil = new SharedPrefUtils(mContext);
+
+        ObserverManager.getInstance().addObserver(this); // register the observer, triggered in RadarActivity.
     }
 
     /**
@@ -161,7 +166,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
                             mAdapter.removeDevice(boundBleDevice);
 
-                            boundBleDevice = null;
+                            boundBleDevice = null; // delete the bound device and remove the reference.
                             spUtil.removeBoundDeviceV2();
 
                             viewWhenNoBLE();
@@ -409,4 +414,26 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     }
 
+    @Override
+    public void onBLEDisconneted(BleDevice bleDevice) {
+        if (boundBleDevice != null) {
+            boundBleDevice.setConnected(false);
+            spUtil.storeBoundDeviceV2(boundBleDevice);
+            mAdapter.addDevice(boundBleDevice);
+        }
+    }
+
+    @Override
+    public void onBLEConneted(BleDevice bleDevice) {
+        if (boundBleDevice == null) {
+            boundBleDevice = new BleBoundDevice(bleDevice);
+            boundBleDevice.setConnected(true);
+            spUtil.storeBoundDeviceV2(boundBleDevice);
+            mAdapter.addDevice(boundBleDevice);
+        }else {
+            Log.e(TAG, "[Fatal Error] you can not reach here.");
+            throw new RuntimeException("[Fatal Error] you can never bind a device after you have bound it and before you remove it.");
+        }
+
+    }
 }
