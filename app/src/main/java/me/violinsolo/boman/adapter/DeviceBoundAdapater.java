@@ -138,4 +138,27 @@ public class DeviceBoundAdapater extends RecyclerView.Adapter<DeviceBoundAdapate
         }
     }
 
+
+    public BleBoundDevice getItem(int position) {
+        if (position <0 || position>=mData.size())
+            throw new IllegalArgumentException("BleDevice index out of range.");
+        return mData.get(position);
+    }
+
+    public void addDevice(BleBoundDevice device){
+        removeDevice(device);
+        mData.add(device);
+    }
+
+    public void removeDevice(BleBoundDevice device) {
+        for (int i = 0; i < mData.size(); i++) {
+            BleBoundDevice t = mData.get(i);
+
+            if (t.getKey().equals(device.getKey())) {
+                mData.remove(i);
+
+                break;
+            }
+        }
+    }
 }
