@@ -56,6 +56,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
 
         ObserverManager.getInstance().deleteObserver(this);
 
+        if (boundBleDevice!=null) {
+            boundBleDevice.setConnected(false);
+            spUtil.storeBoundDeviceV2(boundBleDevice);
+        }
+
         BleManager.getInstance().cancelScan();
         BleManager.getInstance().disconnectAllDevice();
         BleManager.getInstance().destroy();
