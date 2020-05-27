@@ -66,7 +66,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
             BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
             Intermediate.getInstance().statusIsScanning = false;
         }
-        BleManager.getInstance().disconnectAllDevice();
+        if (BleManager.getInstance().getAllConnectedDevice().size()>0){
+            BleManager.getInstance().disconnectAllDevice();
+        }
         BleManager.getInstance().destroy();
     }
 

@@ -39,6 +39,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     public static final String TAG = RadarActivity.class.getSimpleName();
     public static final String EXTRA_DATA_MAC = "EXTRA_DATA_MAC";
 //    private SharedPrefUtils spUtil;
+    private boolean exitOnPurpose = true; // being used to control the back-btn use, you need do something is destory.
 
     public enum ConnState {
         PAGE_INIT,
@@ -67,6 +68,15 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_radar);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (Intermediate.getInstance().statusIsScanning) {
+            BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
+            Intermediate.getInstance().statusIsScanning = false;
+        }
     }
 
     /**
@@ -221,7 +231,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                     int advertisementLength = broadcastData.length;
 
                     String content = HexUtil.hexStrBigEndian(broadcastData);
-                    Log.e(TAG, bleDevice.getKey()+" \t[length]: "+advertisementLength+" -> "+content);
+                    Log.e(TAG, bleDevice.getKey()+" \n\t\t[length]: "+advertisementLength+" -> "+content);
 
 
                     String criticalInfo = "";
@@ -244,7 +254,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                             String plainHex = HexUtil.hexStrBigEndian(secData);
                             String plainAscii = HexUtil.str(secData, true);
 
-                            Log.e(TAG, bleDevice.getKey()+" \t\t [Manufacturer Info]: <"+plainHex+"> => ["+plainAscii+"]");
+//                            Log.e(TAG, bleDevice.getKey()+" \t\t [Manufacturer Info]: <"+plainHex+"> => ["+plainAscii+"]");
                         }else if (secType == (byte)0x09){
                             // current section is device name info section.
 
@@ -257,7 +267,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                             String plainAscii = HexUtil.str(secData, true);
                             criticalInfo = plainAscii;
 
-                            Log.e(TAG, bleDevice.getKey()+" \t\t [Device Name Info]: <"+plainHex+"> => ["+plainAscii+"]");
+//                            Log.e(TAG, bleDevice.getKey()+" \t\t [Device Name Info]: <"+plainHex+"> => ["+plainAscii+"]");
                         }else {
                             // Nothing to do.
                         }
@@ -267,6 +277,8 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
 
                     for (String nm:
                             Config.deviceNames) {
+
+                        Log.d(TAG, "[check] => "+bleDevice.getKey()+"\t\t|"+criticalInfo+"| == |"+nm+"|");
                         if (criticalInfo.startsWith(nm)) {
                             curState = ConnState.FOUND_DEVICES;
                             filteredScanResult.add(bleDevice);
