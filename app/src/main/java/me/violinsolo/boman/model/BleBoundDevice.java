@@ -1,4 +1,4 @@
-package me.violinsolo.boman.ble;
+package me.violinsolo.boman.model;
 
 import com.clj.fastble.data.BleDevice;
 

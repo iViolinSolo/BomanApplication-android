@@ -22,6 +22,7 @@ import me.violinsolo.boman.util.Config;
  * <p>
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
+@Deprecated
 public class BLEUtils {
     public enum BLEState {UNBOUND, BOUND_CONNECTED, BOUND_DISCONNECTED}
     public abstract static class BleConnectCallBack extends BleGattCallback {}

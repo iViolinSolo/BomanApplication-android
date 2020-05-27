@@ -495,7 +495,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private void setStatusBarWhenNoBound() {
         StatusBarUtil.setTransparent(MainActivity.this);
-        mBinder.toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+//        mBinder.toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         mBinder.getRoot().setBackground(getDrawable(R.drawable.main_background));
         StatusBarUtil.setLightMode(MainActivity.this);
 
@@ -503,7 +503,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private void setStatusBarWhenHBound() {
         StatusBarUtil.setTransparent(MainActivity.this);
-        mBinder.toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+//        mBinder.toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         mBinder.getRoot().setBackground(null);
         StatusBarUtil.setLightMode(MainActivity.this);
 
