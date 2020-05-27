@@ -32,14 +32,20 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.activity.prerequisite.bt.LocationCheckActivity;
 import me.violinsolo.boman.activity.prerequisite.login.LoginPortalActivity;
 import me.violinsolo.boman.adapter.DeviceAdapter;
+import me.violinsolo.boman.adapter.DeviceBoundAdapater;
+import me.violinsolo.boman.adapter.DeviceListAdapter;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.ble.BLEUtils;
 import me.violinsolo.boman.ble.BleRepr;
 import me.violinsolo.boman.databinding.ActivityMainBinding;
+import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
+import me.violinsolo.boman.model.BleBoundDevice;
 import me.violinsolo.boman.subscribe.ObserverManager;
 import me.violinsolo.boman.util.SharedPrefUtils;
 
@@ -55,10 +61,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private Context mContext;
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private BleRepr boundBleDevice = null;
+    private BleBoundDevice boundBleDevice = null;
     private SharedPrefUtils spUtil; // = new SharedPrefUtils(mContext); // nullpointerexception.
-    private BLEUtils bleUtils;
-    private DeviceAdapter deviceAdapter;
+
+    private DeviceBoundAdapater mAdapter;
 
 
     @Override
@@ -86,7 +92,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 //        deviceAdapter.notifyDataSetChanged();
 
 
-        boundBleDevice = spUtil.getBoundDevice();
+        boundBleDevice = spUtil.getBoundDeviceV2();
         if (boundBleDevice==null) {
             viewWhenNoBLE();
         }else {
@@ -122,30 +128,28 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
      */
     @Override
     protected void initViews() {
-        setSupportActionBar(mBinder.toolbar);
 
-
-        deviceAdapter = new DeviceAdapter(mContext);
-        mBinder.listDevices.setAdapter(deviceAdapter);
+        // set layout manager
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
+        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        mBinder.rvListDevices.setLayoutManager(mLayoutManager);
+        // set adapter
+        mAdapter = new DeviceBoundAdapater(mContext);
+        mBinder.rvListDevices.setAdapter(mAdapter);
 
 //        bleUtils = new BLEUtils();
 //        bleUtils.init(getApplication());
 
-//        operatingAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
-//        operatingAnim.setInterpolator(new LinearInterpolator());
-//        progressDialog = new ProgressDialog(mContext);
-
         // reset the UI, simultaneously get the MAC address if possible.
-        boundBleDevice = spUtil.getBoundDevice();
+        boundBleDevice = spUtil.getBoundDeviceV2();
         if (boundBleDevice == null) {
             // no bound device
             viewWhenNoBLE();
         }else {
             viewWhenBindBLE();
-            deviceAdapter.addDevice(boundBleDevice, BLEUtils.BLEState.BOUND_DISCONNECTED);
-            deviceAdapter.notifyDataSetChanged();
 
-            checkPermissions();
+            // TODO in the future version, change the loading bound devices via for loop.
+            mAdapter.addDevice(boundBleDevice);
         }
     }
 
@@ -154,44 +158,63 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
      */
     @Override
     protected void bindListeners() {
+        // =====================================
+        // Listeners when we do not have a device yet.
+        // =====================================
+        mBinder.btnAddDevice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, LocationCheckActivity.class));
+            }
+        });
 
+        // =====================================
+        // Listeners when we have a bound device.
+        // =====================================
         mBinder.disconnectBleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (boundBleDevice!=null) {
-                    BleDevice t = bleUtils.getCurrentConnectedDevice();
-                    if (t!=null) {
-                        bleUtils.disconnect(t);
-                        deviceAdapter.removeDevice(t);
-                        deviceAdapter.notifyDataSetChanged();
+                    List<BleDevice> connectedDevices = BleManager.getInstance().getAllConnectedDevice();
+
+                    for (BleDevice device :
+                            connectedDevices) {
+                        if (boundBleDevice.getKey().equals(device.getKey())) {
+                            if (BleManager.getInstance().isConnected(device)) {
+                                BleManager.getInstance().disconnect(device);
+                            }
+
+                            mAdapter.removeDevice(boundBleDevice);
+
+                            boundBleDevice = null;
+                            spUtil.removeBoundDeviceV2();
+
+                            viewWhenNoBLE();
+
+                            break;
+                        }
                     }
-
-                    // TODO disconnect the current device if connected.
-                    boundBleDevice = null;
-                    spUtil.removeBoundDevice();
-
-                    viewWhenNoBLE();
                 }
             }
         });
 
-        mBinder.autoConnectBleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                checkPermissions();
-                // TODO need check permission before use it.
-                // TODO now just try to get all permissions.
-
-                if (bleUtils.getCurrentConnectedDevice()!=null && bleUtils.isConnected(bleUtils.getCurrentConnectedDevice())) {
-                    Intent intent = new Intent(mContext, DetailsActivity.class);
-
-                    intent.putExtra(DetailsActivity.EXTRA_DATA_BLE, bleUtils.getCurrentConnectedDevice());
-
-                    startActivity(intent);
-                }
-            }
-        });
+//        mBinder.autoConnectBleBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                checkPermissions();
+//                // TODO need check permission before use it.
+//                // TODO now just try to get all permissions.
+//
+//                if (bleUtils.getCurrentConnectedDevice()!=null && bleUtils.isConnected(bleUtils.getCurrentConnectedDevice())) {
+//                    Intent intent = new Intent(mContext, DetailsActivity.class);
+//
+//                    intent.putExtra(DetailsActivity.EXTRA_DATA_BLE, bleUtils.getCurrentConnectedDevice());
+//
+//                    startActivity(intent);
+//                }
+//            }
+//        });
 
         mBinder.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,114 +223,17 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             }
         });
 
-        deviceAdapter.setOnDeviceClickListener(new DeviceAdapter.OnDeviceClickListener() {
+        mAdapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
             @Override
-            public void onConnect(BleDevice bleDevice) {
-                bleUtils.connect(bleDevice);
-                spUtil.storeBoundDevice(bleDevice);
-            }
-
-            @Override
-            public void onDisConnect(final BleDevice bleDevice) {
-                bleUtils.disconnect(bleDevice);
-            }
-
-            @Override
-            public void onDetail(BleDevice bleDevice) {
-//                if (BleManager.getInstance().isConnected(bleDevice)) {
-//                    Intent intent = new Intent(MainActivity.this, OperationActivity.class);
-//                    intent.putExtra(OperationActivity.KEY_DATA, bleDevice);
-//                    startActivity(intent);
-//                }
-//                TODO need implement.
-                Toast.makeText(mContext, "Not available now", Toast.LENGTH_LONG).show();
+            public void onItemClick(View view, int position) {
+                // TODO go to next one
+                // need to change the app to bound mac and check others.
+                Intent intent = new Intent(mContext, LocationCheckActivity.class);
+                intent.putExtra("MAC", "XXXXXXX");
+                startActivity(intent);
             }
         });
 
-
-        bleUtils.setBleConnectCallBack(new BLEUtils.BleConnectCallBack() {
-            @Override
-            public void onStartConnect() {
-                progressDialog.show();
-            }
-
-            @Override
-            public void onConnectFail(BleDevice bleDevice, BleException exception) {
-                mBinder.imgLoading.clearAnimation();
-                mBinder.imgLoading.setVisibility(View.GONE);
-//                btn_scan.setText(getString(R.string.start_scan));
-                progressDialog.dismiss();
-                Toast.makeText(mContext, getString(R.string.connect_fail), Toast.LENGTH_LONG).show();
-                bleUtils.setCurrentConnectedDevice(null);
-            }
-
-            @Override
-            public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
-                progressDialog.dismiss();
-                deviceAdapter.addDevice(bleDevice, BLEUtils.BLEState.BOUND_CONNECTED);
-                deviceAdapter.notifyDataSetChanged();
-
-                bleUtils.setCurrentConnectedDevice(bleDevice);
-                spUtil.storeBoundDevice(bleDevice);
-
-                viewWhenBindBLE();
-            }
-
-            @Override
-            public void onDisConnected(boolean isActiveDisConnected, BleDevice bleDevice, BluetoothGatt gatt, int status) {
-                progressDialog.dismiss();
-
-//                deviceAdapter.removeDevice(bleDevice);
-                deviceAdapter.updateDeviceState(bleDevice, BLEUtils.BLEState.BOUND_DISCONNECTED);
-                deviceAdapter.notifyDataSetChanged();
-
-                if (isActiveDisConnected) {
-                    Toast.makeText(MainActivity.this, getString(R.string.active_disconnected), Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(MainActivity.this, getString(R.string.disconnected), Toast.LENGTH_LONG).show();
-                    ObserverManager.getInstance().notifyObserver(bleDevice); // TODO, need to check observable functionality.
-                }
-
-            }
-        });
-
-        bleUtils.setBleScanCallback(new BleScanCallback() {
-            @Override
-            public void onScanStarted(boolean success) {
-                deviceAdapter.clearScanDevice();
-                deviceAdapter.notifyDataSetChanged();
-                mBinder.imgLoading.startAnimation(operatingAnim);
-                mBinder.imgLoading.setVisibility(View.VISIBLE);
-//                btn_scan.setText(getString(R.string.stop_scan));
-            }
-
-            @Override
-            public void onLeScan(BleDevice bleDevice) {
-                super.onLeScan(bleDevice);
-            }
-
-            @Override
-            public void onScanning(BleDevice bleDevice) {
-                deviceAdapter.addDevice(bleDevice, BLEUtils.BLEState.UNBOUND);
-                deviceAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onScanFinished(List<BleDevice> scanResultList) {
-                mBinder.imgLoading.clearAnimation();
-                mBinder.imgLoading.setVisibility(View.INVISIBLE);
-//                btn_scan.setText(getString(R.string.start_scan));
-            }
-        });
-
-
-        // ===========================================
-        mBinder.btnAddDevice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(mContext, LocationCheckActivity.class));
-            }
-        });
     }
 
 
@@ -467,8 +393,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             viewWhenNoBLE();
         }else {
             viewWhenBindBLE();
-            deviceAdapter.addDevice(boundBleDevice, BLEUtils.BLEState.BOUND_DISCONNECTED);
-            deviceAdapter.notifyDataSetChanged();
+            // TODO in the future version, change the loading bound devices via for loop.
+            mAdapter.addDevice(boundBleDevice);
 
             //TODO auto connect in silence mode.
         }
@@ -476,7 +402,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
 
     private void viewWhenNoBLE() {
-        mBinder.autoConnectBleBtn.setVisibility(View.GONE);
+//        mBinder.autoConnectBleBtn.setVisibility(View.GONE);
         mBinder.disconnectBleBtn.setVisibility(View.GONE);
         setStatusBarWhenNoBound();
 
@@ -485,7 +411,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
     private void viewWhenBindBLE() {
-        mBinder.autoConnectBleBtn.setVisibility(View.VISIBLE);
+//        mBinder.autoConnectBleBtn.setVisibility(View.VISIBLE);
         mBinder.disconnectBleBtn.setVisibility(View.VISIBLE);
         setStatusBarWhenHBound();
 

@@ -139,6 +139,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
     public void addDevice(BleDevice device){
         removeDevice(device);
         mData.add(device);
+        notifyDataSetChanged();
     }
 
     public void removeDevice(BleDevice device) {
@@ -148,6 +149,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
             if (t.getKey().equals(device.getKey())) {
                 mData.remove(i);
 
+                notifyDataSetChanged();
                 break;
             }
         }

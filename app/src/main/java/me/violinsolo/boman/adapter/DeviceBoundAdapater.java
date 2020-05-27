@@ -148,6 +148,7 @@ public class DeviceBoundAdapater extends RecyclerView.Adapter<DeviceBoundAdapate
     public void addDevice(BleBoundDevice device){
         removeDevice(device);
         mData.add(device);
+        notifyDataSetChanged();
     }
 
     public void removeDevice(BleBoundDevice device) {
@@ -157,6 +158,7 @@ public class DeviceBoundAdapater extends RecyclerView.Adapter<DeviceBoundAdapate
             if (t.getKey().equals(device.getKey())) {
                 mData.remove(i);
 
+                notifyDataSetChanged();
                 break;
             }
         }

@@ -108,7 +108,7 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
         for (BleDevice ble :
                 bleDevices) {
             mAdapter.addDevice(ble);
-            mAdapter.notifyDataSetChanged();
+//            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -130,7 +130,7 @@ public class DeviceListFragment extends BaseFragment<FragmentDeviceListBinding> 
 //            Log.e(TAG, "Add "+bleDevice.getKey());
             // Before you show this fragment, adapter is null object due to the lifecycle.
             mAdapter.addDevice(bleDevice);
-            mAdapter.notifyDataSetChanged();
+//            mAdapter.notifyDataSetChanged();
         }
     }
 
