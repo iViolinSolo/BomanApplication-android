@@ -38,7 +38,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     public static final String TAG = RadarActivity.class.getSimpleName();
 //    private SharedPrefUtils spUtil;
 
-    public static enum ConnState {
+    public enum ConnState {
         START_SCANNING,
         FOUND_DEVICES,
         NO_DEVICES,
