@@ -61,10 +61,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private DeviceAdapter deviceAdapter;
 
 
-    private Animation operatingAnim;
-    private ProgressDialog progressDialog;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,13 +193,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             }
         });
 
-        mBinder.checkLocationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(mContext, LocationCheckActivity.class));
-            }
-        });
-
         mBinder.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -321,18 +310,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         });
     }
 
-
-    private void viewWhenNoBLE() {
-        mBinder.autoConnectBleBtn.setVisibility(View.GONE);
-        mBinder.disconnectBleBtn.setVisibility(View.GONE);
-        setStatusBarWhenNoBound();
-    }
-
-    private void viewWhenBindBLE() {
-        mBinder.autoConnectBleBtn.setVisibility(View.VISIBLE);
-        mBinder.disconnectBleBtn.setVisibility(View.VISIBLE);
-        setStatusBarWhenHBound();
-    }
 
 //    private void nowScanAllAvailableDevices() {
 //        return;
@@ -498,14 +475,30 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
 
+    private void viewWhenNoBLE() {
+        mBinder.autoConnectBleBtn.setVisibility(View.GONE);
+        mBinder.disconnectBleBtn.setVisibility(View.GONE);
+        setStatusBarWhenNoBound();
+
+        mBinder.flNewRoot.setVisibility(View.VISIBLE);
+        mBinder.flBoundRoot.setVisibility(View.GONE);
+    }
+
+    private void viewWhenBindBLE() {
+        mBinder.autoConnectBleBtn.setVisibility(View.VISIBLE);
+        mBinder.disconnectBleBtn.setVisibility(View.VISIBLE);
+        setStatusBarWhenHBound();
+
+        mBinder.flNewRoot.setVisibility(View.GONE);
+        mBinder.flBoundRoot.setVisibility(View.VISIBLE);
+    }
+
     private void setStatusBarWhenNoBound() {
         StatusBarUtil.setTransparent(MainActivity.this);
         mBinder.toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         mBinder.getRoot().setBackground(getDrawable(R.drawable.main_background));
         StatusBarUtil.setLightMode(MainActivity.this);
 
-        mBinder.flNewRoot.setVisibility(View.VISIBLE);
-        mBinder.flBoundRoot.setVisibility(View.GONE);
     }
 
     private void setStatusBarWhenHBound() {
@@ -514,8 +507,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         mBinder.getRoot().setBackground(null);
         StatusBarUtil.setLightMode(MainActivity.this);
 
-        mBinder.flNewRoot.setVisibility(View.GONE);
-        mBinder.flBoundRoot.setVisibility(View.VISIBLE);
     }
 
 }
