@@ -1,52 +1,26 @@
 package me.violinsolo.boman.activity;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothGatt;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.widget.Toast;
 
 import com.clj.fastble.BleManager;
-import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
-import com.clj.fastble.exception.BleException;
 import com.jaeger.library.StatusBarUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.activity.prerequisite.bt.LocationCheckActivity;
 import me.violinsolo.boman.activity.prerequisite.login.LoginPortalActivity;
-import me.violinsolo.boman.adapter.DeviceAdapter;
 import me.violinsolo.boman.adapter.DeviceBoundAdapater;
-import me.violinsolo.boman.adapter.DeviceListAdapter;
 import me.violinsolo.boman.base.BaseActivity;
-import me.violinsolo.boman.ble.BLEUtils;
-import me.violinsolo.boman.ble.BleRepr;
 import me.violinsolo.boman.databinding.ActivityMainBinding;
 import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
 import me.violinsolo.boman.model.BleBoundDevice;
-import me.violinsolo.boman.subscribe.ObserverManager;
 import me.violinsolo.boman.util.SharedPrefUtils;
 
 /**
@@ -387,7 +361,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private void autoShowUIAndConnIfPossible() {
         // reset the UI, simultaneously get the MAC address if possible.
-        boundBleDevice = spUtil.getBoundDevice();
+        boundBleDevice = spUtil.getBoundDeviceV2();
         if (boundBleDevice == null) {
             // no bound device
             viewWhenNoBLE();
