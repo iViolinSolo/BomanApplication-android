@@ -1,18 +1,22 @@
 package me.violinsolo.boman.adapter;
 
 import android.content.Context;
-import android.view.ViewGroup;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import me.violinsolo.boman.ble.BleRepr;
+import me.violinsolo.boman.R;
 import me.violinsolo.boman.databinding.AdapterRvBoundDeviceItemBinding;
+import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
+import me.violinsolo.boman.model.BleBoundDevice;
 
 /**
  * @author violinsolo
@@ -24,7 +28,17 @@ import me.violinsolo.boman.databinding.AdapterRvBoundDeviceItemBinding;
  */
 public class DeviceBoundAdapater extends RecyclerView.Adapter<DeviceBoundAdapater.ViewHolder> {
     private Context mContext;
-    private List<BleRepr> mData;
+    private List<BleBoundDevice> mData;
+    private OnRecyclerViewItemClickListener onRecyclerViewItemClickListener;
+
+    public DeviceBoundAdapater(Context mContext) {
+        this.mContext = mContext;
+        this.mData = new ArrayList<>();
+    }
+
+    public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener onRecyclerViewItemClickListener) {
+        this.onRecyclerViewItemClickListener = onRecyclerViewItemClickListener;
+    }
 
     /**
      * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
@@ -49,7 +63,17 @@ public class DeviceBoundAdapater extends RecyclerView.Adapter<DeviceBoundAdapate
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        AdapterRvBoundDeviceItemBinding mBinder = AdapterRvBoundDeviceItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
+        ViewHolder vh = new ViewHolder(mBinder);
+        mBinder.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onRecyclerViewItemClickListener != null) {
+                    onRecyclerViewItemClickListener.onItemClick(view, (int) view.getTag());
+                }
+            }
+        });
+        return vh;
     }
 
     /**
@@ -74,7 +98,11 @@ public class DeviceBoundAdapater extends RecyclerView.Adapter<DeviceBoundAdapate
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        BleBoundDevice bleBoundDevice = mData.get(position);
 
+        holder.ivDeviceImage.setImageResource(R.drawable.product_thermometer);
+        holder.tvDeviceName.setText(bleBoundDevice.getName());
+        holder.tvDeviceStatus.setText(bleBoundDevice.ge);
     }
 
     /**

@@ -24,6 +24,7 @@ import me.violinsolo.boman.databinding.AdapterDeviceBinding;
  * <p>
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
+@Deprecated
 public class DeviceAdapter extends BaseAdapter {
 
     private Context mContext;

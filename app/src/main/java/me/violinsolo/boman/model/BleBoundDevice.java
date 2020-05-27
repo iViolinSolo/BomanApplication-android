@@ -16,7 +16,7 @@ public class BleBoundDevice {
     String mac;
     String name;
     int socVal;
-    boolean connStatus;
+    boolean connected;
     BleDevice bleDevice;
 
 
@@ -28,7 +28,7 @@ public class BleBoundDevice {
         }
 
         this.socVal = SOC_NO_VALUE;
-        this.connStatus = false;
+        this.connected = false;
     }
 
     public String getMac() {
@@ -51,8 +51,8 @@ public class BleBoundDevice {
         return socVal;
     }
 
-    public boolean isConnStatus() {
-        return connStatus;
+    public boolean isConnected() {
+        return connected;
     }
 
     public BleDevice getBleDevice() {
@@ -71,8 +71,8 @@ public class BleBoundDevice {
         this.socVal = socVal;
     }
 
-    public void setConnStatus(boolean connStatus) {
-        this.connStatus = connStatus;
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 
     public void setBleDevice(BleDevice bleDevice) {
