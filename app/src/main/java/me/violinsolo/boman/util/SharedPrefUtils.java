@@ -55,7 +55,8 @@ public class SharedPrefUtils {
     // -----------------
     // Keys
     // -----------------
-    private static final String BOUND_DEVICES_KEY = "BOUND_DEVICES_KEY";
+//    private static final String BOUND_DEVICES_KEY = "BOUND_DEVICES_KEY";
+    private static final String BOUND_DEVICES_V1_KEY = "BOUND_DEVICES_V1_KEY";
     private static final String BOUND_DEVICES_V2_KEY = "BOUND_DEVICES_V2_KEY";
 
 
@@ -81,8 +82,8 @@ public class SharedPrefUtils {
     //    V1 store the MAC address and name with current rssi for a device.
     //    ===========================================
     @Deprecated
-    public BleRepr getBoundDevice() {
-        String json = getString(BOUND_DEVICES_KEY);
+    public BleRepr getBoundDeviceV1() {
+        String json = getString(BOUND_DEVICES_V1_KEY);
 
         if (json == null) {
             return null;
@@ -94,28 +95,28 @@ public class SharedPrefUtils {
         }
     }
     @Deprecated
-    public void storeBoundDevice(BleDevice bleDevice) {
+    public void storeBoundDeviceV1(BleDevice bleDevice) {
 //        String json = gson.toJson(bleDevice);
 //        Log.d(TAG, "> current store json is: "+json);
 //        Type type = new TypeToken<BleDevice>(){}.getType();
 //        BleDevice newDev = gson.fromJson(json, type);
 //        Log.d(TAG, "> current restore json is: "+gson.toJson(newDev));
 
-        storeBoundDevice(bleDevice.getMac(), bleDevice.getName(), bleDevice.getRssi());
+        storeBoundDeviceV1(bleDevice.getMac(), bleDevice.getName(), bleDevice.getRssi());
     }
     @Deprecated
-    public void storeBoundDevice(String mac, String name, int rssi) {
+    public void storeBoundDeviceV1(String mac, String name, int rssi) {
         BleRepr t = new BleRepr(mac, name, rssi);
 
         String json = gson.toJson(t);
 
         Log.d(TAG, "> current store json is: "+json);
-        editor.putString(BOUND_DEVICES_KEY, json);
+        editor.putString(BOUND_DEVICES_V1_KEY, json);
         editor.commit();
     }
     @Deprecated
-    public void removeBoundDevice() {
-        editor.remove(BOUND_DEVICES_KEY);
+    public void removeBoundDeviceV1() {
+        editor.remove(BOUND_DEVICES_V1_KEY);
         editor.commit();
     }
 
