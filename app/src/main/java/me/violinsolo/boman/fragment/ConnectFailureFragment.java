@@ -117,7 +117,7 @@ public class ConnectFailureFragment extends BaseFragment<FragmentConnectFailureB
     public void setCurrentTitle(String failureTitle) {
         this.failureTitle = failureTitle;
         if (mBinder!=null) {
-            mBinder.tvFailTitle.setText(failureTitle); //TODO need to chanage, potential nullptr exception
+            mBinder.tvFailTitle.setText(failureTitle);
         }
     }
 
