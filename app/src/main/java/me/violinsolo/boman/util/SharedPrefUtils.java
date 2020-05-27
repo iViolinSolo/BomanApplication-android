@@ -62,9 +62,10 @@ public class SharedPrefUtils {
     // -----------------
     // Functions
     // -----------------
-//    ===========================================
-//    V0 only store the MAC address for a device.
-//    ===========================================
+
+    //    ===========================================
+    //    V0 only store the MAC address for a device.
+    //    ===========================================
 //    public String getBoundDevice() {
 //        return getString(BOUND_DEVICES_KEY);
 //    }
@@ -76,6 +77,9 @@ public class SharedPrefUtils {
 //        storeBoundDevice((String) null);
 //    }
 
+    //    ===========================================
+    //    V1 store the MAC address and name with current rssi for a device.
+    //    ===========================================
     @Deprecated
     public BleRepr getBoundDevice() {
         String json = getString(BOUND_DEVICES_KEY);
@@ -115,8 +119,9 @@ public class SharedPrefUtils {
         editor.commit();
     }
 
-
-
+    //    ===========================================
+    //    V2 store more information, with bledevice reference for a device.
+    //    ===========================================
     public BleBoundDevice getBoundDeviceV2() {
         String json = getString(BOUND_DEVICES_V2_KEY);
 
@@ -130,12 +135,6 @@ public class SharedPrefUtils {
         }
     }
     public void storeBoundDeviceV2(BleBoundDevice bleDevice) {
-//        String json = gson.toJson(bleDevice);
-//        Log.d(TAG, "> current store json is: "+json);
-//        Type type = new TypeToken<BleDevice>(){}.getType();
-//        BleDevice newDev = gson.fromJson(json, type);
-//        Log.d(TAG, "> current restore json is: "+gson.toJson(newDev));
-
         String json = gson.toJson(bleDevice);
 
         Log.d(TAG, "> current store json is: "+json);
