@@ -132,6 +132,51 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
      */
     @Override
     protected void bindListeners() {
+        final BleGattCallback callback = new BleGattCallback() {
+            @Override
+            public void onStartConnect() {
+                curState = ConnState.START_CONNECTING;
+                showLoadingPage();
+                Log.i(TAG, "[Bluetooth] onStartConnect");
+            }
+
+            @Override
+            public void onConnectFail(BleDevice bleDevice, BleException exception) {
+                curState = ConnState.CONNECT_FAIL;
+                showFailurePage();
+                Log.i(TAG, "[Bluetooth] onStartConnect");
+            }
+
+            @Override
+            public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
+                curState = ConnState.CONNECTED;
+
+//                        spUtil.storeBoundDeviceV2(bleDevice);
+                ObserverManager.getInstance().notifyObserverWhenConnected(bleDevice); // mainly notify MainActivity to store the current device.
+
+                // Go to the setting page directly, more user friendly.
+                Intent intent = new Intent(mContext, DetailsActivity.class);
+                intent.putExtra(DetailsActivity.EXTRA_DATA_BLE, bleDevice);
+                startActivity(intent);
+
+                finish();
+                Log.i(TAG, "[Bluetooth] onStartConnect");
+            }
+
+            @Override
+            public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
+
+                if (isActiveDisConnected) {
+                    Toast.makeText(mContext, getString(R.string.active_disconnected), Toast.LENGTH_LONG).show();
+                    ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
+                } else {
+                    Toast.makeText(mContext, getString(R.string.inactive_disconnected), Toast.LENGTH_LONG).show();
+                    ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
+                }
+            }
+        };
+
+
         if (macAddr == null) {
             // you can trigger the scanning functionality.
             // Auto-triggered Scanning Part.
@@ -229,49 +274,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         }else {
             // you should connect the device directly.
             BleManager.getInstance().cancelScan();
-            BleManager.getInstance().connect(macAddr, new BleGattCallback() {
-                @Override
-                public void onStartConnect() {
-                    curState = ConnState.START_CONNECTING;
-                    showLoadingPage();
-                    Log.i(TAG, "[Bluetooth] onStartConnect");
-                }
-
-                @Override
-                public void onConnectFail(BleDevice bleDevice, BleException exception) {
-                    curState = ConnState.CONNECT_FAIL;
-                    showFailurePage();
-                    Log.i(TAG, "[Bluetooth] onStartConnect");
-                }
-
-                @Override
-                public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
-                    curState = ConnState.CONNECTED;
-
-//                        spUtil.storeBoundDeviceV2(bleDevice);
-                    ObserverManager.getInstance().notifyObserverWhenConnected(bleDevice); // mainly notify MainActivity to store the current device.
-
-                    // Go to the setting page directly, more user friendly.
-                    Intent intent = new Intent(mContext, DetailsActivity.class);
-                    intent.putExtra(DetailsActivity.EXTRA_DATA_BLE, bleDevice);
-                    startActivity(intent);
-
-                    finish();
-                    Log.i(TAG, "[Bluetooth] onStartConnect");
-                }
-
-                @Override
-                public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
-
-                    if (isActiveDisConnected) {
-                        Toast.makeText(mContext, getString(R.string.active_disconnected), Toast.LENGTH_LONG).show();
-                        ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
-                    } else {
-                        Toast.makeText(mContext, getString(R.string.inactive_disconnected), Toast.LENGTH_LONG).show();
-                        ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
-                    }
-                }
-            });
+            BleManager.getInstance().connect(macAddr, callback);
         }
 
         deviceListFragment.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
@@ -279,50 +282,9 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
             public void onItemClick(View view, int position) {
                 BleDevice target = deviceListFragment.mAdapter.getItem(position);
                 if (!BleManager.getInstance().isConnected(target)) {
+                    // connect the device through BleDevice.
                     BleManager.getInstance().cancelScan();
-                    BleManager.getInstance().connect(target, new BleGattCallback() {
-                        @Override
-                        public void onStartConnect() {
-                            curState = ConnState.START_CONNECTING;
-                            showLoadingPage();
-                            Log.i(TAG, "[Bluetooth] onStartConnect");
-                        }
-
-                        @Override
-                        public void onConnectFail(BleDevice bleDevice, BleException exception) {
-                            curState = ConnState.CONNECT_FAIL;
-                            showFailurePage();
-                            Log.i(TAG, "[Bluetooth] onStartConnect");
-                        }
-
-                        @Override
-                        public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
-                            curState = ConnState.CONNECTED;
-
-//                        spUtil.storeBoundDeviceV2(bleDevice);
-                            ObserverManager.getInstance().notifyObserverWhenConnected(bleDevice); // mainly notify MainActivity to store the current device.
-
-                            // Go to the setting page directly, more user friendly.
-                            Intent intent = new Intent(mContext, DetailsActivity.class);
-                            intent.putExtra(DetailsActivity.EXTRA_DATA_BLE, bleDevice);
-                            startActivity(intent);
-
-                            finish();
-                            Log.i(TAG, "[Bluetooth] onStartConnect");
-                        }
-
-                        @Override
-                        public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
-
-                            if (isActiveDisConnected) {
-                                Toast.makeText(mContext, getString(R.string.active_disconnected), Toast.LENGTH_LONG).show();
-                                ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
-                            } else {
-                                Toast.makeText(mContext, getString(R.string.inactive_disconnected), Toast.LENGTH_LONG).show();
-                                ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
-                            }
-                        }
-                    });
+                    BleManager.getInstance().connect(target, callback);
                 }
             }
         });
