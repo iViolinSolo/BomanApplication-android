@@ -141,25 +141,27 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
                                         if (data == null || data.length < 1)
                                             content = "No Data Fetched";
                                         else {
-                                            StringBuilder sb = new StringBuilder();
+//                                            StringBuilder sb = new StringBuilder();
+//
+//                                            // 数据原因，所以倒叙读出
+//                                            for (int i = 0; i < data.length ; i++) {
+//                                                Log.d(TAG, i+" -> "+data[i]);
+//                                            }
+//
+//                                            for (int i = data.length - 1; i >= 0; i--) {
+//                                                String hex = Integer.toHexString(data[i] & 0xFF);
+//                                                if (hex.length() == 1) {
+//                                                    hex = '0' + hex;
+//                                                }
+//                                                sb.append(hex);
+//                                                if (addSpace)
+//                                                    sb.append(" ");
+//                                            }
+//                                            content = sb.toString().trim();
+//
+//                                            long result = Long.parseLong(content, 16);
 
-                                            // 数据原因，所以倒叙读出
-                                            for (int i = 0; i < data.length ; i++) {
-                                                Log.d(TAG, i+" -> "+data[i]);
-                                            }
-
-                                            for (int i = data.length - 1; i >= 0; i--) {
-                                                String hex = Integer.toHexString(data[i] & 0xFF);
-                                                if (hex.length() == 1) {
-                                                    hex = '0' + hex;
-                                                }
-                                                sb.append(hex);
-                                                if (addSpace)
-                                                    sb.append(" ");
-                                            }
-                                            content = sb.toString().trim();
-
-                                            long result = Long.parseLong(content, 16);
+                                            long result = HexUtil.lng(data, false);
                                             content+= (" => " + result/100f+" ℃");
                                         }
 //                                String plainHexData = HexUtil.formatHexString(data, true);
@@ -225,9 +227,11 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
 //                                            }
 //                                            content = sb.toString().trim();
 
-                                            content = HexUtil.hexStrLittleEndian(data, false);
-                                            long result = Long.parseLong(content, 16);
-                                            content+= (" => " + result/100f+" uv");
+//                                            content = HexUtil.hexStrLittleEndian(data, false);
+//                                            long result = Long.parseLong(content, 16);
+//                                            content+= (" => " + result/100f+" uv");
+
+                                            long result = HexUtil.lng(data, false);
 
                                             Log.d(TAG, "uv index => "+result/100f+" uv" +"; plain hex data: "+content);
                                         }
@@ -293,8 +297,9 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
 //                                            }
 //                                            content = sb.toString().trim();
 
-                                            content = HexUtil.hexStrLittleEndian(data, false);
-                                            long result = Long.parseLong(content, 16);
+//                                            content = HexUtil.hexStrLittleEndian(data, false);
+//                                            long result = Long.parseLong(content, 16);
+                                            long result = HexUtil.lng(data, false);
                                             content+= (" => " + result/100f+" %");
 
 
