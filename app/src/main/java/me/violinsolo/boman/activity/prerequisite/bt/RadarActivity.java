@@ -155,7 +155,11 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         final BleGattCallback callback = new BleGattCallback() {
             @Override
             public void onStartConnect() {
-                curState = ConnState.START_CONNECTING;
+                if (macAddr == null) {
+                    curState = ConnState.START_CONNECTING;
+                }else {
+                    curState = ConnState.START_CONNECTING_MAC;
+                }
                 showLoadingPage();
                 Log.i(TAG, "[Bluetooth] onStartConnect");
             }
