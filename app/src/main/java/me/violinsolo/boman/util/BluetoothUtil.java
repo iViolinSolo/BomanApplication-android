@@ -2,7 +2,11 @@ package me.violinsolo.boman.util;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.LocationManager;
+
+import androidx.appcompat.app.AlertDialog;
+import me.violinsolo.boman.R;
 
 /**
  * @author violinsolo
@@ -28,5 +32,17 @@ public class BluetoothUtil {
         if (bluetoothAdapter == null)
             return false;
         return bluetoothAdapter.isEnabled();
+    }
+
+    public static void showGoLocationSettingDialog(Context mContext,
+                                                   DialogInterface.OnClickListener cancelCallback,
+                                                   DialogInterface.OnClickListener permitCallback) {
+        new AlertDialog.Builder(mContext)
+                .setTitle(R.string.notifyTitle)
+                .setMessage(R.string.gpsNotifyMsg)
+                .setNegativeButton(R.string.cancel, cancelCallback)
+                .setPositiveButton(R.string.setting, permitCallback)
+                .setCancelable(false)
+                .show();
     }
 }
