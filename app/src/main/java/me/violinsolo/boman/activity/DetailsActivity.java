@@ -23,6 +23,7 @@ import me.violinsolo.boman.databinding.ActivityDetailsBinding;
 import me.violinsolo.boman.subscribe.Observer;
 import me.violinsolo.boman.subscribe.ObserverManager;
 import me.violinsolo.boman.util.HexUtil;
+import me.violinsolo.boman.util.StatusBarUtilNEW;
 
 /**
  * @author violinsolo
@@ -110,10 +111,13 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
     protected void initViews() {
         setSupportActionBar(mBinder.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorWhite), 0);
-        StatusBarUtil.setLightMode(DetailsActivity.this);
+        int color = getResources().getColor(R.color.colorWhite);
+        StatusBarUtil.setColor(this, color, 0);
+        mBinder.toolbar.setBackgroundColor(color);
+//        StatusBarUtil.setLightMode(DetailsActivity.this); //exist bug in fullscreen mode...
+        StatusBarUtilNEW.setLightMode(DetailsActivity.this);
         mBinder.toolbar.setNavigationIcon(R.mipmap.ic_back);
         mBinder.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
