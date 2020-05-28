@@ -27,6 +27,7 @@ import me.violinsolo.boman.subscribe.Observer;
 import me.violinsolo.boman.subscribe.ObserverManager;
 import me.violinsolo.boman.util.Intermediate;
 import me.violinsolo.boman.util.SharedPrefUtils;
+import me.violinsolo.boman.util.StatusBarUtilNEW;
 
 /**
  * @author violinsolo
@@ -259,16 +260,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
         StatusBarUtil.setTransparent(MainActivity.this);
 //        mBinder.toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         mBinder.getRoot().setBackground(getDrawable(R.drawable.main_background));
-        StatusBarUtil.setLightMode(MainActivity.this);
-
+//        StatusBarUtil.setLightMode(MainActivity.this); //exist bug in fullscreen mode...
+        StatusBarUtilNEW.setLightMode(MainActivity.this);
     }
 
     private void setStatusBarWhenHBound() {
         StatusBarUtil.setTransparent(MainActivity.this);
 //        mBinder.toolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         mBinder.getRoot().setBackground(null);
-        StatusBarUtil.setLightMode(MainActivity.this);
-
+//        StatusBarUtil.setLightMode(MainActivity.this); //exist bug in fullscreen mode...
+        StatusBarUtilNEW.setLightMode(MainActivity.this);
     }
 
     @Override

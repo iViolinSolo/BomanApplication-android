@@ -22,6 +22,7 @@ import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityLocationCheckBinding;
 import me.violinsolo.boman.util.Config;
+import me.violinsolo.boman.util.StatusBarUtilNEW;
 
 public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBinding> {
     public static final String TAG = LocationCheckActivity.class.getSimpleName();
@@ -74,6 +75,7 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
 
 //        mBinder.toolbar.setNavigationIcon(R.drawable.ic_chevron_left_black_32dp);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.colorWhite), 0);
+        StatusBarUtilNEW.setLightMode(LocationCheckActivity.this);
         mBinder.toolbar.setNavigationIcon(R.mipmap.ic_back);
         mBinder.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

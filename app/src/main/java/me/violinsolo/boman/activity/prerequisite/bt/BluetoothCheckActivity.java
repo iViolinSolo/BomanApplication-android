@@ -18,6 +18,7 @@ import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityBluetoothCheckBinding;
 import me.violinsolo.boman.util.Config;
+import me.violinsolo.boman.util.StatusBarUtilNEW;
 
 public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckBinding> {
     public static final String TAG = BluetoothCheckActivity.class.getSimpleName();
@@ -70,6 +71,7 @@ public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckB
 //        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可
 //        mBinder.toolbar.setNavigationIcon(R.drawable.ic_chevron_left_black_32dp);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.colorWhite), 0);
+        StatusBarUtilNEW.setLightMode(BluetoothCheckActivity.this);
         mBinder.toolbar.setNavigationIcon(R.mipmap.ic_back);
         mBinder.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
