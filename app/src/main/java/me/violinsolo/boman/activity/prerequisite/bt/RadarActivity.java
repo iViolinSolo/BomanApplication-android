@@ -123,6 +123,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
 //        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可
 //        mBinder.toolbar.setNavigationIcon(R.drawable.ic_chevron_left_black_32dp);
         StatusBarUtil.setColor(this, getResources().getColor(R.color.colorWhite), 0);
+//        StatusBarUtil.setLightMode(RadarActivity.this); //TODO potential bug in light mode, maybe need to check the fragment demo to see how to use this line.
         mBinder.toolbar.setNavigationIcon(R.mipmap.ic_back);
         mBinder.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
