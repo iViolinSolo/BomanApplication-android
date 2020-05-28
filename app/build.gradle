@@ -48,5 +48,7 @@ dependencies {
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
 //    widget for round image view
     implementation 'cn.gavinliu:ShapedImageView:0.8.7'
-
+//    framework for dangerous permission check and runtime register
+    implementation "org.permissionsdispatcher:permissionsdispatcher:4.7.0"
+    annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:4.7.0"
 }

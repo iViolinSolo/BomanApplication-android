@@ -1,5 +1,6 @@
 package me.violinsolo.boman.activity.prerequisite.bt;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.jaeger.library.StatusBarUtil;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
@@ -22,7 +24,14 @@ import me.violinsolo.boman.databinding.ActivityLocationCheckBinding;
 import me.violinsolo.boman.util.BluetoothUtil;
 import me.violinsolo.boman.util.Config;
 import me.violinsolo.boman.util.StatusBarUtilNEW;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBinding> {
     public static final String TAG = LocationCheckActivity.class.getSimpleName();
     private static final int REQUEST_CODE_OPEN_GPS = 1;
@@ -100,49 +109,28 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
                 @Override
                 public void onClick(View view) {
                     Log.d(TAG, "Show dialog to guide the user permit us");
-                    BluetoothUtil.showGoLocationSettingDialog(mContext,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            },
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (BluetoothUtil.checkGPSIsOpen(mContext)) {
-                                        goToNextPage();
-                                    }else {
-                                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                        startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
-                                    }
-                                }
-                            });
-//                    new AlertDialog.Builder(mContext)
-//                            .setTitle(R.string.notifyTitle)
-//                            .setMessage(R.string.gpsNotifyMsg)
-//                            .setNegativeButton(R.string.cancel,
-//                                    new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface dialog, int which) {
-//                                            finish();
-//                                        }
-//                                    })
-//                            .setPositiveButton(R.string.setting,
-//                                    new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface dialog, int which) {
-//                                            if (BluetoothUtil.checkGPSIsOpen(mContext)) {
-//                                                goToNextPage();
-//                                            }else {
-//                                                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                                                startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
-//                                            }
-//                                        }
-//                                    })
-//
-//                            .setCancelable(false)
-//                            .show();
+
+                    // NOTE: delegate the permission handling to generated method
+                    LocationCheckActivityPermissionsDispatcher.showCheckPermissionStateWithPermissionCheck(LocationCheckActivity.this);
+                    // 通过强行插入这段代码，把下面的内容都移动到权限赋予成功的界面去了。
+//                    BluetoothUtil.showGoLocationSettingDialog(mContext,
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    finish();
+//                                }
+//                            },
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    if (BluetoothUtil.checkGPSIsOpen(mContext)) {
+//                                        goToNextPage();
+//                                    }else {
+//                                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                                        startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
+//                                    }
+//                                }
+//                            });
                 }
             });
         }
@@ -188,4 +176,88 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
 //        return locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
 //    }
 
+
+
+
+    /**
+     * -----------------------------------------
+     * check permissions here...
+     *
+     * {
+     *      Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH,   /// this can be gained just through manifest declaration
+     *      Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,   /// these are dangerous permissions need to dynamic apply
+     *      Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE   /// not use this yet.
+     * }
+     * -----------------------------------------
+     */
+
+    /**
+     * 这个方法中写正常的逻辑（假设有该权限应该做的事）
+     */
+    @NeedsPermission({Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH,
+            Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
+    void showCheckPermissionState(){
+        //检查是否开启位置信息（如果没有开启，则无法扫描到任何蓝牙设备在6.0）
+        if (!BluetoothUtil.checkGPSIsOpen(mContext)){
+            BluetoothUtil.showGoLocationSettingDialog(
+                    mContext,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    },
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (BluetoothUtil.checkGPSIsOpen(mContext)) {
+                                goToNextPage();
+                            }else {
+                                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
+                            }
+                        }
+                    }
+            );
+        }
+    }
+
+    /**
+     * 弹出权限同意窗口之前调用的提示窗口
+     * @param request
+     */
+    @OnShowRationale({Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH,
+            Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
+    void showRationaleForPermissionState(PermissionRequest request) {
+        // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
+        // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
+        BluetoothUtil.showRationaleDialog(mContext, R.string.permission_rationale, request);
+    }
+
+    /**
+     * 提示窗口和权限同意窗口--被拒绝时调用
+     */
+    @OnPermissionDenied({Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH,
+            Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
+    void onPermissionStateDenied() {
+        // NOTE: Deal with a denied permission, e.g. by showing specific UI
+        // or disabling certain functionality
+        Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 当完全拒绝了权限打开之后调用
+     */
+    @OnNeverAskAgain({Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH,
+            Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
+    void onPermissionNeverAskAgain() {
+        BluetoothUtil.showOpenSettingDialog(this, R.string.open_setting_permission);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        LocationCheckActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
 }
