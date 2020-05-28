@@ -21,7 +21,7 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:textColor="#000"
-        android:text="铂曼额温枪 #12222"/>
+        android:text="@string/rv_list_device_name"/>
 
     <View
         android:layout_width="0dp"
