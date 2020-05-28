@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
             spUtil.storeBoundDeviceV2(boundBleDevice);
         }
         if (Intermediate.getInstance().statusIsScanning) {
-            BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
+            BleManager.getInstance().cancelScan(); // the npe will be triggered when the Manager is not scanning
             Intermediate.getInstance().statusIsScanning = false;
         }
         if (Intermediate.getInstance().mBleHolder!=null
@@ -80,14 +80,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
     @Override
     protected void onResume() {
         super.onResume();
-//        // TODO: need refactor, show all bound devices and the right status.
-//        List<BleDevice> allConnectedDevice= bleUtils.showConnectedDevice();
-//        deviceAdapter.clearConnectedDevice();
-//        for (BleDevice bleDevice : allConnectedDevice) {
-//            deviceAdapter.addDevice(bleDevice, BLEUtils.BLEState.BOUND_CONNECTED);
-//        }
-//        deviceAdapter.notifyDataSetChanged();
-
 
         boundBleDevice = spUtil.getBoundDeviceV2();
         if (boundBleDevice==null) {
@@ -229,154 +221,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
     }
 
 
-//    private void nowScanAllAvailableDevices() {
-//        return;
-//        if (boundBleDevice == null) {
-//            bleUtils.setScanRule(null);
-//            bleUtils.startScan();
-//        }else {
-//            bleUtils.setScanRule(boundBleDevice.getMac());
-//            BleManager.getInstance().scan(new BleScanCallback() {
-//                @Override
-//                public void onScanStarted(boolean success) {
-//                    deviceAdapter.clearScanDevice();
-//                    deviceAdapter.notifyDataSetChanged();
-//                    mBinder.imgLoading.startAnimation(operatingAnim);
-//                    mBinder.imgLoading.setVisibility(View.VISIBLE);
-////                btn_scan.setText(getString(R.string.stop_scan));
-//                }
-//
-//                @Override
-//                public void onLeScan(BleDevice bleDevice) {
-//                    super.onLeScan(bleDevice);
-//                }
-//
-//                @Override
-//                public void onScanning(BleDevice bleDevice) {
-////                    deviceAdapter.addDevice(bleDevice, BLEUtils.BLEState.UNBOUND);
-////                    deviceAdapter.notifyDataSetChanged();
-//                    bleUtils.connect(bleDevice);
-//                }
-//
-//                @Override
-//                public void onScanFinished(List<BleDevice> scanResultList) {
-//                    mBinder.imgLoading.clearAnimation();
-//                    mBinder.imgLoading.setVisibility(View.INVISIBLE);
-////                btn_scan.setText(getString(R.string.start_scan));
-//                }
-//            });
-//
-//        }
-//    }
-
-
-//    private static final int REQUEST_CODE_OPEN_GPS = 1;
-//    private static final int REQUEST_CODE_PERMISSION_LOCATION = 2;
-//
-//    @Override
-//    public final void onRequestPermissionsResult(int requestCode,
-//                                                 @NonNull String[] permissions,
-//                                                 @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case REQUEST_CODE_PERMISSION_LOCATION:
-//                if (grantResults.length > 0) {
-//                    for (int i = 0; i < grantResults.length; i++) {
-//                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-//                            onPermissionGranted(permissions[i]);
-//                        }
-//                    }
-//                }
-//                break;
-//        }
-//    }
-
-//    private void checkPermissions() {
-//        if (!checkBluetoothIsOpen()) {
-//            Log.e(TAG, "> Bluetooth not open.");
-//            Toast.makeText(mContext, getString(R.string.please_open_blue), Toast.LENGTH_LONG).show();
-//            return;
-//        }
-//
-//        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
-//        List<String> permissionDeniedList = new ArrayList<>();
-//        for (String permission : permissions) {
-//            int permissionCheck = ContextCompat.checkSelfPermission(this, permission);
-//            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-//                Log.d(TAG, "> Manifest.permission.ACCESS_FINE_LOCATION => PackageManager.PERMISSION_GRANTED");
-//                onPermissionGranted(permission);
-//            } else {
-//                Log.e(TAG, "> Manifest.permission.ACCESS_FINE_LOCATION NOT PackageManager.PERMISSION_GRANTED");
-//                permissionDeniedList.add(permission);
-//            }
-//        }
-//        if (!permissionDeniedList.isEmpty()) {
-//            String[] deniedPermissions = permissionDeniedList.toArray(new String[permissionDeniedList.size()]);
-//            ActivityCompat.requestPermissions(this, deniedPermissions, REQUEST_CODE_PERMISSION_LOCATION);
-//        }
-//    }
-//
-//    private void onPermissionGranted(String permission) {
-//        switch (permission) {
-//            case Manifest.permission.ACCESS_FINE_LOCATION:
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !checkGPSIsOpen()) {
-//                    new AlertDialog.Builder(this)
-//                            .setTitle(R.string.notifyTitle)
-//                            .setMessage(R.string.gpsNotifyMsg)
-//                            .setNegativeButton(R.string.cancel,
-//                                    new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface dialog, int which) {
-//                                            finish();
-//                                        }
-//                                    })
-//                            .setPositiveButton(R.string.setting,
-//                                    new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface dialog, int which) {
-//                                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                                            startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
-//                                        }
-//                                    })
-//
-//                            .setCancelable(false)
-//                            .show();
-//                } else {
-////                    TODO: Finish here....
-////                    setScanRule();
-////                    startScan();
-//                    nowScanAllAvailableDevices();
-//                }
-//                break;
-//        }
-//    }
-
-//    private boolean checkGPSIsOpen() {
-//        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-//        if (locationManager == null)
-//            return false;
-//        return locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
-//    }
-//
-//    private boolean checkBluetoothIsOpen() {
-//        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//        return bluetoothAdapter.isEnabled();
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_CODE_OPEN_GPS) {
-//            if (checkGPSIsOpen()) {
-////                    TODO: Finish here....
-////                setScanRule();
-////                startScan();
-//                nowScanAllAvailableDevices();
-//            }
-//        }
-//    }
-
-
     private void autoShowUIAndConnIfPossible() {
         // reset the UI, simultaneously get the MAC address if possible.
         boundBleDevice = spUtil.getBoundDeviceV2();
@@ -433,6 +277,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
             boundBleDevice.setConnected(false);
             spUtil.storeBoundDeviceV2(boundBleDevice);
             mAdapter.addDevice(boundBleDevice);
+        }
+        if (Intermediate.getInstance().mBleHolder != null) {
+            Intermediate.getInstance().mBleHolder = null;
         }
     }
 

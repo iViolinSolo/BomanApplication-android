@@ -76,7 +76,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         Log.d(TAG, "RadarActivity.onDestroy()");
         if (Intermediate.getInstance().statusIsScanning) {
             Log.i(TAG, "Now cancel scanning....");
-            BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
+            BleManager.getInstance().cancelScan(); // the npe will be triggered when the Manager is not scanning
             // .cancelScan() can trigger onScanFinished method
             Intermediate.getInstance().statusIsScanning = false;
         }
@@ -193,10 +193,10 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
 
                 if (isActiveDisConnected) {
                     Toast.makeText(mContext, getString(R.string.active_disconnected), Toast.LENGTH_LONG).show();
-                    ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
+                    ObserverManager.getInstance().notifyObserverWhenDisonnected(device);
                 } else {
                     Toast.makeText(mContext, getString(R.string.inactive_disconnected), Toast.LENGTH_LONG).show();
-                    ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
+                    ObserverManager.getInstance().notifyObserverWhenDisonnected(device);
                 }
                 Log.i(TAG, "[Bluetooth] onDisConnected");
             }
@@ -315,7 +315,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         }else {
             // you should connect the device directly.
             if (Intermediate.getInstance().statusIsScanning) {
-                BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
+                BleManager.getInstance().cancelScan(); // the npe will be triggered when the Manager is not scanning
                 Intermediate.getInstance().statusIsScanning = false;
             }
             BleManager.getInstance().connect(macAddr, callback);
@@ -328,7 +328,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                 if (!BleManager.getInstance().isConnected(target)) {
                     // connect the device through BleDevice.
                     if (Intermediate.getInstance().statusIsScanning) {
-                        BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
+                        BleManager.getInstance().cancelScan(); // the npe will be triggered when the Manager is not scanning
                         Intermediate.getInstance().statusIsScanning = false;
                     }
                     BleManager.getInstance().connect(target, callback);
