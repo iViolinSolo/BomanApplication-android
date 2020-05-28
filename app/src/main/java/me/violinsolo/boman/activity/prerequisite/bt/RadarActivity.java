@@ -168,7 +168,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
             public void onConnectFail(BleDevice bleDevice, BleException exception) {
                 curState = ConnState.CONNECT_FAIL;
                 showFailurePage();
-                Log.i(TAG, "[Bluetooth] onStartConnect");
+                Log.i(TAG, "[Bluetooth] onConnectFail");
             }
 
             @Override
@@ -184,7 +184,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                 startActivity(intent);
 
                 finish();
-                Log.i(TAG, "[Bluetooth] onStartConnect");
+                Log.i(TAG, "[Bluetooth] onConnectSuccess");
             }
 
             @Override
