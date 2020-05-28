@@ -96,7 +96,7 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
     @Override
     protected void initData() {
         bleDevice = getIntent().getParcelableExtra(EXTRA_DATA_BLE);
-        if (bleDevice == null)
+        if (bleDevice == null || !BleManager.getInstance().isConnected(bleDevice))
             finish();
     }
 

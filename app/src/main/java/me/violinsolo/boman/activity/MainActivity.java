@@ -66,6 +66,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
             BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
             Intermediate.getInstance().statusIsScanning = false;
         }
+        if (Intermediate.getInstance().mBleHolder!=null
+                && BleManager.getInstance().isConnected(Intermediate.getInstance().mBleHolder)) {
+            BleManager.getInstance().disconnect(Intermediate.getInstance().mBleHolder);
+            Intermediate.getInstance().mBleHolder = null;
+        }
         if (BleManager.getInstance().getAllConnectedDevice().size()>0){
             BleManager.getInstance().disconnectAllDevice();
         }
@@ -204,7 +209,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
         mAdapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (boundBleDevice!= null) {
+                if (Intermediate.getInstance().mBleHolder!=null
+                        && BleManager.getInstance().isConnected(Intermediate.getInstance().mBleHolder)) {
+
+                    // Go to the setting page directly, no need to connect again.
+                    Intent intent = new Intent(mContext, DetailsActivity.class);
+                    intent.putExtra(DetailsActivity.EXTRA_DATA_BLE, Intermediate.getInstance().mBleHolder);
+                    startActivity(intent);
+                }else if (boundBleDevice!= null) {
                     Intent intent = new Intent(mContext, LocationCheckActivity.class);
                     intent.putExtra(RadarActivity.EXTRA_DATA_MAC, boundBleDevice.getMac());
                     startActivity(intent);
@@ -443,5 +455,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements O
         boundBleDevice.setConnected(true);
         spUtil.storeBoundDeviceV2(boundBleDevice);
         mAdapter.addDevice(boundBleDevice);
+        Intermediate.getInstance().mBleHolder = bleDevice;
     }
 }
