@@ -17,6 +17,9 @@
 
 
     <!--  Activities  -->
+    <!--  layout_login.xml  -->
+    <string name="login_wechat_login">微信登录</string>
+    <string name="login_phone_login">手机号登录</string>
     <!--  layout_main.xml  -->
     <string name="main_welcome_title">欢迎</string>
     <string name="main_welcome_info">该应用能让您设置、控制、畅享您的铂曼智慧医疗设备</string>
