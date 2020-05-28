@@ -17,6 +17,10 @@
 
 
     <!--  Activities  -->
+    <!--  layout_main.xml  -->
+    <string name="main_welcome_title">欢迎</string>
+    <string name="main_welcome_info">该应用能让您设置、控制、畅享您的铂曼智慧医疗设备</string>
+    <string name="main_add_device">添加产品</string>
 
     <!--  Not organized.  -->
     <string name="enter">进入操作</string>
