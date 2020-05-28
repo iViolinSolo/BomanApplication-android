@@ -18,6 +18,7 @@
         android:theme="?attr/actionBarTheme" />
 
     <pl.droidsonroids.gif.GifImageView
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -25,6 +26,11 @@
         android:scaleType="fitXY"
         android:src="@drawable/location_intro"
         android:background="@drawable/location_intro" />
+    <ImageView
+        android:visibility="gone"
+        android:layout_width="228dp"
+        android:layout_height="200dp"
+        android:src="@drawable/location_intro_3x" />
 
     <TextView
         android:id="@+id/tv_permit_location_title"
@@ -34,7 +40,7 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="0dp"
-        android:text="@string/please_permit_location_title"
+        android:text="@string/location_check_please_permit_location_title"
         android:textSize="@dimen/text_title_lv1"/>
     <TextView
         android:id="@+id/tv_permit_location_explanation"
@@ -44,7 +50,7 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="0dp"
-        android:text="@string/please_permit_location_explanation"
+        android:text="@string/location_check_please_permit_location_explanation"
         android:textSize="@dimen/text_title_lv2"/>
 
     <Button
@@ -53,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="0dp"
-        android:text="@string/ok"
+        android:text="@string/location_check_ok"
         android:layout_gravity="center" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

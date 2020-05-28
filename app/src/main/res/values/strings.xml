@@ -17,13 +17,17 @@
 
 
     <!--  Activities  -->
-    <!--  layout_login.xml  -->
+    <!--  layout_login_portal.xml  -->
     <string name="login_wechat_login">微信登录</string>
     <string name="login_phone_login">手机号登录</string>
     <!--  layout_main.xml  -->
     <string name="main_welcome_title">欢迎</string>
     <string name="main_welcome_info">该应用能让您设置、控制、畅享您的铂曼智慧医疗设备</string>
     <string name="main_add_device">添加产品</string>
+    <!--  layout_location_check.xml  -->
+    <string name="location_check_please_permit_location_title">请您允许使用定位</string>
+    <string name="location_check_please_permit_location_explanation">使用蓝牙时，需要您打开位置服务并向Boman授权使用位置权限。（使用位置服务是为了让蓝牙更好的进行连接。）</string>
+    <string name="location_check_ok">好的</string>
 
     <!--  Not organized.  -->
     <string name="enter">进入操作</string>
@@ -41,8 +45,6 @@
     <string name="connected">已连接</string>
     <string name="connect_fail">连接失败</string>
     <string name="ok">好的</string>
-    <string name="please_permit_location_title">请您允许使用定位</string>
-    <string name="please_permit_location_explanation">使用蓝牙时，需要您打开位置服务并向Boman授权使用位置权限。（使用位置服务是为了让蓝牙更好的进行连接。）</string>
     <string name="please_permit_bluetooth_title">请您确保蓝牙的打开</string>
     <string name="please_permit_bluetooth_explanation">我们的应用必须打开蓝牙才能连接铂曼设备；</string>
     <string name="device_bindable">可绑定</string>
