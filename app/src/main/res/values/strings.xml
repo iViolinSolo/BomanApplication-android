@@ -42,6 +42,7 @@
     <!--  adapter_rv_list_device_item.xml  -->
     <string name="rv_list_device_name">铂曼额温枪 #12222</string>
     <!--  fragment_connect_failure.xml  -->
+    <string name="connect_failure_ok">好的</string>
     <!--  fragment_connect_loading.xml  -->
     <!--  fragment_device_list.xml  -->
 
