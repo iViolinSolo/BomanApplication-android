@@ -2,23 +2,41 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingStart="@dimen/safe_distance_20dp"
+    android:paddingEnd="@dimen/safe_distance_20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <View
+        android:id="@+id/v_blank_top"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/iv_device_img"
         android:layout_width="wrap_content"
         android:layout_height="264dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/product_thermometer"
+        app:layout_constraintTop_toBottomOf="@id/v_blank_top"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/product_thermometer"
         />
+
+    <View
+        android:id="@+id/v_blank_middle"
+        android:layout_width="match_parent"
+        android:layout_height="94dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_device_img"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/tv_device_name_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/iv_device_img"
+        app:layout_constraintTop_toBottomOf="@id/v_blank_middle"
         app:layout_constraintStart_toStartOf="parent"
         android:text="产品"
         android:textColor="@color/colorTextLightGray"
@@ -28,17 +46,25 @@
         android:id="@+id/tv_device_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/iv_device_img"
+        app:layout_constraintTop_toBottomOf="@id/v_blank_middle"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="铂曼额温枪一代"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/text_size_16sp"/>
 
+    <View
+        android:id="@+id/v_blank_interval0"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_device_name_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:id="@+id/tv_device_status_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv_device_name_title"
+        app:layout_constraintTop_toBottomOf="@id/v_blank_interval0"
         app:layout_constraintStart_toStartOf="parent"
         android:text="蓝牙状态"
         android:textColor="@color/colorTextLightGray"
@@ -48,17 +74,25 @@
         android:id="@+id/tv_device_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv_device_name"
+        app:layout_constraintTop_toBottomOf="@id/v_blank_interval0"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="已连接"
         android:textColor="@color/colorMainTheme"
         android:textSize="@dimen/text_size_16sp" />
 
+    <View
+        android:id="@+id/v_blank_interval1"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_device_status_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:id="@+id/tv_device_soc_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv_device_status_title"
+        app:layout_constraintTop_toBottomOf="@id/v_blank_interval1"
         app:layout_constraintStart_toStartOf="parent"
         android:text="剩余电量"
         android:textColor="@color/colorTextLightGray"
@@ -68,7 +102,7 @@
         android:id="@+id/tv_device_soc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv_device_status"
+        app:layout_constraintTop_toBottomOf="@id/v_blank_interval1"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="- - %"
         android:textColor="@color/colorBlack"

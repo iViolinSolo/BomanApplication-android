@@ -93,7 +93,6 @@
                 android:id="@+id/disconnect_ble_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:text="解除绑定设备" />
         </LinearLayout>
 
