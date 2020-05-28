@@ -1,7 +1,5 @@
 package me.violinsolo.boman.util;
 
-import android.util.Log;
-
 /**
  * @author violinsolo
  * @version Boman v0.1
@@ -58,6 +56,7 @@ public class HexUtil {
             // if it is Big-Endian, the data array order is the order people can read naturally.
             for (int i = 0; i < data.length; i++) {
                 sb.append(ascii(data[i]));
+//                Log.i(TAG, "|"+ascii(data[i])+"|");
             }
         }else {
             // if it is Little-Endian, the data array order need to access reversely before people can read.
