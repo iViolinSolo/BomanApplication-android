@@ -1,5 +1,7 @@
 package me.violinsolo.boman.util;
 
+import com.clj.fastble.data.BleDevice;
+
 /**
  * @author violinsolo
  * @version Boman v0.1
@@ -19,4 +21,7 @@ public class Intermediate {
 
 
     public boolean statusIsScanning = false;
+
+    // holder for current bound device ...
+    public BleDevice mBleHolder = null;
 }
