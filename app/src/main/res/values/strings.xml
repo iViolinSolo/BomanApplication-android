@@ -50,4 +50,10 @@
     <string name="connect_fail">连接失败</string>
     <string name="ok">好的</string>
     <string name="device_bindable">可绑定</string>
+    <string name="rv_bound_device_name_title">产品</string>
+    <string name="rv_bound_device_name">铂曼额温枪一代</string>
+    <string name="rv_bound_device_status_title">蓝牙状态</string>
+    <string name="rv_bound_device_status">已连接</string>
+    <string name="rv_bound_device_soc_title">剩余电量</string>
+    <string name="rv_bound_device_soc">- - %</string>
 </resources>

@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/v_blank_middle"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="产品"
+        android:text="@string/rv_bound_device_name_title"
         android:textColor="@color/colorTextLightGray"
         android:textSize="@dimen/text_size_16sp"/>
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/v_blank_middle"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="铂曼额温枪一代"
+        android:text="@string/rv_bound_device_name"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/text_size_16sp"/>
 
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/v_blank_interval0"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="蓝牙状态"
+        android:text="@string/rv_bound_device_status_title"
         android:textColor="@color/colorTextLightGray"
         android:textSize="@dimen/text_size_16sp" />
 
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/v_blank_interval0"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="已连接"
+        android:text="@string/rv_bound_device_status"
         android:textColor="@color/colorMainTheme"
         android:textSize="@dimen/text_size_16sp" />
 
@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/v_blank_interval1"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="剩余电量"
+        android:text="@string/rv_bound_device_soc_title"
         android:textColor="@color/colorTextLightGray"
         android:textSize="@dimen/text_size_16sp" />
 
@@ -104,7 +104,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/v_blank_interval1"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="- - %"
+        android:text="@string/rv_bound_device_soc"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/text_size_16sp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
