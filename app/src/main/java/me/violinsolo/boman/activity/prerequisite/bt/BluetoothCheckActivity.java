@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityBluetoothCheckBinding;
+import me.violinsolo.boman.util.BluetoothUtil;
 import me.violinsolo.boman.util.Config;
 import me.violinsolo.boman.util.StatusBarUtilNEW;
 
@@ -79,7 +80,7 @@ public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckB
                 finish();
             }
         });
-        if (checkBluetoothIsOpen()) {
+        if (BluetoothUtil.checkBluetoothIsOpen()) {
             Log.d(TAG, "> Bluetooth service check PASS...");
             goToNextPage();
 
@@ -96,7 +97,7 @@ public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckB
                 public void onClick(View view) {
                     // Ensures Bluetooth is available on the device and it is enabled. If not,
                     // displays a dialog requesting user permission to enable Bluetooth.
-                    if (!checkBluetoothIsOpen()) {
+                    if (!BluetoothUtil.checkBluetoothIsOpen()) {
 
                         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 
@@ -120,7 +121,7 @@ public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckB
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ENABLE_BLUETOOTH) {
-            if (checkBluetoothIsOpen()) {
+            if (BluetoothUtil.checkBluetoothIsOpen()) {
                 goToNextPage();
             }else {
                 Log.e(TAG, "User cancel the action to permit us with the privilege to open bluetooth.");
@@ -139,10 +140,10 @@ public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckB
         finish();
     }
 
-    private boolean checkBluetoothIsOpen() {
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter == null)
-            return false;
-        return bluetoothAdapter.isEnabled();
-    }
+//    private boolean checkBluetoothIsOpen() {
+//        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        if (bluetoothAdapter == null)
+//            return false;
+//        return bluetoothAdapter.isEnabled();
+//    }
 }

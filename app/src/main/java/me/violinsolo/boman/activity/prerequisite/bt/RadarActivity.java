@@ -1,10 +1,8 @@
 package me.violinsolo.boman.activity.prerequisite.bt;
 
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +29,7 @@ import me.violinsolo.boman.fragment.DeviceListFragment;
 import me.violinsolo.boman.listener.OnFailureButtonClickLinstener;
 import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
 import me.violinsolo.boman.subscribe.ObserverManager;
+import me.violinsolo.boman.util.BluetoothUtil;
 import me.violinsolo.boman.util.Config;
 import me.violinsolo.boman.util.HexUtil;
 import me.violinsolo.boman.util.Intermediate;
@@ -134,7 +133,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
             }
         });
 
-        if (!checkBluetoothIsOpen()||!checkGPSIsOpen()) {
+        if (!BluetoothUtil.checkBluetoothIsOpen()||!BluetoothUtil.checkGPSIsOpen(mContext)) {
             Log.e(TAG, "> Please keep bluetooth and location open.");
             Toast.makeText(mContext, "请保持蓝牙和位置服务开启。", Toast.LENGTH_SHORT).show();
             finish();
@@ -401,17 +400,17 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
         }
     }
 
-    private boolean checkGPSIsOpen() {
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager == null)
-            return false;
-        return locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
-    }
-
-    private boolean checkBluetoothIsOpen() {
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter == null)
-            return false;
-        return bluetoothAdapter.isEnabled();
-    }
+//    private boolean checkGPSIsOpen() {
+//        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+//        if (locationManager == null)
+//            return false;
+//        return locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
+//    }
+//
+//    private boolean checkBluetoothIsOpen() {
+//        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        if (bluetoothAdapter == null)
+//            return false;
+//        return bluetoothAdapter.isEnabled();
+//    }
 }

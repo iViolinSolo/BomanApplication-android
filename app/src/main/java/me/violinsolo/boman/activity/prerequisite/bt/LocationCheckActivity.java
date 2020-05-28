@@ -3,7 +3,6 @@ package me.violinsolo.boman.activity.prerequisite.bt;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -21,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityLocationCheckBinding;
+import me.violinsolo.boman.util.BluetoothUtil;
 import me.violinsolo.boman.util.Config;
 import me.violinsolo.boman.util.StatusBarUtilNEW;
 
@@ -84,7 +84,7 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
             }
         });
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkGPSIsOpen()) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || BluetoothUtil.checkGPSIsOpen(mContext)) {
             Log.d(TAG, "> Location service check PASS...");
             goToNextPage();
         }else {
@@ -115,7 +115,7 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if (checkGPSIsOpen()) {
+                                            if (BluetoothUtil.checkGPSIsOpen(mContext)) {
                                                 goToNextPage();
                                             }else {
                                                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -145,7 +145,7 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_OPEN_GPS) {
-            if (checkGPSIsOpen()) {
+            if (BluetoothUtil.checkGPSIsOpen(mContext)) {
                 goToNextPage();
             }else {
                 Log.e(TAG, "User cancel the action to permit us with the privilege to access Location.");
@@ -164,11 +164,11 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
         finish();
     }
 
-    private boolean checkGPSIsOpen() {
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager == null)
-            return false;
-        return locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
-    }
+//    private boolean checkGPSIsOpen() {
+//        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+//        if (locationManager == null)
+//            return false;
+//        return locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
+//    }
 
 }
