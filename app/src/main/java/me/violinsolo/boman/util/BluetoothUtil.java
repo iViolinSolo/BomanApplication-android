@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.location.LocationManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import me.violinsolo.boman.R;
+import permissions.dispatcher.PermissionRequest;
 
 /**
  * @author violinsolo
@@ -34,15 +37,66 @@ public class BluetoothUtil {
         return bluetoothAdapter.isEnabled();
     }
 
-    public static void showGoLocationSettingDialog(Context mContext,
+    public static AlertDialog showGoLocationSettingDialog(Context mContext,
                                                    DialogInterface.OnClickListener cancelCallback,
                                                    DialogInterface.OnClickListener permitCallback) {
-        new AlertDialog.Builder(mContext)
+        AlertDialog dialog = new AlertDialog.Builder(mContext)
                 .setTitle(R.string.notifyTitle)
                 .setMessage(R.string.gpsNotifyMsg)
                 .setNegativeButton(R.string.cancel, cancelCallback)
                 .setPositiveButton(R.string.setting, permitCallback)
                 .setCancelable(false)
                 .show();
+        return dialog;
+    }
+
+    /**
+     * 弹出请求提示框之前的提示框
+     * @param messageResId
+     * @param request
+     */
+    public static AlertDialog showRationaleDialog(Context mContext,
+                                           @StringRes int messageResId,
+                                           final PermissionRequest request) {
+        AlertDialog dialog = new AlertDialog.Builder(mContext)
+                .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        request.cancel();
+                    }
+                })
+                .setCancelable(false)
+                .setMessage(messageResId)
+                .show();
+        return dialog;
+    }
+
+    /**
+     * 打开设置界面
+     */
+    public static AlertDialog showOpenSettingDialog(final Context context, @StringRes int messageResId){
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setPositiveButton(R.string.open_setting, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogInterface dialog, int which) {
+                        IntentUtil.startAppSettings(context);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false)
+                .setMessage(messageResId)
+                .show();
+        return dialog;
     }
 }
