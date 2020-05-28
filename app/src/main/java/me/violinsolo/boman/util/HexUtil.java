@@ -1,5 +1,7 @@
 package me.violinsolo.boman.util;
 
+import android.util.Log;
+
 /**
  * @author violinsolo
  * @version Boman v0.1
@@ -9,6 +11,7 @@ package me.violinsolo.boman.util;
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
 public class HexUtil {
+    public static final String TAG = HexUtil.class.getSimpleName();
 
     /**
      * cast the byte array to plain hex string, eg.

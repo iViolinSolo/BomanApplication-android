@@ -73,8 +73,11 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "RadarActivity.onDestroy()");
         if (Intermediate.getInstance().statusIsScanning) {
+            Log.i(TAG, "Now cancel scanning....");
             BleManager.getInstance().cancelScan(); // TODO the npe will be triggered when the Manager is not scanning
+            // .cancelScan() can trigger onScanFinished method
             Intermediate.getInstance().statusIsScanning = false;
         }
     }
@@ -190,6 +193,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                     Toast.makeText(mContext, getString(R.string.inactive_disconnected), Toast.LENGTH_LONG).show();
                     ObserverManager.getInstance().notifyObserverWhenDisonnected(device); // TODO, need to check observable functionality.
                 }
+                Log.i(TAG, "[Bluetooth] onDisConnected");
             }
         };
 
@@ -200,6 +204,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
             BleManager.getInstance().scan(new BleScanCallback() {
                 @Override
                 public void onScanFinished(List<BleDevice> scanResultList) {
+                    Log.i(TAG, "[Bluetooth] onScanFinished");
                     curState = ConnState.SCANNING_FINISH;
 
                     if (filteredScanResult.isEmpty()) {
@@ -222,6 +227,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                         showFailurePage();
                     }
 
+                    Log.i(TAG, "[Bluetooth] onScanStarted");
                 }
 
                 @Override
@@ -230,16 +236,20 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
 
                     int advertisementLength = broadcastData.length;
 
+                    final String tmp = "00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61";
                     String content = HexUtil.hexStrBigEndian(broadcastData);
-                    Log.e(TAG, bleDevice.getKey()+" \n\t\t[length]: "+advertisementLength+" -> "+content);
+                    Log.e(TAG, "\n\t\t"+bleDevice.getKey()+" \n\t\t[length]: "+advertisementLength+" -> \n\t\t"+tmp+"\n\t\t"+content);
 
 
                     String criticalInfo = "";
                     for (int i = 0; i < advertisementLength; i++) {
                         int secLen = broadcastData[i] & 0xff;
 
-                        if (i>=31) {
-                            break; // or the response data field will out of bound.`
+//                        if (i>=31) { // BUG, sometimes it will exceed the 31length.
+//                            break; // or the response data field will out of bound.`
+//                        }
+                        if(secLen == 0) {
+                            continue;
                         }
 
                         byte secType = broadcastData[i+1];
@@ -267,7 +277,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                             String plainAscii = HexUtil.str(secData, true);
                             criticalInfo = plainAscii;
 
-//                            Log.e(TAG, bleDevice.getKey()+" \t\t [Device Name Info]: <"+plainHex+"> => ["+plainAscii+"]");
+                            Log.d(TAG, bleDevice.getKey()+" \t\t [Device Name Info]: <"+plainHex+"> => ["+plainAscii+"]");
                         }else {
                             // Nothing to do.
                         }
@@ -293,6 +303,7 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
                         }
                     }
 
+                    Log.i(TAG, "[Bluetooth] onScanning");
                 }
             });
 
@@ -372,9 +383,9 @@ public class RadarActivity extends BaseActivity<ActivityRadarBinding> {
 
     private void showFailurePage() {
         // Attention, there are two types of FailurePage
-        getSupportFragmentManager().beginTransaction().hide(connectLoadingFragment).commit();
-        getSupportFragmentManager().beginTransaction().show(connectFailureFragment).commit();
-        getSupportFragmentManager().beginTransaction().hide(deviceListFragment).commit();
+        getSupportFragmentManager().beginTransaction().hide(connectLoadingFragment).commitAllowingStateLoss();  // fix bug: java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+        getSupportFragmentManager().beginTransaction().show(connectFailureFragment).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().hide(deviceListFragment).commitAllowingStateLoss();
 
         if (curState == ConnState.CONNECT_FAIL) {
             connectFailureFragment.setCurrentTitle("连接不到您的产品？");
