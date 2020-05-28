@@ -7,14 +7,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 
 import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
+import com.jaeger.library.StatusBarUtil;
 
 import java.util.UUID;
 
+import me.violinsolo.boman.R;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityDetailsBinding;
 import me.violinsolo.boman.subscribe.Observer;
@@ -106,6 +109,18 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
     @Override
     protected void initViews() {
         setSupportActionBar(mBinder.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorWhite), 0);
+        StatusBarUtil.setLightMode(DetailsActivity.this);
+        mBinder.toolbar.setNavigationIcon(R.mipmap.ic_back);
+        mBinder.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         ObserverManager.getInstance().addObserver(this);
 

@@ -5,17 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/activity_vertical_margin"
     tools:context=".activity.DetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorWhite"
         android:minHeight="?attr/actionBarSize"
-        app:title="Bluetooth details"
-        app:titleTextColor="@android:color/white"
+        app:title="Device Name"
+        app:titleTextColor="@color/colorBlack"
         android:theme="?attr/actionBarTheme" />
 
     <TextView
