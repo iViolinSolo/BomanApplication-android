@@ -163,6 +163,8 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
 
                                             long result = HexUtil.lng(data, false);
                                             content+= (" => " + result/100f+" ℃");
+
+                                            Log.d(TAG, "temperature => "+result/100f+" ℃");
                                         }
 //                                String plainHexData = HexUtil.formatHexString(data, true);
 
@@ -232,8 +234,9 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
 //                                            content+= (" => " + result/100f+" uv");
 
                                             long result = HexUtil.lng(data, false);
+                                            content+= (" => " + result/100f+" uv");
 
-                                            Log.d(TAG, "uv index => "+result/100f+" uv" +"; plain hex data: "+content);
+                                            Log.d(TAG, "uv index => "+result/100f+" uv");
                                         }
 //                                String plainHexData = HexUtil.formatHexString(data, true);
 
@@ -303,7 +306,7 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
                                             content+= (" => " + result/100f+" %");
 
 
-                                            Log.d(TAG, "humidity index => "+result/100f+" %" +"; plain hex data: "+content);
+                                            Log.d(TAG, "humidity index => "+result/100f+" %");
                                         }
 //                                String plainHexData = HexUtil.formatHexString(data, true);
 
