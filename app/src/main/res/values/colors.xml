@@ -12,5 +12,6 @@
     <color name="colorTextDarkGray">#747875</color>
     <color name="colorTextLightGray">#939795</color>
     <color name="colorTextLightGrayA50">#7f939795</color>
+    <color name="colorDividerGray">#D8D8D8</color>
 
 </resources>
