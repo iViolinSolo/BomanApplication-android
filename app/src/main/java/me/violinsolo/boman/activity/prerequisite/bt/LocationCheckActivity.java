@@ -31,6 +31,14 @@ import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
+/**
+ * @author violinsolo
+ * @version Boman v0.1
+ * @createAt 2020/5/20 10:18 AM
+ * @updateAt 2020/5/20 10:18 AM
+ * <p>
+ * Copyright (c) 2020 EmberXu.hack. All rights reserved.
+ */
 @RuntimePermissions
 public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBinding> {
     public static final String TAG = LocationCheckActivity.class.getSimpleName();
@@ -92,48 +100,68 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
             }
         });
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || BluetoothUtil.checkGPSIsOpen(mContext)) {
-            Log.d(TAG, "> Location service check PASS...");
-            goToNextPage();
-        }else {
-            Log.e(TAG, "> Location service check FAIL...");
+        // set highlight.
+        SpannableStringBuilder style = new SpannableStringBuilder(mBinder.tvPermitLocationExplanation.getText());
+        style.setSpan(new ForegroundColorSpan(Config.colorPrimary), 9, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(new ForegroundColorSpan(Config.colorPrimary), 16, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mBinder.tvPermitLocationExplanation.setText(style);
+
+        mBinder.btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Show dialog to guide the user permit us");
+
+                // NOTE: delegate the permission handling to generated method
+                LocationCheckActivityPermissionsDispatcher.showCheckPermissionStateWithPermissionCheck(LocationCheckActivity.this);
+            }
+        });
+
+        // 1. when we get into this interface, we need to check if the permission has been dynamic applied.
+        LocationCheckActivityPermissionsDispatcher.showCheckPermissionStateWithPermissionCheck(LocationCheckActivity.this);
 
 
-            // set highlight.
-            SpannableStringBuilder style = new SpannableStringBuilder(mBinder.tvPermitLocationExplanation.getText());
-            style.setSpan(new ForegroundColorSpan(Config.colorPrimary), 9, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            style.setSpan(new ForegroundColorSpan(Config.colorPrimary), 16, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            mBinder.tvPermitLocationExplanation.setText(style);
-
-            mBinder.btnNext.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d(TAG, "Show dialog to guide the user permit us");
-
-                    // NOTE: delegate the permission handling to generated method
-                    LocationCheckActivityPermissionsDispatcher.showCheckPermissionStateWithPermissionCheck(LocationCheckActivity.this);
-                    // 通过强行插入这段代码，把下面的内容都移动到权限赋予成功的界面去了。
-//                    BluetoothUtil.showGoLocationSettingDialog(mContext,
-//                            new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    finish();
-//                                }
-//                            },
-//                            new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    if (BluetoothUtil.checkGPSIsOpen(mContext)) {
-//                                        goToNextPage();
-//                                    }else {
-//                                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                                        startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
-//                                    }
-//                                }
-//                            });
-                }
-            });
-        }
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || BluetoothUtil.checkGPSIsOpen(mContext)) {
+//            Log.d(TAG, "> Location service check PASS...");
+//            goToNextPage();
+//        }else {
+//            Log.e(TAG, "> Location service check FAIL...");
+//
+//
+//            // set highlight.
+//            SpannableStringBuilder style = new SpannableStringBuilder(mBinder.tvPermitLocationExplanation.getText());
+//            style.setSpan(new ForegroundColorSpan(Config.colorPrimary), 9, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            style.setSpan(new ForegroundColorSpan(Config.colorPrimary), 16, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            mBinder.tvPermitLocationExplanation.setText(style);
+//
+//            mBinder.btnNext.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Log.d(TAG, "Show dialog to guide the user permit us");
+//
+//                    // NOTE: delegate the permission handling to generated method
+//                    LocationCheckActivityPermissionsDispatcher.showCheckPermissionStateWithPermissionCheck(LocationCheckActivity.this);
+//                    // 通过强行插入这段代码，把下面的内容都移动到权限赋予成功的界面去了。
+////                    BluetoothUtil.showGoLocationSettingDialog(mContext,
+////                            new DialogInterface.OnClickListener() {
+////                                @Override
+////                                public void onClick(DialogInterface dialog, int which) {
+////                                    finish();
+////                                }
+////                            },
+////                            new DialogInterface.OnClickListener() {
+////                                @Override
+////                                public void onClick(DialogInterface dialog, int which) {
+////                                    if (BluetoothUtil.checkGPSIsOpen(mContext)) {
+////                                        goToNextPage();
+////                                    }else {
+////                                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+////                                        startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
+////                                    }
+////                                }
+////                            });
+//                }
+//            });
+//        }
 
 
     }
@@ -198,28 +226,58 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
             Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
     void showCheckPermissionState(){
         //检查是否开启位置信息（如果没有开启，则无法扫描到任何蓝牙设备在6.0）
-        if (!BluetoothUtil.checkGPSIsOpen(mContext)){
-            BluetoothUtil.showGoLocationSettingDialog(
-                    mContext,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    },
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (BluetoothUtil.checkGPSIsOpen(mContext)) {
-                                goToNextPage();
-                            }else {
-                                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || BluetoothUtil.checkGPSIsOpen(mContext)) {
+            Log.d(TAG, "> Location service check PASS...");
+            goToNextPage();
+        }else {
+            Log.e(TAG, "> Location service check FAIL...");
+
+            if (!BluetoothUtil.checkGPSIsOpen(mContext)){
+                BluetoothUtil.showGoLocationSettingDialog(
+                        mContext,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        },
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (BluetoothUtil.checkGPSIsOpen(mContext)) {
+                                    goToNextPage();
+                                }else {
+                                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
+                                }
                             }
                         }
-                    }
-            );
+                );
+            }
         }
+//        if (!BluetoothUtil.checkGPSIsOpen(mContext)){
+//            BluetoothUtil.showGoLocationSettingDialog(
+//                    mContext,
+//                    new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            finish();
+//                        }
+//                    },
+//                    new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            if (BluetoothUtil.checkGPSIsOpen(mContext)) {
+//                                goToNextPage();
+//                            }else {
+//                                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                                startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
+//                            }
+//                        }
+//                    }
+//            );
+//        }
     }
 
     /**

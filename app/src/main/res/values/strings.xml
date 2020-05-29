@@ -23,7 +23,7 @@
     <string name="permission_rationale">我们需要蓝牙和位置服务的权限，使用位置服务是为了让蓝牙更好的进行连接。</string>
     <string name="permission_denied">我们需要蓝牙和位置服务的权限，使用位置服务是为了让蓝牙更好的进行连接。</string>
     <string name="open_setting">去设置</string>
-    <string name="open_setting_permission">请去设置手动授予我们位置权限。</string>
+    <string name="open_setting_permission">请去"设置"手动授予我们位置权限。</string>
 
     <!--  Activity Layout XMLs  -->
     <!--  activity_login_portal.xml  -->
