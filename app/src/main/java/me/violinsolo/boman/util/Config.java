@@ -24,6 +24,9 @@ public class Config {
         deviceNames.add("BM-");
     }
 
+    // if the temperature value is bigger than temperatureThreshold, it demonstrates "Temperature High!"
+    public static final int temperatureThreshold = 3750;
+
 
     public static final int colorPrimary = 0xFF6200EE;
     public static final int colorPrimaryDark = 0xFF3700B3;
