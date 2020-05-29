@@ -24,6 +24,11 @@
     <string name="permission_denied">我们需要蓝牙和位置服务的权限，使用位置服务是为了让蓝牙更好的进行连接。</string>
     <string name="open_setting">去设置</string>
     <string name="open_setting_permission">请去"设置"手动授予我们位置权限。</string>
+    <string name="notifyTitle">系统位置服务已关闭</string>
+    <string name="gpsNotifyMsg">请打开位置服务，以便使用蓝牙更好的查找您的产品。</string>
+    <string name="please_open_gps">请开启位置服务</string>
+    <string name="go_gps_setting">去设置</string>
+    <string name="cancel">取消</string>
 
     <!--  Activity Layout XMLs  -->
     <!--  activity_login_portal.xml  -->
@@ -61,10 +66,6 @@
     <string name="rssi_icon">rssi icon</string>
 
 
-    <string name="notifyTitle">系统定位服务已关闭</string>
-    <string name="gpsNotifyMsg">请打开定位服务，以便使用蓝牙更好的查找您的产品。</string>
-    <string name="setting">去设置</string>
-    <string name="cancel">取消</string>
     <string name="please_open_blue">请先打开蓝牙</string>
 
 

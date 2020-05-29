@@ -38,6 +38,22 @@ import permissions.dispatcher.RuntimePermissions;
  * @updateAt 2020/5/20 10:18 AM
  * <p>
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
+ *
+ * 流程为：
+ *  1. 用户进入本界面，检查是否动态申请了位置权限？
+ *      1.1 已经获取权限：检查是否开启定位？
+ *          1.1.1 是：进入下一界面，本界面finish
+ *          1.1.2 否：弹窗提示用户开启定位，用户选择？
+ *              1.1.2.1 是：去设置界面，返回时会在onActivityResult里面进行检查是否打开了定位
+ *              1.1.2.2 否：取消。
+ *                      直到用户打开了位置服务。进入下一界面。
+ *      1.2 没有获取权限：弹窗提示用户允许位置权限?
+ *          1.2.1 允许：进入1.1完成整个流程
+ *          1.2.2 拒绝：用户重新点击好的，弹窗提示用户允许权限
+ *              1.2.2.1 总是拒绝：下次用户点击好的，弹窗提示去设置界面手动授予权限
+ *              1.2.2.2 拒绝：继续弹窗提示用户允许权限
+ *              1.2.2.3 允许：成功授予权限，并进入1.1完成整个流程。
+ *
  */
 @RuntimePermissions
 public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBinding> {
@@ -182,7 +198,7 @@ public class LocationCheckActivity extends BaseActivity<ActivityLocationCheckBin
                 goToNextPage();
             }else {
                 Log.e(TAG, "User cancel the action to permit us with the privilege to access Location.");
-                Toast.makeText(mContext, "请授予我们位置权限", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.please_open_gps, Toast.LENGTH_SHORT).show();
             }
         }
     }

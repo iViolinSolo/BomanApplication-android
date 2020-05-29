@@ -44,7 +44,7 @@ public class BluetoothUtil {
                 .setTitle(R.string.notifyTitle)
                 .setMessage(R.string.gpsNotifyMsg)
                 .setNegativeButton(R.string.cancel, cancelCallback)
-                .setPositiveButton(R.string.setting, permitCallback)
+                .setPositiveButton(R.string.go_gps_setting, permitCallback)
                 .setCancelable(false)
                 .show();
         return dialog;
