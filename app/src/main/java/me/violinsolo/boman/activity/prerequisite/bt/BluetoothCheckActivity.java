@@ -114,6 +114,17 @@ public class BluetoothCheckActivity extends BaseActivity<ActivityBluetoothCheckB
 
                 }
             });
+
+            // In order to conform to the procedure in LocationCheckActivity, we add the following code
+            // snippet to trigger the bluetooth open dialog as the user firstly enter this UI.
+            // Ensures Bluetooth is available on the device and it is enabled. If not,
+            // displays a dialog requesting user permission to enable Bluetooth.
+            if (!BluetoothUtil.checkBluetoothIsOpen()) {
+
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+
+                startActivityForResult(enableBtIntent, REQUEST_CODE_ENABLE_BLUETOOTH);
+            }
         }
     }
 
