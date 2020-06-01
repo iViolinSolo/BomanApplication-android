@@ -40,5 +40,7 @@ public class ExampleUnitTest {
         System.out.println(Locale.getDefault().getLanguage());
         System.out.println(Locale.CHINESE.getLanguage());
         System.out.println(Locale.CHINESE.getLanguage().equals(Locale.getDefault().getLanguage()));
+
+        System.out.println("hour minute:"+DateUtil.getHourMinuteADV(millsec, null));
     }
 }

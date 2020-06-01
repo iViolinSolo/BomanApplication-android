@@ -41,6 +41,10 @@ public class TemperatureRecord {
         return DateUtil.getDayADV(value, null);
     }
 
+    public String getCurrentSimpleTime() {
+        return DateUtil.getHourMinuteADV(value, null);
+    }
+
     @Override
     public String toString() {
         return "TemperatureRecord{" +

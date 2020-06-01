@@ -55,7 +55,31 @@ public class DateUtil {
      * 动态响应中英文日期显示格式。
      * @param milliseconds
      * @param tz
-     * @return
+     * @return  "18:39"
+     */
+    public static String getHourMinuteADV(long milliseconds, TimeZone tz) {
+        if (tz == null) {
+            tz = TimeZone.getDefault();
+        }
+        String fmt = "";
+        Locale dft = Locale.getDefault();
+        if (dft.getLanguage().equals(Locale.CHINESE.getLanguage())) {
+            fmt = "HH:mm";  //18:39
+        }else {
+            fmt = "HH:mm";  //18:39
+        }
+
+        Date date = new Date(milliseconds);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(fmt, Locale.getDefault());
+        simpleDateFormat.setTimeZone(tz);
+        return simpleDateFormat.format(date);
+    }
+
+    /**
+     * 动态响应中英文日期显示格式。
+     * @param milliseconds
+     * @param tz
+     * @return  "yyyy年MM月dd日 星期二", "Tus, Jun dd, yyyy"
      */
     public static String getDayADV(long milliseconds, TimeZone tz) {
         if (tz == null) {
@@ -74,6 +98,4 @@ public class DateUtil {
         simpleDateFormat.setTimeZone(tz);
         return simpleDateFormat.format(date);
     }
-
-
 }
