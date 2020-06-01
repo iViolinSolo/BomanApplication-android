@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -25,8 +26,47 @@ import me.violinsolo.boman.model.TemperatureRecord;
  */
 public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    private List<TemperatureRecord> mData;
+    private List<Object> mData;  // Object contains String and TemperatureRecord.
 
+
+    public TemperatureHistoryAdapter(Context mContext) {
+        this.mContext = mContext;
+        this.mData = new ArrayList<>();
+    }
+
+    // Attention, the order of mData will be reversed when we present the data.
+    public synchronized void addRecord(TemperatureRecord record) {
+        long recordTime = record.getTimestamp();
+
+        if (mData.isEmpty()) {
+            mData.add(record);
+            String currentDay = record.getCurrentDay();
+            mData.add(currentDay);
+        }else {
+            int lastIdx = mData.size()-1;
+            Object last = mData.get(lastIdx);
+            if (last instanceof String) {
+                String strLast = (String) last;
+                String strRecord = record.getCurrentDay();
+
+                if (strLast.equals(strRecord)) {
+                    mData.remove(lastIdx);
+                }
+                mData.add(record);
+                mData.add(strRecord);
+                // 这里是强行把两个操作合并在一起了，
+                // 如果record的时间是strLast，去除这个标记，然后append数据，加入新标签，其实就是老标签
+                // 如果record的时间不是strLast，相当于是个新的数据，这个时候需要直接append数据，然后加入新标签。
+
+                // TODO: in the future, update this method so that you could insert a random record which can not guarantee the data sequence that conforms to date.
+            }else {
+                // 最后一个不是string，就强行帮他维护一个
+                mData.add(record);
+                String currentDay = record.getCurrentDay();
+                mData.add(currentDay);
+            }
+        }
+    }
 
     /**
      * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
@@ -51,6 +91,8 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+
         return null;
     }
 
