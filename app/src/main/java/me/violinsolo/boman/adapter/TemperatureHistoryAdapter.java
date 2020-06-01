@@ -57,6 +57,8 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView
             mData.add(record);
             String currentDay = record.getCurrentDay();
             mData.add(currentDay);
+
+            notifyDataSetChanged();
         }else {
             int lastIdx = mData.size()-1;
             Object last = mData.get(lastIdx);
@@ -74,11 +76,14 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView
                 // 如果record的时间不是strLast，相当于是个新的数据，这个时候需要直接append数据，然后加入新标签。
 
                 // TODO: in the future, update this method so that you could insert a random record which can not guarantee the data sequence that conforms to date.
+                notifyDataSetChanged();
             }else {
                 // 最后一个不是string，就强行帮他维护一个
                 mData.add(record);
                 String currentDay = record.getCurrentDay();
                 mData.add(currentDay);
+
+                notifyDataSetChanged();
             }
         }
     }
