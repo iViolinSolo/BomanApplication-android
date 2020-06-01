@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginStart="@dimen/safe_distance_20dp"
     android:layout_marginEnd="@dimen/safe_distance_20dp"
+    android:id="@+id/cl_temperature_record_root"
     android:background="@drawable/temperature_record_all_corner">
 
     <TextView

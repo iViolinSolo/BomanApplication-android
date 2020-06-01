@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import me.violinsolo.boman.R;
@@ -145,7 +146,7 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView
      */
     @Override
     public int getItemViewType(int position) {
-        Object obj = mData.get(position);
+        Object obj = mData.get(mData.size() - position - 1);
         if (obj instanceof String) {
             return VIEW_TYPE_GROUP_TITLE;
         }else if (obj instanceof TemperatureRecord) {
@@ -178,7 +179,7 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         // get plain data..
-        Object obj = mData.get(position);
+        Object obj = mData.get(mData.size() - position - 1);
 
         if (obj instanceof String) {
             // get data..
@@ -212,6 +213,70 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView
                 trvh.tvTemperatureNotify.setTextColor(tColor);
 
                 trvh.itemView.setTag(position);
+
+                // now we set the background of it.
+                // some sort of intricate.
+                // 每个都要判断一下前面的元素和后面的元素，才能决定自己应该是四种背景布局中的哪一种。
+
+
+                // in this mData array list, data are stored reversely.
+                // ----------------------------------------------------
+                // mData:
+                //
+                // ... old records, old record group title ------> new records, new record group title ...
+                // ----------------------------------------------------
+                //
+                // ----------------------------------------------------
+                // UI:
+                //
+                // new group title          --> small position, big array index
+                // new records
+                // ...
+                // old group title
+                // old records              --> big position, small array index
+                // ----------------------------------------------------
+
+                // ... String, TemperatureRecord, [current position] , TemperatureRecord, String ...
+                // ... ------, prevIdx, curIdx, formIdx, -----, ...
+                //
+                // ...
+                // formIdx
+                // curIdx
+                // prevIdx
+                // ...
+
+                int curIdx = mData.size() - 1 - position;
+                int prevIdx = curIdx -1; // here word "previous" means the previous data, older data.
+                int formIdx = curIdx +1; // here word "former" means the former data, newer data.
+                int bgxml = R.drawable.temperature_record_all_corner; // default bgxml
+                if (prevIdx < 0 || mData.get(prevIdx) instanceof String) {
+                    //  the bottom of the background xml should be round corners.
+                    if (mData.get(formIdx) instanceof String) {
+                        //  the top of the background xml should be round corners.
+                        bgxml = R.drawable.temperature_record_all_corner;
+                    }else if (mData.get(formIdx) instanceof TemperatureRecord) {
+                        //  the top of the background xml should be NO corners.
+                        bgxml = R.drawable.temperature_record_lower_corner;
+                    }else {
+                        // never come into this area.
+                    }
+                }else if (mData.get(prevIdx) instanceof TemperatureRecord) {
+                    //  the bottom of the background xml should be NO corners.
+                    if (mData.get(formIdx) instanceof String) {
+                        //  the top of the background xml should be round corners.
+                        bgxml = R.drawable.temperature_record_upper_corner;
+
+                    }else if (mData.get(formIdx) instanceof TemperatureRecord) {
+                        //  the top of the background xml should be NO corners.
+                        bgxml = R.drawable.temperature_record_no_corner;
+                    }else {
+                        // never come into this area.
+                    }
+                }else {
+                    // never come into this area.
+                }
+
+                trvh.clViewRoot.setBackgroundResource(bgxml);
             }else {
                 throw new RuntimeException("RecyclerView ViewHolder's type does not match Data's type: data:"+record+" position:"+position);
             }
@@ -231,6 +296,7 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public static class TemperatureRecordViewHolder extends RecyclerView.ViewHolder {
+        private ConstraintLayout clViewRoot;
         private TextView tvTime;
         private TextView tvTemperatureValue;
         private TextView tvTemperatureSymbol;
@@ -239,6 +305,7 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView
         public TemperatureRecordViewHolder(AdapterRvTemperatureHistoryRecordItemBinding mBinder) {
             super(mBinder.getRoot());
 
+            clViewRoot = mBinder.clTemperatureRecordRoot;
             tvTime = mBinder.tvTime;
             tvTemperatureValue = mBinder.tvTemperatureValue;
             tvTemperatureSymbol = mBinder.tvTemperatureSymbol;
