@@ -31,6 +31,8 @@ import me.violinsolo.boman.util.Intermediate;
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
 public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static final String TAG = TemperatureHistoryAdapter.class.getSimpleName();
+
     public static final int VIEW_TYPE_GROUP_TITLE = 0;
     public static final int VIEW_TYPE_TEMPERATURE_RECORD = 1;
     public static final int VIEW_TYPE_UNKNOWN = -1;
@@ -282,6 +284,17 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView
                 }
 
                 trvh.clViewRoot.setBackgroundResource(bgxml);
+
+//                if (prevIdx<0) { // TODO we will fix this bug in the future...
+//                    // curIdx == size-1
+//                    // 当前元素是最后一个元素
+//                    Log.e(TAG, "Last element, custom layout params");
+//
+////                    ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 64);
+//                    ViewGroup.LayoutParams layoutParams = trvh.clViewRoot.getLayoutParams();
+//                    layoutParams.;//4个参数按顺序分别是左上右下
+//                    trvh.clViewRoot.setLayoutParams(layoutParams);
+//                }
             }else {
                 throw new RuntimeException("RecyclerView ViewHolder's type does not match Data's type: data:"+record+" position:"+position);
             }
