@@ -1,6 +1,7 @@
 package me.violinsolo.boman.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.databinding.AdapterRvTemperatureHistoryGroupTitleItemBinding;
 import me.violinsolo.boman.databinding.AdapterRvTemperatureHistoryRecordItemBinding;
+import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
 import me.violinsolo.boman.model.TemperatureRecord;
 import me.violinsolo.boman.util.Config;
 import me.violinsolo.boman.util.Intermediate;
@@ -28,13 +30,22 @@ import me.violinsolo.boman.util.Intermediate;
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
 public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static final int VIEW_TYPE_GROUP_TITLE = 0;
+    public static final int VIEW_TYPE_TEMPERATURE_RECORD = 1;
+    public static final int VIEW_TYPE_UNKNOWN = -1;
+
     private Context mContext;
     private List<Object> mData;  // Object contains String and TemperatureRecord.
+    private OnRecyclerViewItemClickListener onRecyclerViewItemClickListener;
 
 
     public TemperatureHistoryAdapter(Context mContext) {
         this.mContext = mContext;
         this.mData = new ArrayList<>();
+    }
+
+    public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener onRecyclerViewItemClickListener) {
+        this.onRecyclerViewItemClickListener = onRecyclerViewItemClickListener;
     }
 
     // Attention, the order of mData will be reversed when we present the data.
@@ -94,9 +105,54 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_GROUP_TITLE) {
+            AdapterRvTemperatureHistoryGroupTitleItemBinding mBinder = AdapterRvTemperatureHistoryGroupTitleItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
+            GroupTitleViewHolder vh = new GroupTitleViewHolder(mBinder);
 
+            return vh;
+        }else if (viewType == VIEW_TYPE_TEMPERATURE_RECORD) {
+            AdapterRvTemperatureHistoryRecordItemBinding mBinder = AdapterRvTemperatureHistoryRecordItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
+            TemperatureRecordViewHolder vh = new TemperatureRecordViewHolder(mBinder);
 
+            // only this type is clickable
+            mBinder.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onRecyclerViewItemClickListener != null) {
+                        onRecyclerViewItemClickListener.onItemClick(view, (int) view.getTag());
+                    }
+                }
+            });
+            return vh;
+        }else if (viewType == VIEW_TYPE_UNKNOWN){
+
+            return null;
+        }
         return null;
+    }
+
+    /**
+     * Return the view type of the item at <code>position</code> for the purposes
+     * of view recycling.
+     *
+     * <p>The default implementation of this method returns 0, making the assumption of
+     * a single view type for the adapter. Unlike ListView adapters, types need not
+     * be contiguous. Consider using id resources to uniquely identify item view types.
+     *
+     * @param position position to query
+     * @return integer value identifying the type of the view needed to represent the item at
+     * <code>position</code>. Type codes need not be contiguous.
+     */
+    @Override
+    public int getItemViewType(int position) {
+        Object obj = mData.get(position);
+        if (obj instanceof String) {
+            return VIEW_TYPE_GROUP_TITLE;
+        }else if (obj instanceof TemperatureRecord) {
+            return VIEW_TYPE_TEMPERATURE_RECORD;
+        }else {
+            return VIEW_TYPE_UNKNOWN;
+        }
     }
 
     /**
@@ -171,7 +227,7 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView
      */
     @Override
     public int getItemCount() {
-        return 0;
+        return mData.size();
     }
 
     public static class TemperatureRecordViewHolder extends RecyclerView.ViewHolder {
