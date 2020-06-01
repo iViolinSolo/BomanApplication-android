@@ -38,11 +38,11 @@ public class TemperatureRecord {
     }
 
     public String getCurrentDay() {
-        return DateUtil.getDayADV(value, null);
+        return DateUtil.getDayADV(timestamp, null);
     }
 
     public String getCurrentSimpleTime() {
-        return DateUtil.getHourMinuteADV(value, null);
+        return DateUtil.getHourMinuteADV(timestamp, null);
     }
 
     @Override
