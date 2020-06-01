@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import me.violinsolo.testlibsapp.R;
+import me.violinsolo.testlibsapp.adapter.event.Extension;
 import me.violinsolo.testlibsapp.databinding.AdapterRvTemperatureHistoryGroupTitleItemBinding;
 import me.violinsolo.testlibsapp.databinding.AdapterRvTemperatureHistoryRecordItemBinding;
 import me.violinsolo.testlibsapp.listener.OnRecyclerViewItemClickListener;
@@ -313,7 +314,7 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<ViewHolder> 
         return mData.size();
     }
 
-    public static class TemperatureRecordViewHolder extends ViewHolder {
+    public static class TemperatureRecordViewHolder extends ViewHolder implements Extension {
         private ConstraintLayout clViewRoot;
         private TextView tvTime;
         private TextView tvTemperatureValue;
@@ -329,15 +330,25 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<ViewHolder> 
             tvTemperatureSymbol = mBinder.tvTemperatureSymbol;
             tvTemperatureNotify = mBinder.tvTemperatureNotify;
         }
+
+        @Override
+        public float getActionWidth() {
+            return clViewRoot.getWidth();
+        }
     }
 
-    public static class  GroupTitleViewHolder extends ViewHolder {
+    public static class  GroupTitleViewHolder extends ViewHolder implements Extension {
         private TextView tvGroupTitle;
 
         public GroupTitleViewHolder(AdapterRvTemperatureHistoryGroupTitleItemBinding mBiner) {
             super(mBiner.getRoot());
 
             tvGroupTitle = mBiner.tvGroupTitle;
+        }
+
+        @Override
+        public float getActionWidth() {
+            return NO_AVAILABLE;
         }
     }
 }
