@@ -22,4 +22,7 @@ public class Config {
     static {
         deviceNames.add("Thunderboard");
     }
+
+    // if the temperature value is bigger than temperatureThreshold, it demonstrates "Temperature High!"
+    public static final int temperatureThreshold = 3750;
 }
