@@ -40,4 +40,12 @@ public class TemperatureRecord {
     public String getCurrentDay() {
         return DateUtil.getDayADV(value, null);
     }
+
+    @Override
+    public String toString() {
+        return "TemperatureRecord{" +
+                "value=" + value +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }
