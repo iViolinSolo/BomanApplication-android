@@ -15,13 +15,18 @@ import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.jaeger.library.StatusBarUtil;
 
+import java.util.Random;
 import java.util.UUID;
 
 import me.violinsolo.boman.R;
+import me.violinsolo.boman.adapter.TemperatureHistoryAdapter;
 import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityDetailsBinding;
+import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
+import me.violinsolo.boman.model.TemperatureRecord;
 import me.violinsolo.boman.subscribe.Observer;
 import me.violinsolo.boman.subscribe.ObserverManager;
+import me.violinsolo.boman.util.DateUtil;
 import me.violinsolo.boman.util.HexUtil;
 import me.violinsolo.boman.util.StatusBarUtilNEW;
 
@@ -37,7 +42,9 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
     private static final String TAG = DetailsActivity.class.getSimpleName();
 
     public static final String EXTRA_DATA_BLE = "EXTRA_DATA_BLE";
-    public Context mContext = DetailsActivity.this;
+    public Context mContext;
+
+    private TemperatureHistoryAdapter mAdapter;
 
     private BleDevice bleDevice;
     private BluetoothGattService bluetoothGattService;
@@ -102,6 +109,10 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
         bleDevice = getIntent().getParcelableExtra(EXTRA_DATA_BLE);
         if (bleDevice == null || !BleManager.getInstance().isConnected(bleDevice))
             finish();
+
+        mContext = DetailsActivity.this;
+
+        ObserverManager.getInstance().addObserver(this);
     }
 
     /**
@@ -126,7 +137,23 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
             }
         });
 
-        ObserverManager.getInstance().addObserver(this);
+
+        mAdapter = new TemperatureHistoryAdapter(mContext);
+        mBinder.rvHistoryRecords.setAdapter(mAdapter);
+
+        Random random = new Random();
+        // mock data
+        for (int i = 0; i < 20; i++) {
+            long curTime = DateUtil.getCurrentTimestamp();
+            int m = random.nextInt(200)-100;  // [-100. 100)
+            long tr = curTime+m*1000000L;
+            int tt = 3750+m;
+
+            TemperatureRecord record = new TemperatureRecord(tt, tr);
+            Log.d(TAG, record.toString());
+            mAdapter.addRecord(record);
+        }
+
 
         mBinder.tvDeviceInfo.setText(String.format("%s - %s", bleDevice.getName(), bleDevice.getMac()));
         mBinder.tvDeviceInfo.setTextColor(0xFF8DA9E4);
@@ -365,6 +392,13 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
     @Override
     protected void bindListeners() {
 
+
+        mAdapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+        });
     }
 
     @Override
