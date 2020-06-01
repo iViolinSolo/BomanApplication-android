@@ -44,7 +44,7 @@ public class AdcvActivity extends BaseActivity<ActivityAdcvBinding> {
      */
     @Override
     protected void initData() {
-
+        mContext = AdcvActivity.this;
     }
 
     /**
