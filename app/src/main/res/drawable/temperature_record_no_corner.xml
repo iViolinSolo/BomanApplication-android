@@ -8,7 +8,7 @@
                 android:topRightRadius="@dimen/corner_radius_0dp"
                 android:bottomLeftRadius="@dimen/corner_radius_0dp"
                 android:bottomRightRadius="@dimen/corner_radius_0dp" />
-            <solid android:color="@color/colorDividerGray" />  <!-- 边框颜色 -->
+            <solid android:color="@color/colorDividerHGray" />  <!-- 边框颜色 -->
         </shape>
     </item>
 

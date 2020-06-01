@@ -13,5 +13,7 @@
     <color name="colorTextLightGray">#939795</color>
     <color name="colorTextLightGrayA50">#7f939795</color>
     <color name="colorDividerGray">#D8D8D8</color>
+    <color name="colorDividerHGray">#EEEEEE</color>
+    <color name="colorRVBG">#F4F6FA</color>
 
 </resources>
