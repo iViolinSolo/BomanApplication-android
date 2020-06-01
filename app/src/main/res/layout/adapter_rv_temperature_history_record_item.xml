@@ -30,6 +30,13 @@
         app:layout_constraintStart_toEndOf="@+id/tv_time"
         app:layout_constraintTop_toTopOf="parent">
 
+        <View
+            android:id="@+id/v_h_divider"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorDividerGray" />
+
         <ImageView
             android:id="@+id/iv_thermometer_ic"
             android:layout_width="wrap_content"
@@ -37,12 +44,6 @@
             android:layout_gravity="center"
             app:srcCompat="@mipmap/ic_thermometer_3x" />
 
-        <View
-            android:id="@+id/v_h_divider"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/colorDividerGray" />
     </FrameLayout>
 
     <TextView
