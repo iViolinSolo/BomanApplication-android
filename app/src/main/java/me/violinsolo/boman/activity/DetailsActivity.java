@@ -18,6 +18,8 @@ import com.jaeger.library.StatusBarUtil;
 import java.util.Random;
 import java.util.UUID;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.adapter.TemperatureHistoryAdapter;
 import me.violinsolo.boman.base.BaseActivity;
@@ -137,7 +139,11 @@ public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implem
             }
         });
 
-
+        // set layout manager
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext);
+        mLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        mBinder.rvHistoryRecords.setLayoutManager(mLayoutManager);
+        // set adapter
         mAdapter = new TemperatureHistoryAdapter(mContext);
         mBinder.rvHistoryRecords.setAdapter(mAdapter);
 
