@@ -12,9 +12,12 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+import me.violinsolo.boman.R;
 import me.violinsolo.boman.databinding.AdapterRvTemperatureHistoryGroupTitleItemBinding;
 import me.violinsolo.boman.databinding.AdapterRvTemperatureHistoryRecordItemBinding;
 import me.violinsolo.boman.model.TemperatureRecord;
+import me.violinsolo.boman.util.Config;
+import me.violinsolo.boman.util.Intermediate;
 
 /**
  * @author violinsolo
@@ -118,7 +121,47 @@ public class TemperatureHistoryAdapter extends RecyclerView.Adapter<RecyclerView
      */
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        // get plain data..
+        Object obj = mData.get(position);
 
+        if (obj instanceof String) {
+            // get data..
+            String groupTitle = (String) obj;
+
+            if (holder instanceof GroupTitleViewHolder) {
+                GroupTitleViewHolder gtvh = (GroupTitleViewHolder) holder;
+
+                gtvh.tvGroupTitle.setText(groupTitle);
+
+                gtvh.itemView.setTag(position);
+            }else {
+                throw new RuntimeException("RecyclerView ViewHolder's type does not match Data's type: data:"+groupTitle+" position:"+position);
+            }
+        }else if (obj instanceof TemperatureRecord) {
+            // get data..
+            TemperatureRecord record = (TemperatureRecord) obj;
+
+            if (holder instanceof TemperatureRecordViewHolder) {
+                TemperatureRecordViewHolder trvh = (TemperatureRecordViewHolder) holder;
+
+                trvh.tvTime.setText(record.getCurrentSimpleTime());
+                // TODO the convertion between Celsius and Fahrenheit need to be added.
+                int temperatureValue = record.getValue();
+                float trueValue = temperatureValue/100f;
+                trvh.tvTemperatureValue.setText(String.format("%s", trueValue));
+                String tSymbol = Intermediate.getInstance().isCelsius? "℃": "℉";
+                trvh.tvTemperatureSymbol.setText(tSymbol);
+                trvh.tvTemperatureNotify.setText(temperatureValue > Config.temperatureThreshold? "体温偏高":"体温正常");
+                int tColor = mContext.getResources().getColor(temperatureValue > Config.temperatureThreshold? R.color.colorRed:R.color.colorBlack);
+                trvh.tvTemperatureNotify.setTextColor(tColor);
+
+                trvh.itemView.setTag(position);
+            }else {
+                throw new RuntimeException("RecyclerView ViewHolder's type does not match Data's type: data:"+record+" position:"+position);
+            }
+        }else {
+            throw new RuntimeException("RecyclerView Data's type is unknown. position:"+position);
+        }
     }
 
     /**

@@ -24,4 +24,6 @@ public class Intermediate {
 
     // holder for current bound device ...
     public BleDevice mBleHolder = null;
+
+    public boolean isCelsius = true;
 }
