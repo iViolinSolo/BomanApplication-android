@@ -1,4 +1,4 @@
-package me.violinsolo.boman.ble;
+package me.violinsolo.boman.deprecated.ble;
 
 import android.bluetooth.BluetoothDevice;
 

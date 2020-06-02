@@ -10,7 +10,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-import me.violinsolo.boman.ble.BleRepr;
+import me.violinsolo.boman.deprecated.ble.BleRepr;
 import me.violinsolo.boman.model.BleBoundDevice;
 
 import static android.content.Context.MODE_PRIVATE;

@@ -1,4 +1,4 @@
-package me.violinsolo.boman.adapter;
+package me.violinsolo.boman.deprecated;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.violinsolo.boman.R;
-import me.violinsolo.boman.ble.BLEUtils;
+import me.violinsolo.boman.deprecated.ble.BLEUtils;
 import me.violinsolo.boman.databinding.AdapterDeviceBinding;
 
 /**
