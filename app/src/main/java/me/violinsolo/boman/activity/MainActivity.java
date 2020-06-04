@@ -23,7 +23,7 @@ import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityMainBinding;
 import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
 import me.violinsolo.boman.model.BleBoundDevice;
-import me.violinsolo.boman.subscribe.Observer;
+import me.violinsolo.boman.subscribe.BleConnectionStateObserver;
 import me.violinsolo.boman.subscribe.ObserverManager;
 import me.violinsolo.boman.util.Intermediate;
 import me.violinsolo.boman.util.SharedPrefUtils;
@@ -37,7 +37,7 @@ import me.violinsolo.boman.util.StatusBarUtilNEW;
  * <p>
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
-public class MainActivity extends BaseActivity<ActivityMainBinding> implements Observer {
+public class MainActivity extends BaseActivity<ActivityMainBinding> implements BleConnectionStateObserver {
     private Context mContext;
     private static final String TAG = MainActivity.class.getSimpleName();
 

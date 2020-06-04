@@ -26,7 +26,7 @@ import me.violinsolo.boman.base.BaseActivity;
 import me.violinsolo.boman.databinding.ActivityDetailsBinding;
 import me.violinsolo.boman.listener.OnRecyclerViewItemClickListener;
 import me.violinsolo.boman.model.TemperatureRecord;
-import me.violinsolo.boman.subscribe.Observer;
+import me.violinsolo.boman.subscribe.BleConnectionStateObserver;
 import me.violinsolo.boman.subscribe.ObserverManager;
 import me.violinsolo.boman.util.DateUtil;
 import me.violinsolo.boman.util.HexUtil;
@@ -40,7 +40,7 @@ import me.violinsolo.boman.util.StatusBarUtilNEW;
  * <p>
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
-public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implements Observer {
+public class DetailsActivity extends BaseActivity<ActivityDetailsBinding> implements BleConnectionStateObserver {
     private static final String TAG = DetailsActivity.class.getSimpleName();
 
     public static final String EXTRA_DATA_BLE = "EXTRA_DATA_BLE";
