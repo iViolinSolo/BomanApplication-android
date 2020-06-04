@@ -111,7 +111,7 @@ public class DateUtil {
      * @param tz null means default timezone to be used.
      * @return
      */
-    public static int[] castIntArray2Millis(long milliseconds, TimeZone tz) {
+    public static int[] castMillis2IntArray(long milliseconds, TimeZone tz) {
         if (tz == null) {
             tz = TimeZone.getDefault();
         }
