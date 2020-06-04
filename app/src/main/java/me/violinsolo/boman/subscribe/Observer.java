@@ -1,8 +1,6 @@
 package me.violinsolo.boman.subscribe;
 
 
-import com.clj.fastble.data.BleDevice;
-
 /**
  * @author violinsolo
  * @version Boman v0.1
@@ -11,8 +9,6 @@ import com.clj.fastble.data.BleDevice;
  * <p>
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
-public interface Observer {
+interface Observer {
 
-    void onBLEDisconneted(BleDevice bleDevice);
-    void onBLEConneted(BleDevice bleDevice);
 }
