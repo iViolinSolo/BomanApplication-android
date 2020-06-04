@@ -251,4 +251,45 @@ public class BluetoothUtil {
     public static final String characteristic_Synchronize_Control = "26a31a1b-420c-d987-b441-c4c57b33b414";
     // 属性：Notify             同步文件内容
     public static final String characteristic_Synchronize_Content = "11a31a33-420c-d987-b441-c4c57b33b477";
+
+
+    /**
+     * =====================================================
+     *
+     * The following codes are used to be Helper functions which can have some positive effects.
+     *
+     * =====================================================
+     */
+
+    public byte[] genCurrentTimeData() {
+        long milliseconds = DateUtil.getCurrentTimestamp();
+        int[] timeArr = DateUtil.castMillis2IntArray(milliseconds, null);
+
+        byte[] data = new byte[7];
+        data[0] = (byte) (timeArr[0] >> 8 & 0xFF);  // 大端，高位在前，低位在后
+        data[1] = (byte) (timeArr[0] & 0xFF);
+        data[2] = (byte) (timeArr[1] & 0xFF);
+        data[3] = (byte) (timeArr[2] & 0xFF);
+        data[4] = (byte) (timeArr[3] & 0xFF);
+        data[5] = (byte) (timeArr[4] & 0xFF);
+        data[6] = (byte) (timeArr[5] & 0xFF);
+
+        return data;
+    }
+
+    public long parseCurrentTimeData(byte[] data) {
+        int[] timeArr = new int[6];
+
+        int year = (data[0] & 0xFF << 8) + (data[1] & 0xFF);  // 大端，高位在前，低位在后
+        timeArr[0] = year;
+        timeArr[1] = data[2] & 0xFF;
+        timeArr[2] = data[3] & 0xFF;
+        timeArr[3] = data[4] & 0xFF;
+        timeArr[4] = data[5] & 0xFF;
+        timeArr[5] = data[6] & 0xFF;
+
+        long milliseconds = DateUtil.castIntArray2Millis(timeArr, null);
+
+        return milliseconds;
+    }
 }
