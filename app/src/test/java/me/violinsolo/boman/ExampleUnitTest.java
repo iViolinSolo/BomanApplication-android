@@ -2,6 +2,7 @@ package me.violinsolo.boman;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 import me.violinsolo.boman.util.DateUtil;
@@ -42,5 +43,19 @@ public class ExampleUnitTest {
         System.out.println(Locale.CHINESE.getLanguage().equals(Locale.getDefault().getLanguage()));
 
         System.out.println("hour minute:"+DateUtil.getHourMinuteADV(millsec, null));
+    }
+
+    @Test
+    public void test_calendar_fns() {
+        long millisecs = DateUtil.getCurrentTimestamp();
+        System.out.println(millisecs);
+        System.out.println(DateUtil.formatMillisToGMT8(millisecs));
+
+        int[] timeArr = DateUtil.castMillis2IntArray(millisecs, null);
+        System.out.println(Arrays.toString(timeArr));
+
+        long millisecs2 = DateUtil.castMillis2IntArray(timeArr, null);
+        System.out.println(millisecs2);
+        System.out.println(DateUtil.formatMillisToGMT8(millisecs2));
     }
 }
