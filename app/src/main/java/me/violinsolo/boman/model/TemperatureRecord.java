@@ -1,5 +1,7 @@
 package me.violinsolo.boman.model;
 
+import java.util.UUID;
+
 import me.violinsolo.boman.util.DateUtil;
 
 /**
@@ -15,10 +17,16 @@ public class TemperatureRecord {
     private int value; // Celsius degree.
     // the timestamp for this record.
     private long timestamp;
+    // true if this record has been upload.
+    private boolean hasUpload;
+    // THE uuid to identify this resource in the server-side.
+    private String uuid;
 
     public TemperatureRecord(int value, long timestamp) {
         this.value = value;
         this.timestamp = timestamp;
+        this.hasUpload = false;
+        this.uuid = UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     public int getValue() {
