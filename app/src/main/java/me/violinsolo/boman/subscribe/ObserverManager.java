@@ -43,7 +43,9 @@ public class ObserverManager implements Observable {
     public synchronized void notifyObserverWhenConnected(BleDevice bleDevice) {
         for (int i = 0; i < observers.size(); i++) {
             Observer o = observers.get(i);
-            o.onBLEConneted(bleDevice);
+            if (o instanceof BleConnectionStateObserver) {
+                o.onBLEConneted(bleDevice);
+            }
         }
     }
 
@@ -51,7 +53,9 @@ public class ObserverManager implements Observable {
     public synchronized void notifyObserverWhenDisonnected(BleDevice bleDevice) {
         for (int i = 0; i < observers.size(); i++) {
             Observer o = observers.get(i);
-            o.onBLEDisconneted(bleDevice);
+            if (o instanceof BleConnectionStateObserver) {
+                o.onBLEDisconneted(bleDevice);
+            }
         }
     }
 
