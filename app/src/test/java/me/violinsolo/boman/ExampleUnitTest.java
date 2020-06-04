@@ -51,10 +51,10 @@ public class ExampleUnitTest {
         System.out.println(millisecs);
         System.out.println(DateUtil.formatMillisToGMT8(millisecs));
 
-        int[] timeArr = DateUtil.castMillis2IntArray(millisecs, null);
+        int[] timeArr = DateUtil.castIntArray2Millis(millisecs, null);
         System.out.println(Arrays.toString(timeArr));
 
-        long millisecs2 = DateUtil.castMillis2IntArray(timeArr, null);
+        long millisecs2 = DateUtil.castIntArray2Millis(timeArr, null);
         System.out.println(millisecs2);
         System.out.println(DateUtil.formatMillisToGMT8(millisecs2));
     }
