@@ -153,4 +153,18 @@ public class HexUtil {
 
         return (char) asciiVal;
     }
+
+    /**
+     * cast a byte array to a short, 16 bits integer.
+     * @param data
+     * @return
+     */
+    public static short toShort(final byte[] data) {
+        short l = 0;
+        l |= data[0] & 0xFF;
+        l <<= 8;
+        l |= data[1] & 0xFF;
+//        System.out.println("l:"+l);
+        return l;
+    }
 }

@@ -2,6 +2,8 @@ package me.violinsolo.boman.util;
 
 import com.clj.fastble.data.BleDevice;
 
+import me.violinsolo.boman.model.BleBoundDevice;
+
 /**
  * @author violinsolo
  * @version Boman v0.1
@@ -25,5 +27,9 @@ public class Intermediate {
     // holder for current bound device ...
     public BleDevice mBleHolder = null;
 
+    // holder for app-level temperature unit
     public boolean isCelsius = true;
+
+    // holder for ble-level state of charge
+    public int socVal = BleBoundDevice.SOC_NO_VALUE;
 }

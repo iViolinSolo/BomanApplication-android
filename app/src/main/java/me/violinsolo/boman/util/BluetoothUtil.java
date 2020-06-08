@@ -261,12 +261,39 @@ public class BluetoothUtil {
      * =====================================================
      */
 
-    public byte[] genCurrentTimeData() {
+    public static final byte notifySuccess = (byte) 0xB5;
+
+    public static final byte controlPointHeader = (byte) 0xA5;
+    public static final byte controlPointSetTime = (byte) 0x01;
+    public static final byte controlPointReadTime = (byte) 0x02;
+    public static final byte controlPointReadSOC = (byte) 0x03; // battery remain level
+    public static final byte controlPointSetTemperatureUnit = (byte) 0x04;
+    public static final byte celsiusMode = (byte) 0x01;
+    public static final byte fahrenheitMode = (byte) 0x02;
+    public static final byte controlPointReadEnvironmentTemperature = (byte) 0x05;
+    public static final byte controlPointReadTemperature = (byte) 0x06;
+    public static final byte controlPointSetTemperatureOffset= (byte) 0x07;
+//    public static final byte controlPoint= (byte) 0x;
+//    public static final byte controlPoint= (byte) 0x;
+//    public static final byte controlPoint= (byte) 0x;
+//    public static final byte controlPoint= (byte) 0x;
+//    public static final byte = (byte) 0x;
+//    public static final byte = (byte) 0x;
+//    public static final byte = (byte) 0x;
+//    public static final byte = (byte) 0x;
+//    public static final byte = (byte) 0x;
+//    public static final byte = (byte) 0x;
+//    public static final byte = (byte) 0x;
+//    public static final byte = (byte) 0x;
+
+
+    // called in 0xA501
+    public static byte[] genCurrentTimeData() {
         long milliseconds = DateUtil.getCurrentTimestamp();
         int[] timeArr = DateUtil.castMillis2IntArray(milliseconds, null);
 
         byte[] data = new byte[7];
-        data[0] = (byte) (timeArr[0] >> 8 & 0xFF);  // 大端，高位在前，低位在后
+        data[0] = (byte) ((timeArr[0] >> 8) & 0xFF);  // 大端，高位在前，低位在后
         data[1] = (byte) (timeArr[0] & 0xFF);
         data[2] = (byte) (timeArr[1] & 0xFF);
         data[3] = (byte) (timeArr[2] & 0xFF);
@@ -277,10 +304,14 @@ public class BluetoothUtil {
         return data;
     }
 
-    public long parseCurrentTimeData(byte[] data) {
+    // called in 0xA502
+    // assert data.length == 6,
+    // the first byte in this array in NOTIFY has been engulfed so data array has a length 6.
+    public static long parseCurrentTimeData(byte[] data) {
         int[] timeArr = new int[6];
 
-        int year = (data[0] & 0xFF << 8) + (data[1] & 0xFF);  // 大端，高位在前，低位在后
+        // remember the priority of << is higher than &, using () to specify the right calling order...
+        int year = ((data[0] & 0xFF) << 8) + (data[1] & 0xFF);  // 大端，高位在前，低位在后
         timeArr[0] = year;
         timeArr[1] = data[2] & 0xFF;
         timeArr[2] = data[3] & 0xFF;
@@ -292,4 +323,63 @@ public class BluetoothUtil {
 
         return milliseconds;
     }
+
+    // called in 0xA503
+    // the first byte in this array in NOTIFY has been engulfed so data array has a length 1,
+    // which will only pass the ONLY byte into this function.
+    public static int parseCurrentSOCValue(byte data) {
+        int socVal = (data & 0xFF);
+
+        return socVal;
+    }
+
+    // called in 0xA504
+    public static byte genCurrentTemperatureUnit() {
+        return Intermediate.getInstance().isCelsius? celsiusMode: fahrenheitMode;
+    }
+
+
+    // called in 0xA505
+    // assert data.length == 7,
+    public static float parseCurrentEnvironmentTemperature(byte[] data) {
+        byte[] envTemp = new byte[2];
+        envTemp[0] = data[0];
+        envTemp[1] = data[1];
+
+        short envTemperature10times = HexUtil.toShort(envTemp);
+
+        return envTemperature10times / 10f;
+    }
+
+
+    // called in 0xA506
+    public static short parseCurrentTemperature(byte[] data) {
+        byte[] bodyTemp = new byte[2];
+        bodyTemp[0] = data[6];
+        bodyTemp[1] = data[7];
+
+        byte[] surfaceTemp = new byte[2];
+        surfaceTemp[0] = data[0];
+        surfaceTemp[1] = data[1];
+
+        // body temperature ...
+        short bodyTemperature10times = HexUtil.toShort(bodyTemp);
+        short surfaceTemperature10times = HexUtil.toShort(surfaceTemp);
+
+        return bodyTemperature10times;
+    }
+
+    // called in 0xA507
+    public static byte[] genCurrentTemperatureOffset(short tempOffset) {
+        byte[] data = new byte[2];
+        data[0] = (byte) ((tempOffset >> 8) & 0xFF);  // 大端，高位在前，低位在后
+        data[1] = (byte) (tempOffset & 0xFF);
+
+        return data;
+    }
+
+    // called in 0xA501
+    // called in 0xA501
+    // called in 0xA501
+    // called in 0xA501
 }
