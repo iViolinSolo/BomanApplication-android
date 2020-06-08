@@ -30,6 +30,18 @@ public class Intermediate {
     // holder for app-level temperature unit
     public boolean isCelsius = true;
 
+    // holder for app-level temperature mode,
+    // true means it's body temperature mode, else is surface mode.
+    public boolean isBodyTempMode = true;
+
+    public enum DeviceTestMode {
+        NORMAL_TEMPERATURE_MEASUREMENT_MODE, // default
+        FACTORY_MODE,
+        CONTINUOUSLY_MEASURING_MODE
+    }
+    // holder for app-level device mode, usually used in test page...
+    public DeviceTestMode currentDeviceMode = DeviceTestMode.NORMAL_TEMPERATURE_MEASUREMENT_MODE;
+
     // holder for ble-level state of charge
     public int socVal = BleBoundDevice.SOC_NO_VALUE;
 }

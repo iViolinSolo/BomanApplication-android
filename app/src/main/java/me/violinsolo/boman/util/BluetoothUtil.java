@@ -273,8 +273,14 @@ public class BluetoothUtil {
     public static final byte controlPointReadEnvironmentTemperature = (byte) 0x05;
     public static final byte controlPointReadTemperature = (byte) 0x06;
     public static final byte controlPointSetTemperatureOffset= (byte) 0x07;
-//    public static final byte controlPoint= (byte) 0x;
-//    public static final byte controlPoint= (byte) 0x;
+    public static final byte controlPointSetTemperatureMode= (byte) 0xF1;
+    public static final byte bodyTemperatureMode = (byte) 0x01;
+    public static final byte surfaceTemperatureMode = (byte) 0x02;
+    public static final byte controlPointSetDeviceTestMode= (byte) 0xF2;
+    public static final byte normalTemperatureMeasurementMode = (byte) 0x01;
+    public static final byte factoryMode = (byte) 0x02;
+    public static final byte continuouslyMeasuringMode = (byte) 0x03;
+
 //    public static final byte controlPoint= (byte) 0x;
 //    public static final byte controlPoint= (byte) 0x;
 //    public static final byte = (byte) 0x;
@@ -378,6 +384,35 @@ public class BluetoothUtil {
         return data;
     }
 
+    // called in 0xA5F1
+    // should be invoked every time when you connect the thermometer.
+    public static byte genCurrentTemperatureMode() {
+        return Intermediate.getInstance().isBodyTempMode? bodyTemperatureMode: surfaceTemperatureMode;
+    }
+
+    // called in 0xA5F2
+    public static byte genCurrentDeviceTestMode() {
+        byte result;
+        Intermediate.DeviceTestMode mode = Intermediate.getInstance().currentDeviceMode;
+
+        switch (mode) {
+            case FACTORY_MODE:
+                result = factoryMode;
+                break;
+            case CONTINUOUSLY_MEASURING_MODE:
+                result = continuouslyMeasuringMode;
+                break;
+            case NORMAL_TEMPERATURE_MEASUREMENT_MODE:
+            default:
+                result = normalTemperatureMeasurementMode;
+                break;
+        }
+
+        return result;
+    }
+
+    // called in 0xA501
+    // called in 0xA501
     // called in 0xA501
     // called in 0xA501
     // called in 0xA501
