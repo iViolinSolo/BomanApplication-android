@@ -377,11 +377,12 @@ public class BluetoothUtil {
 
     // called in 0xA507
     public static byte[] genCurrentTemperatureOffset(short tempOffset) {
-        byte[] data = new byte[2];
-        data[0] = (byte) ((tempOffset >> 8) & 0xFF);  // 大端，高位在前，低位在后
-        data[1] = (byte) (tempOffset & 0xFF);
-
-        return data;
+//        byte[] data = new byte[2];
+//        data[0] = (byte) ((tempOffset >> 8) & 0xFF);  // 大端，高位在前，低位在后
+//        data[1] = (byte) (tempOffset & 0xFF);
+//
+//        return data;
+        return parseShortToByteArr(tempOffset);
     }
 
     // called in 0xA5F1
@@ -411,10 +412,61 @@ public class BluetoothUtil {
         return result;
     }
 
-    // called in 0xA501
-    // called in 0xA501
-    // called in 0xA501
-    // called in 0xA501
-    // called in 0xA501
-    // called in 0xA501
+    // TEST CALLED CODES...
+    private static byte[] parseShortToByteArr(short val) {
+        byte[] data = new byte[2];
+        data[0] = (byte) ((val >> 8) & 0xFF);  // 大端，高位在前，低位在后
+        data[1] = (byte) (val & 0xFF);
+
+        return data;
+    }
+
+    // called in 0xA5A1
+    public static byte[] genCurrentTest_16_35_BlackBodyTempOffset(short tempOffset) {
+        return parseShortToByteArr(tempOffset);
+    }
+    // called in 0xA5A2
+    public static byte[] genCurrentTest_16_37_BlackBodyTempOffset(short tempOffset) {
+        return parseShortToByteArr(tempOffset);
+    }
+    // called in 0xA5A3
+    public static byte[] genCurrentTest_16_39_BlackBodyTempOffset(short tempOffset) {
+        return parseShortToByteArr(tempOffset);
+    }
+    // called in 0xA5B1
+    public static byte[] genCurrentTest_25_35_BlackBodyTempOffset(short tempOffset) {
+        return parseShortToByteArr(tempOffset);
+    }
+    // called in 0xA5B2
+    public static byte[] genCurrentTest_25_37_BlackBodyTempOffset(short tempOffset) {
+        return parseShortToByteArr(tempOffset);
+    }
+    // called in 0xA5B3
+    public static byte[] genCurrentTest_25_39_BlackBodyTempOffset(short tempOffset) {
+        return parseShortToByteArr(tempOffset);
+    }
+    // called in 0xA5C1
+    public static byte[] genCurrentTest_39_35_BlackBodyTempOffset(short tempOffset) {
+        return parseShortToByteArr(tempOffset);
+    }
+    // called in 0xA5C2
+    public static byte[] genCurrentTest_39_37_BlackBodyTempOffset(short tempOffset) {
+        return parseShortToByteArr(tempOffset);
+    }
+    // called in 0xA5C3
+    public static byte[] genCurrentTest_39_39_BlackBodyTempOffset(short tempOffset) {
+        return parseShortToByteArr(tempOffset);
+    }
+    // called in 0xA5D1
+    public static byte[] genCurrentTest_42_35_BlackBodyTempOffset(short tempOffset) {
+        return parseShortToByteArr(tempOffset);
+    }
+    // called in 0xA5D2
+    public static byte[] genCurrentTest_42_37_BlackBodyTempOffset(short tempOffset) {
+        return parseShortToByteArr(tempOffset);
+    }
+    // called in 0xA5D3
+    public static byte[] genCurrentTest_42_39_BlackBodyTempOffset(short tempOffset) {
+        return parseShortToByteArr(tempOffset);
+    }
 }
