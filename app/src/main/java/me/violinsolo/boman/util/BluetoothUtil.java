@@ -17,6 +17,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import me.violinsolo.boman.R;
 import me.violinsolo.boman.model.ThermometerDeviceInfo;
+import me.violinsolo.boman.model.base.BaseDeviceInfo;
 import permissions.dispatcher.PermissionRequest;
 
 /**
@@ -504,9 +505,40 @@ public class BluetoothUtil {
         // mac
         byte[] macArr = new byte[]{data[0], data[1], data[2], data[3], data[4], data[5]};
         // device version ascii
-        byte[] version = new byte[]{data[6], data[7], data[8], data[9], data[10]};
+        byte[] versionArr = new byte[]{data[6], data[7], data[8], data[9], data[10]};
+        // the device type, which will be parsed into an Enum DeviceType
+        byte deviceTypeArr = data[11];
+        // bluetooth protocol version, 4.0 / 5.1 ...
+        byte bluetoothTypeArr = data[12];
+        // the temperature unit set by BT characteristic ControlPoint from app client.
+        byte temperatureUnitArr = data[13];
+        // the surface or the body mode, and the default mode should be body mode.
+        byte surfaceOrBodyArr = data[14];
+        // the current thermometer device mode, it will be changed when a QA want to do some test.
+        byte modeArr = data[15];
+        // the 16 bits integer indicates the lenght you should auto synchronizing when you want upload the historic records.
+        byte[] syncDataSizeArr = new byte[]{data[16], data[17]};
+        // reserved area, should not be used this time....
+        byte[] reservedAreaArr = new byte[]{data[18], data[19], data[20], data[21], data[22], data[23],
+                data[24], data[25], data[26], data[27], data[28], data[29]};
 
+        ThermometerDeviceInfo deviceInfo = new ThermometerDeviceInfo(
+                HexUtil.hexStrBigEndian(macArr, false),
+                HexUtil.str(versionArr, true),
+                BaseDeviceInfo.DeviceType.parse(deviceTypeArr),
+                BaseDeviceInfo.BluetoothVersion.parse(bluetoothTypeArr),
+                ThermometerDeviceInfo.TemperatureUnit.parse(temperatureUnitArr),
+                ThermometerDeviceInfo.MeasuringMode.parse(surfaceOrBodyArr),
+                ThermometerDeviceInfo.DeviceMode.parse(modeArr),
+                HexUtil.toShort(syncDataSizeArr),
+                reservedAreaArr);
 
-        return null;
+        return deviceInfo;
     }
+
+
+    // ===============================================================================
+    // Read Temperature Offset helper codes...
+    // ===============================================================================
+
 }
