@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import me.violinsolo.boman.R;
+import me.violinsolo.boman.model.TemperatureRecord;
+import me.violinsolo.boman.model.TestTemperatureOffset;
 import me.violinsolo.boman.model.ThermometerDeviceInfo;
 import me.violinsolo.boman.model.base.BaseDeviceInfo;
 import permissions.dispatcher.PermissionRequest;
@@ -294,15 +296,21 @@ public class BluetoothUtil {
     public static final byte controlPointSetTempOffset_42_35_BlackBody = (byte) 0xD1;
     public static final byte controlPointSetTempOffset_42_37_BlackBody = (byte) 0xD2;
     public static final byte controlPointSetTempOffset_42_39_BlackBody = (byte) 0xD3;
-//    public static final byte = (byte) 0x;
-//    public static final byte = (byte) 0x;
-//    public static final byte = (byte) 0x;
-//    public static final byte = (byte) 0x;
-//    public static final byte = (byte) 0x;
-//    public static final byte = (byte) 0x;
+
+    public static final byte synchronizeControlHeader = (byte) 0xA6;
+    public static final byte synchronizeControlStartSync = (byte) 0x01;
+    public static final byte synchronizeControlClearFlash = (byte) 0x02;
 //    public static final byte = (byte) 0x;
 //    public static final byte = (byte) 0x;
 
+
+    // ===============================================================================
+    // ===============================================================================
+    // ===============================================================================
+    // Service 1
+    // ===============================================================================
+    // ===============================================================================
+    // ===============================================================================
 
     // ===============================================================================
     // Control Point helper codes...
@@ -541,4 +549,67 @@ public class BluetoothUtil {
     // Read Temperature Offset helper codes...
     // ===============================================================================
 
+    public static TestTemperatureOffset parseTestTemperatureOffset(byte[] data) {
+        byte[] offset_overall_arr = new byte[] {data[0], data[1]};
+        byte[] offset_16_35_arr = new byte[] {data[2], data[3]};
+        byte[] offset_16_37_arr = new byte[] {data[4], data[5]};
+        byte[] offset_16_39_arr = new byte[] {data[6], data[7]};
+        byte[] offset_25_35_arr = new byte[] {data[8], data[9]};
+        byte[] offset_25_37_arr = new byte[] {data[10], data[11]};
+        byte[] offset_25_39_arr = new byte[] {data[12], data[13]};
+        byte[] offset_39_35_arr = new byte[] {data[14], data[15]};
+        byte[] offset_39_37_arr = new byte[] {data[16], data[17]};
+        byte[] offset_39_39_arr = new byte[] {data[18], data[19]};
+        byte[] offset_42_35_arr = new byte[] {data[20], data[21]};
+        byte[] offset_42_37_arr = new byte[] {data[22], data[23]};
+        byte[] offset_42_39_arr = new byte[] {data[24], data[25]};
+
+        TestTemperatureOffset temperatureOffset = new TestTemperatureOffset(
+                HexUtil.toShort(offset_overall_arr),
+                HexUtil.toShort(offset_16_35_arr),
+                HexUtil.toShort(offset_16_37_arr),
+                HexUtil.toShort(offset_16_39_arr),
+                HexUtil.toShort(offset_25_35_arr),
+                HexUtil.toShort(offset_25_37_arr),
+                HexUtil.toShort(offset_25_39_arr),
+                HexUtil.toShort(offset_39_35_arr),
+                HexUtil.toShort(offset_39_37_arr),
+                HexUtil.toShort(offset_39_39_arr),
+                HexUtil.toShort(offset_42_35_arr),
+                HexUtil.toShort(offset_42_37_arr),
+                HexUtil.toShort(offset_42_39_arr));
+
+        return temperatureOffset;
+
+    }
+
+
+
+    // ===============================================================================
+    // ===============================================================================
+    // ===============================================================================
+    // Service 2
+    // ===============================================================================
+    // ===============================================================================
+    // ===============================================================================
+
+    // ===============================================================================
+    // Synchronize Control
+    // ===============================================================================
+    // nothing to do...
+
+    // ===============================================================================
+    // Synchronize Content
+    // ===============================================================================
+    public static TemperatureRecord parseSynchronizeContent(byte[] data) {
+        byte[] millisecondsArr = new byte[] {data[0], data[1], data[2], data[3], data[4], data[5], data[6]};
+        byte[] temperatureValArr = new byte[] {data[7], data[8]};
+        byte[] reservedAreaArr = new byte[] {data[9], data[10], data[11], data[12], data[13], data[14], data[15]};
+
+        long millisecs = BluetoothUtil.parseCurrentTimeData(millisecondsArr);
+        short tempvalCelsius = HexUtil.toShort(temperatureValArr);
+
+        TemperatureRecord record = new TemperatureRecord(tempvalCelsius, millisecs);
+        return record;
+    }
 }
