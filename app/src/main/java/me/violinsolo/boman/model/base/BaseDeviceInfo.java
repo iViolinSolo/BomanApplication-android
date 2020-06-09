@@ -8,7 +8,7 @@ package me.violinsolo.boman.model.base;
  * <p>
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
-public abstract class DeviceInfo {
+public abstract class BaseDeviceInfo {
 
     public enum DeviceType {
         THERMOMETER((byte)0x01), UNKNOWN((byte)0xFF);
@@ -25,6 +25,15 @@ public abstract class DeviceInfo {
 
         public void setTypeCode(byte typeCode) {
             this.typeCode = typeCode;
+        }
+
+        public static DeviceType parse(byte target) {
+            for (DeviceType value : DeviceType.values()) {
+                if (value.getTypeCode() == target) {
+                    return value;
+                }
+            }
+            return null;
         }
     }
 
@@ -43,6 +52,14 @@ public abstract class DeviceInfo {
 
         public void setTypeCode(byte typeCode) {
             this.typeCode = typeCode;
+        }
+
+        public static BluetoothVersion parse(byte target) {
+            for (BluetoothVersion value : BluetoothVersion.values()) {
+                if (value.getTypeCode() == target)
+                    return value;
+            }
+            return null;
         }
     }
 }

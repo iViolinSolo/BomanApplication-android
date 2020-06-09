@@ -8,5 +8,5 @@ package me.violinsolo.boman.model.base;
  * <p>
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
-public abstract class Record {
+public abstract class BaseRecord {
 }

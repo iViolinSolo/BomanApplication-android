@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import me.violinsolo.boman.R;
+import me.violinsolo.boman.model.ThermometerDeviceInfo;
 import permissions.dispatcher.PermissionRequest;
 
 /**
@@ -280,9 +281,18 @@ public class BluetoothUtil {
     public static final byte normalTemperatureMeasurementMode = (byte) 0x01;
     public static final byte factoryMode = (byte) 0x02;
     public static final byte continuouslyMeasuringMode = (byte) 0x03;
-
-//    public static final byte controlPoint= (byte) 0x;
-//    public static final byte controlPoint= (byte) 0x;
+    public static final byte controlPointSetTempOffset_16_35_BlackBody = (byte) 0xA1;
+    public static final byte controlPointSetTempOffset_16_37_BlackBody = (byte) 0xA2;
+    public static final byte controlPointSetTempOffset_16_39_BlackBody = (byte) 0xA3;
+    public static final byte controlPointSetTempOffset_25_35_BlackBody = (byte) 0xB1;
+    public static final byte controlPointSetTempOffset_25_37_BlackBody = (byte) 0xB2;
+    public static final byte controlPointSetTempOffset_25_39_BlackBody = (byte) 0xB3;
+    public static final byte controlPointSetTempOffset_39_35_BlackBody = (byte) 0xC1;
+    public static final byte controlPointSetTempOffset_39_37_BlackBody = (byte) 0xC2;
+    public static final byte controlPointSetTempOffset_39_39_BlackBody = (byte) 0xC3;
+    public static final byte controlPointSetTempOffset_42_35_BlackBody = (byte) 0xD1;
+    public static final byte controlPointSetTempOffset_42_37_BlackBody = (byte) 0xD2;
+    public static final byte controlPointSetTempOffset_42_39_BlackBody = (byte) 0xD3;
 //    public static final byte = (byte) 0x;
 //    public static final byte = (byte) 0x;
 //    public static final byte = (byte) 0x;
@@ -292,6 +302,10 @@ public class BluetoothUtil {
 //    public static final byte = (byte) 0x;
 //    public static final byte = (byte) 0x;
 
+
+    // ===============================================================================
+    // Control Point helper codes...
+    // ===============================================================================
 
     // called in 0xA501
     public static byte[] genCurrentTimeData() {
@@ -348,9 +362,7 @@ public class BluetoothUtil {
     // called in 0xA505
     // assert data.length == 7,
     public static float parseCurrentEnvironmentTemperature(byte[] data) {
-        byte[] envTemp = new byte[2];
-        envTemp[0] = data[0];
-        envTemp[1] = data[1];
+        byte[] envTemp = new byte[]{data[0], data[1]};
 
         short envTemperature10times = HexUtil.toShort(envTemp);
 
@@ -360,13 +372,9 @@ public class BluetoothUtil {
 
     // called in 0xA506
     public static short parseCurrentTemperature(byte[] data) {
-        byte[] bodyTemp = new byte[2];
-        bodyTemp[0] = data[6];
-        bodyTemp[1] = data[7];
+        byte[] bodyTemp = new byte[]{data[6], data[7]};
 
-        byte[] surfaceTemp = new byte[2];
-        surfaceTemp[0] = data[0];
-        surfaceTemp[1] = data[1];
+        byte[] surfaceTemp = new byte[]{data[0], data[1]};
 
         // body temperature ...
         short bodyTemperature10times = HexUtil.toShort(bodyTemp);
@@ -468,5 +476,37 @@ public class BluetoothUtil {
     // called in 0xA5D3
     public static byte[] genCurrentTest_42_39_BlackBodyTempOffset(short tempOffset) {
         return parseShortToByteArr(tempOffset);
+    }
+
+
+
+    // ===============================================================================
+    // Thermometry Notify helper codes...
+    // ===============================================================================
+
+    public static short parsePassiveTemperature(byte[] data) {
+        byte[] bodyTemp = new byte[]{data[6], data[7]};
+
+        byte[] surfaceTemp = new byte[]{data[0], data[1]};
+
+        // body temperature ...
+        short bodyTemperature10times = HexUtil.toShort(bodyTemp);
+        short surfaceTemperature10times = HexUtil.toShort(surfaceTemp);
+
+        return bodyTemperature10times;
+    }
+
+    // ===============================================================================
+    // Read State helper codes...
+    // ===============================================================================
+
+    public static ThermometerDeviceInfo parseDeviceState(byte[] data) {
+        // mac
+        byte[] macArr = new byte[]{data[0], data[1], data[2], data[3], data[4], data[5]};
+        // device version ascii
+        byte[] version = new byte[]{data[6], data[7], data[8], data[9], data[10]};
+
+
+        return null;
     }
 }

@@ -2,7 +2,7 @@ package me.violinsolo.boman.model;
 
 import java.util.UUID;
 
-import me.violinsolo.boman.model.base.Record;
+import me.violinsolo.boman.model.base.BaseRecord;
 import me.violinsolo.boman.util.DateUtil;
 
 /**
@@ -13,7 +13,7 @@ import me.violinsolo.boman.util.DateUtil;
  * <p>
  * Copyright (c) 2020 EmberXu.hack. All rights reserved.
  */
-public class TemperatureRecord extends Record {
+public class TemperatureRecord extends BaseRecord {
     // the 100 times value of a temperature taken by the thermometer, eg. value=3700 means it's 37.00℃
     private int value; // Celsius degree.
     // the timestamp for this record.
